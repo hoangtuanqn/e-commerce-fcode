@@ -2,7 +2,7 @@
 TARGET = e-commerce-fcode
 
 # Các file nguồn
-SRC = main.c math_utils.c
+SRC = main.c src/register.c src/login.c
 
 # Các file object
 OBJ = $(SRC:.c=.o)
