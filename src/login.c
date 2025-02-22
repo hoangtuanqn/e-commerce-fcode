@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "../includes/global.h"
 #include "../includes/login.h"
+#include "../includes/viewui.h"
 
 User currentUser;
 

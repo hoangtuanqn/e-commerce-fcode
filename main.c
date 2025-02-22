@@ -9,6 +9,7 @@
 int main() {
     int choice;
     User user;
+    // The user is not logged in
     do {
         viewUIStart();
         scanf("%d", &choice);
@@ -27,6 +28,8 @@ int main() {
                 msgError("Invalid choice. Please try again. \n");
         }
     } while (is_logged_in == 0);
+
+    // Logged in user
     if(is_logged_in) {
         switch (currentUser.accountType) {
             case 1:
