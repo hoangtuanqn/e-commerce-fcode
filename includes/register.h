@@ -1,5 +1,5 @@
 #ifndef REGISTER_H
 #define REGISTER_H
-int registerUser();
+void registerForm(User *user);
 #endif
 
