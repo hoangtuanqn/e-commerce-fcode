@@ -5,6 +5,7 @@
 #include "includes/function.h"
 #include "includes/register.h"
 #include "includes/login.h"
+#include "includes/seller.h"
 
 int main() {
     int choice;
@@ -33,10 +34,10 @@ int main() {
     if(is_logged_in) {
         switch (currentUser.accountType) {
             case 1:
-                viewUIBuyer();
+                // viewUIBuyer();
                 break;
             case 2:
-                viewUISeller();
+                seller();
                 break;
         }
     }
