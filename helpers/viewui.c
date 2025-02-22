@@ -30,26 +30,6 @@ void viewUIBuyer() {
     printf("Enter your choice: ");
 
 }
-viewUISellerHeader() {
-    printf("\n========== Welcome to the system! ==========\n");
-    printf("We are excited to support you in your selling journey.\n");
-    printf("=====================================================\n\n");
-
-    printf("\n========== Dashboard! ==========\n");
-    printf("Stock available: [quantity]\n");
-    printf("Number of orders sold: [number of orders]\n");
-    printf("Total sales amount: [total amount]\n");
-    printf("=====================================================\n\n");
-}
-void viewUISeller() {
-    printf("1. Add Category\n");
-    printf("2. Add Product\n");
-    printf("3. View Product\n");
-    printf("4. Update Product\n");
-    printf("5. Delete Product\n");
-    printf("6. Logout\n");
-    printf("Enter your choice: ");
-}
 
 int viewUIReLogin() {
     int choice;

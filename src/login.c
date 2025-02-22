@@ -4,6 +4,7 @@
 #include "../includes/global.h"
 #include "../includes/login.h"
 #include "../includes/viewui.h"
+#include "../includes/function.h"
 
 User currentUser;
 
