@@ -12,5 +12,6 @@ typedef struct {
     char warehouseAddress[200]; // Only for sellers
 } User;
 extern int is_logged_in;
+extern User currentUser;
 #endif
 

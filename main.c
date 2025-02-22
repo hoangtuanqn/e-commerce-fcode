@@ -2,6 +2,7 @@
 #include <string.h>
 #include "includes/global.h"
 #include "includes/register.h"
+#include "includes/login.h"
 // Define User structure
 
 void viewUIStart() {
@@ -15,17 +16,17 @@ void viewUIStart() {
 
 int main() {
     int choice;
-	User newUser;
-    while (1) {
+	User user;
+    do {
         viewUIStart();
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                registerForm(&newUser);
+                registerForm(&user);
                 break;
             case 2:
-                printf("Login functionality not implemented yet.\n");
+                loginForm(&user);
                 break;
             case 3:
                 printf("Exit successfully\n");
@@ -33,7 +34,7 @@ int main() {
             default:
                 printf("Invalid choice. Please try again.\n");
         }
-    }
+    } while (is_logged_in == 0);
 
     return 0;
 }
