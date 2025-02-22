@@ -3,6 +3,79 @@
 #include <string.h>
 #include "../includes/global.h"
 #include "../includes/register.h"
+int handleRegister(User *user) {
+    if (user == NULL) {
+        printf("Invalid user data!\n");
+        return 0;
+    }
+
+    FILE *file = fopen("data/Users.txt", "a");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 0;
+    }
+
+    if (user->accountType < 1 || user->accountType > 2) {
+        printf("Invalid account type!\n");
+        fclose(file);
+        return 0;
+    }
+
+    if (fprintf(file, "%s %s %s %s %s %s %d %s %s\n",
+                user->username, user->password, user->email, user->phone,
+                user->fullName, user->address, user->accountType,
+                user->shopName, user->warehouseAddress) < 0) {
+        printf("Error writing to file!\n");
+        fclose(file);
+        return 0;
+    }
+
+    fclose(file);
+    return 1;
+}
+
+int isEmailExists(const char *email) {
+    FILE *file = fopen("data/Users.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 0;
+    }
+
+    char line[512];
+    while (fgets(line, sizeof(line), file)) {
+        char existingEmail[100];
+        if (sscanf(line, "%*s %*s %99s", existingEmail) == 1) {
+            if (strcmp(existingEmail, email) == 0) {
+                fclose(file);
+                return 1; 
+            }
+        }
+    }
+
+    fclose(file);
+    return 0;
+}
+int isPhoneExists(const char *phone) {
+    FILE *file = fopen("data/Users.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 0;
+    }
+
+    char line[512];
+    while (fgets(line, sizeof(line), file)) {
+        char existingPhone[12];
+        if (sscanf(line, "%*s %*s %*s %11s", existingPhone) == 1) {
+            if (strcmp(existingPhone, phone) == 0) {
+                fclose(file);
+                return 1; 
+            }
+        }
+    }
+
+    fclose(file);
+    return 0;
+}
 void registerForm(User *user) {
     printf("====================================\n");
     printf("       USER REGISTRATION        \n");
@@ -22,13 +95,27 @@ void registerForm(User *user) {
         scanf("%s", confirmPassword);
     }
 
-    printf("Email: ");
-    scanf("%s", user->email);
+    int emailExists;
+    do {
+        printf("Email: ");
+        scanf("%s", user->email);
+        emailExists = isEmailExists(user->email);
+        if (emailExists) {
+            printf("Email already exists! Please enter another email.\n");
+        }
+    } while (emailExists);
     
     
+    int phoneExists;
+    do {
+        printf("Phone Number: ");
+        scanf("%s", user->phone);
+        phoneExists = isPhoneExists(user->phone);
+        if (phoneExists) {
+            printf("Phone already exists! Please enter another phone.\n");
+        }
+    } while (phoneExists);
 
-    printf("Phone Number: ");
-    scanf("%s", user->phone);
 
     printf("Full Name: ");
     scanf(" %[^\n]", user->fullName);
@@ -46,7 +133,12 @@ void registerForm(User *user) {
         printf("Warehouse Address: ");
         scanf(" %[^\n]", user->warehouseAddress);
     }
-    is_logged_in = 1;
-    printf("\nRegistration Successful!\n");
+
+    if (handleRegister(user) == 1) {
+        is_logged_in = 1;
+        printf("\nRegistration Successful!\n");
+    } else {
+        printf("Registration Failed!\n");
+    }
     printf("====================================\n");
 }
