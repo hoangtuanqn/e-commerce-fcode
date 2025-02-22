@@ -95,7 +95,7 @@ void registerForm(User *user) {
         scanf("%s", user->email);
         emailExists = isEmailExists(user->email);
         if (emailExists) {
-            printf("Email already exists! Please enter another email.\n");
+            msgError("Email already exists! Please enter another email.\n");
         }
     } while (emailExists);
     
@@ -106,7 +106,7 @@ void registerForm(User *user) {
         scanf("%s", user->phone);
         phoneExists = isPhoneExists(user->phone);
         if (phoneExists) {
-            printf("Phone already exists! Please enter another phone.\n");
+            msgError("Phone already exists! Please enter another phone.\n");
         }
     } while (phoneExists);
 
@@ -139,9 +139,9 @@ void registerForm(User *user) {
     if (handleRegister(user) == 1) {
         is_logged_in = 1;
         currentUser = *user;
-        printf("\nRegistration Successful!\n");
+        msgSuccess("\nRegistration Successful!\n");
     } else {
-        printf("Registration Failed!\n");
+        msgError("Registration Failed!\n");
     }
     printf("====================================\n");
 }

@@ -8,3 +8,10 @@ void trimTrailingSpaces(char *str) {
     }
     str[len] = '\0';
 }
+void msgSuccess(char *message) {
+    printf("\033[32m%s\033[0m", message);
+}
+void msgError(char *message) {
+    printf("\033[31m%s\033[0m", message);
+}
+

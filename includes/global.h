@@ -11,7 +11,6 @@ typedef struct {
     char shopName[100];       // Only for sellers
     char warehouseAddress[200]; // Only for sellers
 } User;
-void trimTrailingSpaces(char *str);
 extern int is_logged_in;
 extern User currentUser;
 #endif

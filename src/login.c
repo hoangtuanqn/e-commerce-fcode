@@ -90,7 +90,7 @@ int viewUIReLogin() {
     printf("Enter your choice: ");
     scanf("%d", &choice);
     if (choice != 1 && choice != 2) {
-        printf("Invalid choice!\n");
+        msgError("Invalid choice!\n");
         return viewUIReLogin();
     }
     return choice;
@@ -111,10 +111,10 @@ void loginForm(User *user) {
         if (handleLogin(user)) {
             is_logged_in = 1;
             isReLogin = 0;
-            printf("Login successful!\n");
+            msgSuccess("Login successful!\n");
 
         } else {
-            printf("Invalid username or password!\n");
+            msgError("Invalid username or password!\n");
             isReLogin = viewUIReLogin();
         }
     } while (isReLogin == 1);

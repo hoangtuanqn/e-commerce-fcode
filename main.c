@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "includes/global.h"
+#include "includes/function.h"
 #include "includes/register.h"
 #include "includes/login.h"
+
 // Define User structure
 void viewUIStart() {
     printf("\n=== E-commerce System ===\n");
@@ -21,7 +23,7 @@ void viewUILoginSuccess() {
 
 int main() {
     int choice;
-	User user;
+    User user;
     do {
         viewUIStart();
         scanf("%d", &choice);
@@ -37,7 +39,7 @@ int main() {
                 printf("Exit successfully\n");
                 return 0;
             default:
-                printf("Invalid choice. Please try again.\n");
+                msgError("Invalid choice. Please try again. \n");
         }
     } while (is_logged_in == 0);
     if(is_logged_in) {
