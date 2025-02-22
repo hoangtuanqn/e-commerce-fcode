@@ -7,6 +7,7 @@
 #include "../../includes/seller/add_category.h"
 #include "../../includes/seller/view_all_category.h"
 #include "../../includes/seller/view_delete_category.h"
+
 void seller() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause

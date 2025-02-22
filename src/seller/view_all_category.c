@@ -12,7 +12,7 @@ void view_all_category() {
         msg_error("Error opening file for reading!\n");
         return;
     }
-    char username[100], category[100], line[100];
+    char username[100], category[100];
     printf("\n========== All Category ==========\n");
     int i = 0;
     while (!feof(file)) {
