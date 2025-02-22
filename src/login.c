@@ -19,7 +19,7 @@ int handleLogin(User *user) {
     }
 
     char line[512];
-    char username[50], password[50], email[100], phone[20], fullName[100], address[200], shopName[100], warehouseAddress[200];
+    char username[50], password[50], email[100], phone[20], fullName[100], address[200], shopName[200], warehouseAddress[200];
     int accountType;
 
     while (!feof(file)) {
@@ -82,19 +82,6 @@ int handleLogin(User *user) {
     return 0;
 }
 
-int viewUIReLogin() {
-    int choice;
-    printf("\n=== Do you want to login again? ===\n");
-    printf("1. Yes\n");
-    printf("2. No\n");
-    printf("Enter your choice: ");
-    scanf("%d", &choice);
-    if (choice != 1 && choice != 2) {
-        msgError("Invalid choice!\n");
-        return viewUIReLogin();
-    }
-    return choice;
-}
 
 void loginForm(User *user) {
     int isReLogin = 1;

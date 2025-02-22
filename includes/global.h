@@ -1,5 +1,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
+
 typedef struct {
     char username[50];
     char password[50];
@@ -13,5 +14,6 @@ typedef struct {
 } User;
 extern int is_logged_in;
 extern User currentUser;
+
 #endif
 

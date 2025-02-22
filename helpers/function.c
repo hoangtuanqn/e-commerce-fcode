@@ -1,6 +1,5 @@
 #include <string.h>
 #include <ctype.h>
-
 void trimTrailingSpaces(char *str) {
     int len = strlen(str);
     while (len > 0 && isspace(str[len - 1])) {
@@ -13,5 +12,9 @@ void msgSuccess(char *message) {
 }
 void msgError(char *message) {
     printf("\033[31m%s\033[0m", message);
+}
+
+void msgCustom(char *message, char *color) {
+    printf("\033[%sm%s\033[0m", color, message);
 }
 
