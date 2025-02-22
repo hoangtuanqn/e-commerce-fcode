@@ -4,3 +4,4 @@
 #include "../includes/global.h"
 
 int is_logged_in = 0; //= 0 là chưa login, = 1 là đã login
+User current_user;

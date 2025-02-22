@@ -3,26 +3,27 @@
 #include <string.h>
 #include "../../includes/global.h"
 #include "../../includes/function.h"
-#include "../../includes/seller/viewui.h"
-#include "../../includes/seller/addCategory.h"
+#include "../../includes/seller/view_ui.h"
+#include "../../includes/seller/add_category.h"
+#include "../../includes/seller/view_all_category.h"
 void seller() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
-    viewUISellerHeader();
+    view_ui_seller_header();
     do {
-        viewUISeller();
+        view_ui_seller();
         scanf("%d", &choice);
         switch (choice) {
             case 1:
-                viewAddCategory();
+                view_all_category();
                 break;
             case 2:
+                view_add_category();
                 return;
             default:
-                msgError("Invalid choice!\n");
+                msg_error("Invalid choice!\n");
                 printf("Enter your choice: ");
         }
     } while (!pause);
 
 }
-

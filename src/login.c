@@ -3,75 +3,74 @@
 #include <stdlib.h>
 #include "../includes/global.h"
 #include "../includes/login.h"
-#include "../includes/viewui.h"
+#include "../includes/view_ui.h"
 #include "../includes/function.h"
 
-User currentUser;
+User current_user;
 
-int handleLogin(User *user) {
+int handle_login(User *user) {
     if (user == NULL) {
         printf("Invalid user data!\n");
         return 0;
     }
 
-    FILE *file = fopen("data/Users.txt", "r");
+    FILE *file = fopen("data/users.txt", "r");
     if (file == NULL) {
         perror("Error opening file");
         return 0;
     }
 
     char line[512];
-    char username[50], password[50], email[100], phone[20], fullName[100], address[200], shopName[200], warehouseAddress[200];
-    int accountType;
+    char username[50], password[50], email[100], phone[20], full_name[100], address[200], shop_name[200], warehouse_address[200];
+    int account_type;
 
     while (!feof(file)) {
         fgets(line, sizeof(line), file);
         strcpy(username, line);
-        trimTrailingSpaces(username);
+        trim_trailing_spaces(username);
 
         fgets(line, sizeof(line), file);
         strcpy(password, line);
-        trimTrailingSpaces(password);
+        trim_trailing_spaces(password);
 
         fgets(line, sizeof(line), file);
         strcpy(email, line);
-        trimTrailingSpaces(email);
+        trim_trailing_spaces(email);
 
         fgets(line, sizeof(line), file);
         strcpy(phone, line);
-        trimTrailingSpaces(phone);
+        trim_trailing_spaces(phone);
 
         fgets(line, sizeof(line), file);
-        strcpy(fullName, line);
-        trimTrailingSpaces(fullName);
-
+        strcpy(full_name, line);
+        trim_trailing_spaces(full_name);
 
         fgets(line, sizeof(line), file);
         strcpy(address, line);
-        trimTrailingSpaces(address);
+        trim_trailing_spaces(address);
 
         fgets(line, sizeof(line), file);
-        trimTrailingSpaces(line);
-        accountType = atoi(line);
+        trim_trailing_spaces(line);
+        account_type = atoi(line);
 
         fgets(line, sizeof(line), file);
-        strcpy(shopName, line);
-        trimTrailingSpaces(shopName);
+        strcpy(shop_name, line);
+        trim_trailing_spaces(shop_name);
 
         fgets(line, sizeof(line), file);
-        strcpy(warehouseAddress, line);
-        trimTrailingSpaces(warehouseAddress);
+        strcpy(warehouse_address, line);
+        trim_trailing_spaces(warehouse_address);
 
         if (strcmp(username, user->username) == 0 && strcmp(password, user->password) == 0) {
-            strcpy(currentUser.username, username);
-            strcpy(currentUser.password, password);
-            strcpy(currentUser.fullName, fullName);
-            strcpy(currentUser.email, email);
-            strcpy(currentUser.phone, phone);
-            strcpy(currentUser.address, address);
-            currentUser.accountType = accountType;
-            strcpy(currentUser.shopName, shopName);
-            strcpy(currentUser.warehouseAddress, warehouseAddress);
+            strcpy(current_user.username, username);
+            strcpy(current_user.password, password);
+            strcpy(current_user.full_name, full_name);
+            strcpy(current_user.email, email);
+            strcpy(current_user.phone, phone);
+            strcpy(current_user.address, address);
+            current_user.account_type = account_type;
+            strcpy(current_user.shop_name, shop_name);
+            strcpy(current_user.warehouse_address, warehouse_address);
             fclose(file);
             return 1;
         }
@@ -84,9 +83,8 @@ int handleLogin(User *user) {
     return 0;
 }
 
-
-void loginForm(User *user) {
-    int isReLogin = 1;
+void login_form(User *user) {
+    int is_re_login = 1;
     do {
         printf("====================================\n");
         printf("             USER LOGIN        \n");
@@ -97,14 +95,14 @@ void loginForm(User *user) {
         printf("Password: ");
         scanf("%s", user->password);
 
-        if (handleLogin(user)) {
+        if (handle_login(user)) {
             is_logged_in = 1;
-            isReLogin = 0;
-            msgSuccess("Login successful!\n");
+            is_re_login = 0;
+            msg_success("Login successful!\n");
 
         } else {
-            msgError("Invalid username or password!\n");
-            isReLogin = viewUIReLogin();
+            msg_error("Invalid username or password!\n");
+            is_re_login = view_ui_re_login();
         }
-    } while (isReLogin == 1);
+    } while (is_re_login == 1);
 }

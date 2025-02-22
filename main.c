@@ -1,40 +1,39 @@
 #include <stdio.h>
 #include <string.h>
-#include "includes/viewui.h"
+#include "includes/view_ui.h"
 #include "includes/global.h"
 #include "includes/function.h"
 #include "includes/register.h"
 #include "includes/login.h"
 #include "includes/seller/seller.h"
-
 int main() {
     int choice;
     User user;
     // The user is not logged in
     do {
-        viewUIStart();
+        view_ui_start();
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                registerForm(&user);
+                register_form(&user);
                 break;
             case 2:
-                loginForm(&user);
+                login_form(&user);
                 break;
             case 3:
                 printf("Exit successfully\n");
                 return 0;
             default:
-                msgError("Invalid choice. Please try again. \n");
+                msg_error("Invalid choice. Please try again. \n");
         }
     } while (is_logged_in == 0);
 
     // Logged in user
     if(is_logged_in) {
-        switch (currentUser.accountType) {
+        switch (current_user.account_type) {
             case 1:
-                // viewUIBuyer();
+                // view_ui_buyer();
                 break;
             case 2:
                 seller();

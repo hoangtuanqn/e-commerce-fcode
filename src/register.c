@@ -5,13 +5,13 @@
 #include "../includes/function.h"
 #include "../includes/register.h"
 
-int handleRegister(User *user) {
+int handle_register(User *user) {
     if (user == NULL) {
-        msgError("Invalid user data!\n");
+        msg_error("Invalid user data!\n");
         return 0;
     }
 
-    FILE *file = fopen("data/Users.txt", "a");
+    FILE *file = fopen("data/users.txt", "a");
     if (file == NULL) {
         perror("Error opening file");
         return 0;
@@ -19,9 +19,9 @@ int handleRegister(User *user) {
 
     if (fprintf(file, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n%s\n%s\n\n",
                 user->username, user->password, user->email, user->phone,
-                user->fullName, user->address, user->accountType,
-                user->shopName, user->warehouseAddress) < 0) {
-        msgError("Error writing to file!\n");
+                user->full_name, user->address, user->account_type,
+                user->shop_name, user->warehouse_address) < 0) {
+        msg_error("Error writing to file!\n");
         fclose(file);
         return 0;
     }
@@ -30,8 +30,8 @@ int handleRegister(User *user) {
     return 1;
 }
 
-int isEmailExists(const char *email) {
-    FILE *file = fopen("data/Users.txt", "r");
+int is_email_exists(const char *email) {
+    FILE *file = fopen("data/users.txt", "r");
     if (file == NULL) {
         perror("Error opening file");
         return 0;
@@ -39,9 +39,9 @@ int isEmailExists(const char *email) {
 
     char line[512];
     while (fgets(line, sizeof(line), file)) {
-        char existingEmail[100];
-        if (sscanf(line, "%*s %*s %99s", existingEmail) == 1) {
-            if (strcmp(existingEmail, email) == 0) {
+        char existing_email[100];
+        if (sscanf(line, "%*s %*s %99s", existing_email) == 1) {
+            if (strcmp(existing_email, email) == 0) {
                 fclose(file);
                 return 1; 
             }
@@ -51,8 +51,8 @@ int isEmailExists(const char *email) {
     fclose(file);
     return 0;
 }
-int isPhoneExists(const char *phone) {
-    FILE *file = fopen("data/Users.txt", "r");
+int is_phone_exists(const char *phone) {
+    FILE *file = fopen("data/users.txt", "r");
     if (file == NULL) {
         perror("Error opening file");
         return 0;
@@ -60,9 +60,9 @@ int isPhoneExists(const char *phone) {
 
     char line[512];
     while (fgets(line, sizeof(line), file)) {
-        char existingPhone[12];
-        if (sscanf(line, "%*s %*s %*s %11s", existingPhone) == 1) {
-            if (strcmp(existingPhone, phone) == 0) {
+        char existing_phone[12];
+        if (sscanf(line, "%*s %*s %*s %11s", existing_phone) == 1) {
+            if (strcmp(existing_phone, phone) == 0) {
                 fclose(file);
                 return 1; 
             }
@@ -72,7 +72,7 @@ int isPhoneExists(const char *phone) {
     fclose(file);
     return 0;
 }
-void registerForm(User *user) {
+void register_form(User *user) {
     printf("====================================\n");
     printf("       USER REGISTRATION        \n");
     printf("====================================\n");
@@ -83,71 +83,71 @@ void registerForm(User *user) {
     scanf("%s", user->password);
     
     printf("Confirm Password: ");
-    char confirmPassword[50];
-    scanf("%s", confirmPassword);
+    char confirm_password[50];
+    scanf("%s", confirm_password);
     
-    while (strcmp(user->password, confirmPassword) != 0) {
+    while (strcmp(user->password, confirm_password) != 0) {
         printf("Passwords do not match! Please re-enter: ");
-        scanf("%s", confirmPassword);
+        scanf("%s", confirm_password);
     }
 
-    int emailExists;
+    int email_exists;
     do {
         printf("Email: ");
         scanf("%s", user->email);
-        emailExists = isEmailExists(user->email);
-        if (emailExists) {
-            msgError("Email already exists! Please enter another email.\n");
+        email_exists = is_email_exists(user->email);
+        if (email_exists) {
+            msg_error("Email already exists! Please enter another email.\n");
         }
-    } while (emailExists);
+    } while (email_exists);
     
     
-    int phoneExists;
+    int phone_exists;
     do {
         printf("Phone Number: ");
         scanf("%s", user->phone);
-        phoneExists = isPhoneExists(user->phone);
-        if (phoneExists) {
-            msgError("Phone already exists! Please enter another phone.\n");
+        phone_exists = is_phone_exists(user->phone);
+        if (phone_exists) {
+            msg_error("Phone already exists! Please enter another phone.\n");
         }
-    } while (phoneExists);
+    } while (phone_exists);
 
     // Drift command fails, use getchar() to remove character '\n'
     getchar();
-    
+
     printf("Full Name: ");
-    gets(user->fullName);
+    gets(user->full_name);
 
     printf("Address: ");
     gets(user->address);
 
     do {
         printf("Account Type (1: Buyer, 2: Seller): ");
-        scanf("%d", &user->accountType);
-        if (user->accountType < 1 || user->accountType > 2) {
+        scanf("%d", &user->account_type);
+        if (user->account_type < 1 || user->account_type > 2) {
             printf("Invalid account type!\n");
         }
-    } while (user->accountType < 1 || user->accountType > 2);
+    } while (user->account_type < 1 || user->account_type > 2);
 
     // Drift command fails, use getchar() to remove character '\n'
     getchar();
-    if (user->accountType == 2) {
+    if (user->account_type == 2) {
         printf("Shop Name: ");
-        gets(user->shopName);
+        gets(user->shop_name);
 
         printf("Warehouse Address: ");
-        gets(user->warehouseAddress);
+        gets(user->warehouse_address);
     } else {
-        strcpy(user->shopName, ".");
-        strcpy(user->warehouseAddress, ".");
+        strcpy(user->shop_name, ".");
+        strcpy(user->warehouse_address, ".");
     }
 
-    if (handleRegister(user) == 1) {
+    if (handle_register(user) == 1) {
         is_logged_in = 1;
-        currentUser = *user;
-        msgSuccess("\nRegistration Successful!\n");
+        current_user = *user;
+        msg_success("\nRegistration Successful!\n");
     } else {
-        msgError("Registration Failed!\n");
+        msg_error("Registration Failed!\n");
     }
     printf("====================================\n");
 }
