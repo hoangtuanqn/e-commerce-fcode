@@ -15,12 +15,6 @@ int handleRegister(User *user) {
         return 0;
     }
 
-    if (user->accountType < 1 || user->accountType > 2) {
-        printf("Invalid account type!\n");
-        fclose(file);
-        return 0;
-    }
-
     if (fprintf(file, "%s %s %s %s %s %s %d %s %s\n",
                 user->username, user->password, user->email, user->phone,
                 user->fullName, user->address, user->accountType,
@@ -123,8 +117,13 @@ void registerForm(User *user) {
     printf("Address: ");
     scanf(" %[^\n]", user->address);
 
-    printf("Account Type (1: Buyer, 2: Seller): ");
-    scanf("%d", &user->accountType);
+    do {
+        printf("Account Type (1: Buyer, 2: Seller): ");
+        scanf("%d", &user->accountType);
+        if (user->accountType < 1 || user->accountType > 2) {
+            printf("Invalid account type!\n");
+        }
+    } while (user->accountType < 1 || user->accountType > 2);
 
     if (user->accountType == 2) {
         printf("Shop Name: ");
