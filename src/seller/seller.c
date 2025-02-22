@@ -6,6 +6,7 @@
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/add_category.h"
 #include "../../includes/seller/view_all_category.h"
+#include "../../includes/seller/view_delete_category.h"
 void seller() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
@@ -19,7 +20,10 @@ void seller() {
                 break;
             case 2:
                 view_add_category();
-                return;
+                break;
+            case 3:
+                view_delete_category();
+                break;
             default:
                 msg_error("Invalid choice!\n");
                 printf("Enter your choice: ");

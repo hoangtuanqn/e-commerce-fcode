@@ -10,7 +10,7 @@ int is_exist_category(char *category_name) {
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");
         return 0;
-    }
+    }     
     char category[100], username[100];
     while (!feof(file)) {
         fgets(username, sizeof(username), file);

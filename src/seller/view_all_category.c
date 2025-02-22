@@ -20,12 +20,11 @@ void view_all_category() {
         trim_trailing_spaces(username);
         fgets(category, sizeof(category), file);
         trim_trailing_spaces(category);
-        if(strcmp(username, current_user.username) == 0) {
+        if(username[0] != '\n' && strcmp(username, current_user.username) == 0) {
             printf("%d. \033[32m%s\033[0m\n", ++i, category);
-        }
-
-        // Read last line
-        fgets(line, sizeof(line), file);
+        } 
+        username[0] = '\n';
+        category[0] = '\n';
     }
     printf("============END============\n\n");
     fclose(file);
