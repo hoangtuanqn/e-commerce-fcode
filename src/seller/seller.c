@@ -5,6 +5,7 @@
 #include "../../includes/function.h"
 #include "../../includes/viewui.h"
 int isExistCategory(char *categoryName) {
+    trimTrailingSpaces(categoryName);
     FILE *file = fopen("data/Categories.txt", "r");
     if (file == NULL) {
         msgError("Error opening file!\n");
@@ -17,11 +18,7 @@ int isExistCategory(char *categoryName) {
         
         fgets(category, sizeof(category), file);
         trimTrailingSpaces(category);
-        // printf("1. %s %s %d %d\n", username, category, strlen(username), strlen(category));
-        // printf("2. %s %s %d %d\n\n", currentUser.username, categoryName, strlen(currentUser.username), strlen(categoryName));
 
-        // printf("Chieu dai cua username la: %s - %s - %d\n", username, currentUser.username, strcmp(username, currentUser.username));
-        printf("Category là: %s - %s - %d\n", category, categoryName, strcmp(category, categoryName));  
         if (strcmp(category, categoryName) == 0 && strcmp(username, currentUser.username) == 0) {
             fclose(file);
             return 1;
@@ -36,7 +33,7 @@ int isExistCategory(char *categoryName) {
 }
 void handleAddCategory(char *categoryName) {
     if (isExistCategory(categoryName)) {
-        msgError("Category already exists!\n");
+        msgError("Category already exists!\n\n");
         return;
     }
     FILE *file = fopen("data/Categories.txt", "a");
