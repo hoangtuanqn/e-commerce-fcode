@@ -11,7 +11,6 @@ void viewUIStart() {
     printf("Enter your choice: ");
 }
 void viewUIBuyer() {
-    system("cls");
     printf("\n========== Welcome to Your Shopping Portal! ==========\n");
     printf("We are excited to assist you in finding the best products tailored to your needs.\n");
     printf("=====================================================\n\n");
@@ -31,7 +30,7 @@ void viewUIBuyer() {
 
 }
 void viewUISeller() {
-    system("cls");
+    int choice;
     printf("\n========== Welcome to the system! ==========\n");
     printf("We are excited to support you in your selling journey.\n");
     printf("=====================================================\n\n");
@@ -42,12 +41,27 @@ void viewUISeller() {
     printf("Total sales amount: [total amount]\n");
     printf("=====================================================\n\n");
 
-    printf("1. Add Product\n");
-    printf("2. View Product\n");
-    printf("3. Update Product\n");
-    printf("4. Delete Product\n");
-    printf("5. Logout\n");
+    printf("1. Add Category\n");
+    printf("2. Add Product\n");
+    printf("3. View Product\n");
+    printf("4. Update Product\n");
+    printf("5. Delete Product\n");
+    printf("6. Logout\n");
     printf("Enter your choice: ");
+    scanf("%d", &choice);
+    switch (choice) {
+        case 1:
+            viewUIAddCategory();
+            break;
+        case 2:
+            viewUIAddProduct();
+            break;
+        case 5:
+            return;
+        default:
+            msgError("Invalid choice!\n");
+            return viewUISeller();
+    }
 }
 
 int viewUIReLogin() {
@@ -62,4 +76,18 @@ int viewUIReLogin() {
         return viewUIReLogin();
     }
     return choice;
+}
+
+void viewUIAddProduct() {
+    printf("\n========== Add Product ==========\n");
+    printf("Enter product category: ");
+    scanf("%s", product.category);
+    printf("Enter product name: ");
+    scanf("%s", product.name);
+    printf("Enter product price: ");
+    scanf("%f", &product.price);
+    printf("Enter product quantity: ");
+    scanf("%d", &product.quantity);
+    printf("Enter product description: ");
+    scanf("%s", product.description);
 }

@@ -2,10 +2,12 @@
 #include <math.h>
 #include <string.h>
 #include "../includes/global.h"
+#include "../includes/function.h"
 #include "../includes/register.h"
+
 int handleRegister(User *user) {
     if (user == NULL) {
-        printf("Invalid user data!\n");
+        msgError("Invalid user data!\n");
         return 0;
     }
 
@@ -19,7 +21,7 @@ int handleRegister(User *user) {
                 user->username, user->password, user->email, user->phone,
                 user->fullName, user->address, user->accountType,
                 user->shopName, user->warehouseAddress) < 0) {
-        printf("Error writing to file!\n");
+        msgError("Error writing to file!\n");
         fclose(file);
         return 0;
     }
@@ -110,12 +112,14 @@ void registerForm(User *user) {
         }
     } while (phoneExists);
 
-
+    // Drift command fails, use getchar() to remove character '\n'
+    getchar();
+    
     printf("Full Name: ");
-    scanf(" %[^\n]", user->fullName);
+    gets(user->fullName);
 
     printf("Address: ");
-    scanf(" %[^\n]", user->address);
+    gets(user->address);
 
     do {
         printf("Account Type (1: Buyer, 2: Seller): ");
@@ -125,12 +129,14 @@ void registerForm(User *user) {
         }
     } while (user->accountType < 1 || user->accountType > 2);
 
+    // Drift command fails, use getchar() to remove character '\n'
+    getchar();
     if (user->accountType == 2) {
         printf("Shop Name: ");
-        scanf(" %[^\n]", user->shopName);
+        gets(user->shopName);
 
         printf("Warehouse Address: ");
-        scanf(" %[^\n]", user->warehouseAddress);
+        gets(user->warehouseAddress);
     } else {
         strcpy(user->shopName, ".");
         strcpy(user->warehouseAddress, ".");
