@@ -1,8 +1,11 @@
 #include <stdio.h>
-#include <math.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../includes/global.h"
 #include "../includes/login.h"
+
+User currentUser;
+
 int handleLogin(User *user) {
     if (user == NULL) {
         printf("Invalid user data!\n");
@@ -16,11 +19,47 @@ int handleLogin(User *user) {
     }
 
     char line[512];
+    char username[50], password[50], email[100], phone[20], fullName[100], address[200], shopName[100], warehouseAddress[200];
+    int accountType;
+
     while (fgets(line, sizeof(line), file)) {
-        char username[50];
-        char password[50];
-        if (sscanf(line, "%s %s", username, password) == 2) {
+        for(int i = 1; i <= 9; i++) {
+            sscanf(line, "%49s", username);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%49s", password);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%99s", email);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%19s", phone);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%99s", fullName);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%199s", address);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%d", &accountType);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%99s", shopName);
+            fgets(line, sizeof(line), file);
+
+            sscanf(line, "%199s", warehouseAddress);
+
             if (strcmp(username, user->username) == 0 && strcmp(password, user->password) == 0) {
+                strcpy(currentUser.username, username);
+                strcpy(currentUser.password, password);
+                strcpy(currentUser.fullName, fullName);
+                strcpy(currentUser.email, email);
+                strcpy(currentUser.phone, phone);
+                strcpy(currentUser.address, address);
+                currentUser.accountType = accountType;
+                strcpy(currentUser.shopName, shopName);
+                strcpy(currentUser.warehouseAddress, warehouseAddress);
                 fclose(file);
                 return 1;
             }
@@ -30,7 +69,7 @@ int handleLogin(User *user) {
     fclose(file);
     return 0;
 }
-    
+
 int viewUIReLogin() {
     int choice;
     printf("\n=== Do you want to login again? ===\n");
@@ -38,14 +77,15 @@ int viewUIReLogin() {
     printf("2. No\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
-    if(choice != 1 && choice != 2) {
+    if (choice != 1 && choice != 2) {
         printf("Invalid choice!\n");
         return viewUIReLogin();
     }
     return choice;
 }
+
 void loginForm(User *user) {
-    int isReLogin = 0;
+    int isReLogin = 1;
     do {
         printf("====================================\n");
         printf("             USER LOGIN        \n");
@@ -58,13 +98,12 @@ void loginForm(User *user) {
 
         if (handleLogin(user)) {
             is_logged_in = 1;
+            isReLogin = 0;
             printf("Login successful!\n");
-        } else {
-            printf("Invalid username or password!\n");
-            isReLogin = viewUIReLogin();
-        
-        }
-        printf("\n");
-    } while(isReLogin == 1);
 
+        } else {
+            isReLogin = viewUIReLogin();
+            printf("Invalid username or password!\n");
+        }
+    } while (isReLogin == 1);
 }

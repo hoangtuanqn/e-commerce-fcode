@@ -15,7 +15,7 @@ int handleRegister(User *user) {
         return 0;
     }
 
-    if (fprintf(file, "%s %s %s %s %s %s %d %s %s\n",
+    if (fprintf(file, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n%s\n%s\n\n",
                 user->username, user->password, user->email, user->phone,
                 user->fullName, user->address, user->accountType,
                 user->shopName, user->warehouseAddress) < 0) {
@@ -131,10 +131,14 @@ void registerForm(User *user) {
 
         printf("Warehouse Address: ");
         scanf(" %[^\n]", user->warehouseAddress);
+    } else {
+        strcpy(user->shopName, ".");
+        strcpy(user->warehouseAddress, ".");
     }
 
     if (handleRegister(user) == 1) {
         is_logged_in = 1;
+        currentUser = *user;
         printf("\nRegistration Successful!\n");
     } else {
         printf("Registration Failed!\n");
