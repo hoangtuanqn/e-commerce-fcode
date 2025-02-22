@@ -5,7 +5,6 @@
 #include "../includes/login.h"
 
 int loginUser() {
-    int isLogin = 2;
-    printf("Status login: %d\n", isLogin);
+    printf("Login User\n");
     return 0;
 }
