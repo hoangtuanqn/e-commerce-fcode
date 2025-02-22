@@ -22,48 +22,60 @@ int handleLogin(User *user) {
     char username[50], password[50], email[100], phone[20], fullName[100], address[200], shopName[100], warehouseAddress[200];
     int accountType;
 
-    while (fgets(line, sizeof(line), file)) {
-        for(int i = 1; i <= 9; i++) {
-            sscanf(line, "%49s", username);
-            fgets(line, sizeof(line), file);
+    while (!feof(file)) {
+        fgets(line, sizeof(line), file);
+        strcpy(username, line);
+        trimTrailingSpaces(username);
 
-            sscanf(line, "%49s", password);
-            fgets(line, sizeof(line), file);
+        fgets(line, sizeof(line), file);
+        strcpy(password, line);
+        trimTrailingSpaces(password);
 
-            sscanf(line, "%99s", email);
-            fgets(line, sizeof(line), file);
+        fgets(line, sizeof(line), file);
+        strcpy(email, line);
+        trimTrailingSpaces(email);
 
-            sscanf(line, "%19s", phone);
-            fgets(line, sizeof(line), file);
+        fgets(line, sizeof(line), file);
+        strcpy(phone, line);
+        trimTrailingSpaces(phone);
 
-            sscanf(line, "%99s", fullName);
-            fgets(line, sizeof(line), file);
+        fgets(line, sizeof(line), file);
+        strcpy(fullName, line);
+        trimTrailingSpaces(fullName);
 
-            sscanf(line, "%199s", address);
-            fgets(line, sizeof(line), file);
 
-            sscanf(line, "%d", &accountType);
-            fgets(line, sizeof(line), file);
+        fgets(line, sizeof(line), file);
+        strcpy(address, line);
+        trimTrailingSpaces(address);
 
-            sscanf(line, "%99s", shopName);
-            fgets(line, sizeof(line), file);
+        fgets(line, sizeof(line), file);
+        trimTrailingSpaces(line);
+        accountType = atoi(line);
 
-            sscanf(line, "%199s", warehouseAddress);
+        fgets(line, sizeof(line), file);
+        strcpy(shopName, line);
+        trimTrailingSpaces(shopName);
 
-            if (strcmp(username, user->username) == 0 && strcmp(password, user->password) == 0) {
-                strcpy(currentUser.username, username);
-                strcpy(currentUser.password, password);
-                strcpy(currentUser.fullName, fullName);
-                strcpy(currentUser.email, email);
-                strcpy(currentUser.phone, phone);
-                strcpy(currentUser.address, address);
-                currentUser.accountType = accountType;
-                strcpy(currentUser.shopName, shopName);
-                strcpy(currentUser.warehouseAddress, warehouseAddress);
-                fclose(file);
-                return 1;
-            }
+        fgets(line, sizeof(line), file);
+        strcpy(warehouseAddress, line);
+        trimTrailingSpaces(warehouseAddress);
+
+        if (strcmp(username, user->username) == 0 && strcmp(password, user->password) == 0) {
+            strcpy(currentUser.username, username);
+            strcpy(currentUser.password, password);
+            strcpy(currentUser.fullName, fullName);
+            strcpy(currentUser.email, email);
+            strcpy(currentUser.phone, phone);
+            strcpy(currentUser.address, address);
+            currentUser.accountType = accountType;
+            strcpy(currentUser.shopName, shopName);
+            strcpy(currentUser.warehouseAddress, warehouseAddress);
+            fclose(file);
+            return 1;
         }
+
+        fgets(line, sizeof(line), file);
+        fgets(line, sizeof(line), file);
     }
 
     fclose(file);
@@ -102,8 +114,8 @@ void loginForm(User *user) {
             printf("Login successful!\n");
 
         } else {
-            isReLogin = viewUIReLogin();
             printf("Invalid username or password!\n");
+            isReLogin = viewUIReLogin();
         }
     } while (isReLogin == 1);
 }
