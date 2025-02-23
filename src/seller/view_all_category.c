@@ -5,12 +5,12 @@
 #include "../../includes/global.h"
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
-void view_all_category() {
+int view_all_category() {
     system("cls");
     FILE *file = fopen("data/categories.txt", "r");
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");
-        return;
+        return 0;
     }
     char username[100], category[100];
     printf("\n========== All Category ==========\n");
@@ -28,4 +28,5 @@ void view_all_category() {
     }
     printf("============END============\n\n");
     fclose(file);
+    return i;
 }

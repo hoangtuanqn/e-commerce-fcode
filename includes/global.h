@@ -15,5 +15,6 @@ typedef struct {
 extern int is_logged_in;
 extern User current_user;
 
+
 #endif
 
