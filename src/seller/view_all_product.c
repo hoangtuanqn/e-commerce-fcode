@@ -6,7 +6,6 @@
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
 int view_all_product() {
-    system("cls");
     FILE *file = fopen("data/products.txt", "r");
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");

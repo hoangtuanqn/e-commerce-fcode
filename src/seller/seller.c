@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../../includes/global.h"
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
@@ -25,24 +26,31 @@ void seller() {
                 is_logged_in = 0;
                 return;
             case 1:
+                system("cls");
                 view_all_category();
                 break;
             case 2:
+                system("cls");
                 view_add_category();
                 break;
             case 3:
+                system("cls");
                 view_update_category();
                 break;
             case 4:
+                system("cls");
                 view_delete_category();
                 break;
             case 5:
+                system("cls");
                 view_all_product();
                 break;
              case 6:
+                system("cls");
                 view_add_product();
                 break;
             case 7:
+                system("cls");
                 view_update_product();
                 break;
             default:

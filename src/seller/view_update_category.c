@@ -65,7 +65,6 @@ void update_product_category(char *user_name_old, char *category_name) {
     fclose(file_product2);
 }
 void view_update_category() {
-    system("cls");
     FILE *file = fopen("data/categories.txt", "r");
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");

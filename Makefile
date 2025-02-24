@@ -2,7 +2,7 @@
 TARGET = e-commerce-fcode
 
 # Các file nguồn
-SRC = main.c src/global.c src/login.c src/register.c helpers/function.c helpers/view_ui.c src/seller/seller.c src/seller/view_add_category.c src/seller/view_ui.c src/seller/view_all_category.c src/seller/view_delete_category.c src/seller/view_update_category.c src/seller/view_all_product.c src/seller/view_add_product.c
+SRC = main.c src/global.c src/login.c src/register.c helpers/function.c helpers/view_ui.c src/seller/seller.c src/seller/view_add_category.c src/seller/view_ui.c src/seller/view_all_category.c src/seller/view_delete_category.c src/seller/view_update_category.c src/seller/view_all_product.c src/seller/view_add_product.c src/seller/view_update_product.c
 
 # Các file object
 OBJ = $(SRC:.c=.o)

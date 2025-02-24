@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include "../includes/global.h"
 void trim_trailing_spaces(char *str) {
     int len = strlen(str);
     while (len > 0 && isspace(str[len - 1])) {
@@ -42,4 +43,26 @@ void quick_sort(int arr[], int low, int high) {
         quick_sort(arr, low, pi - 1);
         quick_sort(arr, pi + 1, high);
     }
+}
+char *check_name_category(int category_id) {
+    FILE *file = fopen("data/categories.txt", "r");
+    if (file == NULL) {
+        msg_error("Error opening file for reading!\n");
+        return NULL;
+    }
+    char username[100], category[100];
+    int cnt = 0;
+    while (fgets(username, sizeof(username), file) != NULL && fgets(category, sizeof(category), file) != NULL) {
+        trim_trailing_spaces(username);
+        trim_trailing_spaces(category);
+        if (strcmp(username, current_user.username) == 0) {
+            ++cnt;
+        }
+        if (cnt == category_id) {
+            fclose(file);
+            return strdup(category); // Use strdup to return a dynamically allocated copy of the category
+        }
+    }
+    fclose(file);
+    return NULL;
 }

@@ -6,7 +6,6 @@
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
 int view_all_category() {
-    system("cls");
     FILE *file = fopen("data/categories.txt", "r");
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");

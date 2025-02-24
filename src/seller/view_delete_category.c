@@ -7,7 +7,6 @@
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/view_all_category.h"
 void view_delete_category() {
-    system("cls");
     FILE *file = fopen("data/categories.txt", "r");
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");

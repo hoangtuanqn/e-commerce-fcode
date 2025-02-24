@@ -23,28 +23,6 @@ int handle_add_product(char *product_name, char *category_name, float price, int
     msg_success("Product added successfully!\n\n");
     return 1;
 }
-char *check_name_category(int category_id) {
-    FILE *file = fopen("data/categories.txt", "r");
-    if (file == NULL) {
-        msg_error("Error opening file for reading!\n");
-        return NULL;
-    }
-    char username[100], category[100];
-    int cnt = 0;
-    while (fgets(username, sizeof(username), file) != NULL && fgets(category, sizeof(category), file) != NULL) {
-        trim_trailing_spaces(username);
-        trim_trailing_spaces(category);
-        if (strcmp(username, current_user.username) == 0) {
-            ++cnt;
-        }
-        if (cnt == category_id) {
-            fclose(file);
-            return strdup(category); // Use strdup to return a dynamically allocated copy of the category
-        }
-    }
-    fclose(file);
-    return NULL;
-}
 void view_add_product() {
     char product_name[100], description[256];
     float price;
