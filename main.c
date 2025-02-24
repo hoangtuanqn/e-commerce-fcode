@@ -6,6 +6,7 @@
 #include "includes/register.h"
 #include "includes/login.h"
 #include "includes/seller/seller.h"
+#include "includes/buyer/buyer.h"
 int main() {
     int choice;
     User user;
@@ -30,11 +31,14 @@ int main() {
         if(is_logged_in) {
             switch (current_user.account_type) {
                 case 1:
-                    // view_ui_buyer();
+                    buyer();
                     break;
                 case 2:
                     seller();
                     break;
+                default:
+                    msg_error("Invalid account type. Please try again. \n");
+                    return 0;
             }
         }
     } while (is_pause_program == 0);

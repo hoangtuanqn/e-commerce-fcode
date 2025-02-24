@@ -14,7 +14,7 @@ void view_ui_seller_header() {
     printf("=====================================================\n\n");
 }
 void view_ui_seller() {
-    msg_bold("\n========== Menu ==========\n");
+    msg_bold("\n========== Seller Menu ==========\n");
     printf("1. View All Category\n");
     printf("2. Add Category\n");
     printf("3. Update Category\n");

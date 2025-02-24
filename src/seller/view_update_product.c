@@ -5,6 +5,7 @@
 #include "../../includes/global.h"
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
+#include "../../includes/seller/view_all_category.h"
 #include "../../includes/seller/view_all_product.h"
 
 void view_update_product() {
@@ -65,16 +66,16 @@ void view_update_product() {
             cnt++;
             if(cnt == listProduct[cntList]) {
                 strcpy(user_name[j], user_name_temp);
-
+                int quantity_category = view_all_category();
                 do {
                     printf("Enter new category ID for ID %d: ", cnt);
                     fgets(category_id_temp, sizeof(category_id_temp), stdin);
                     trim_trailing_spaces(category_id_temp);
                     strcpy(category_id[j], category_id_temp);
-                    if(atoi(category_id_temp) < 1 || atoi(category_id_temp) > result) {
+                    if(atoi(category_id_temp) < 1 || atoi(category_id_temp) > quantity_category) {
                         msg_error("Category ID is invalid!\n");
                     }
-                } while (atoi(category_id_temp) < 1 || atoi(category_id_temp) > result);
+                } while (atoi(category_id_temp) < 1 || atoi(category_id_temp) > quantity_category);
 
                 do {
                     printf("Enter new product name for ID %d: ", cnt);

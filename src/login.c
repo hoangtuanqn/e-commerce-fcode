@@ -75,8 +75,6 @@ int handle_login(User *user) {
             return 1;
         }
 
-        fgets(line, sizeof(line), file);
-        fgets(line, sizeof(line), file);
     }
 
     fclose(file);
