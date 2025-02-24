@@ -13,6 +13,7 @@ typedef struct {
     char warehouse_address[200]; // Only for sellers
 } User;
 extern int is_logged_in;
+extern int is_pause_program;
 extern User current_user;
 
 

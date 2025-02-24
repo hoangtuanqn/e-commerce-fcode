@@ -1,5 +1,5 @@
-#ifndef ADD_CATEGORY_H
-#define ADD_CATEGORY_H
+#ifndef VIEW_ADD_CATEGORY_H
+#define VIEW_ADD_CATEGORY_H
 
 int handle_add_category(char *category_name);
 void view_add_category();

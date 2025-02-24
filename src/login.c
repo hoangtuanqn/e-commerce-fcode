@@ -87,7 +87,7 @@ void login_form(User *user) {
     int is_re_login = 1;
     do {
         printf("====================================\n");
-        printf("             USER LOGIN        \n");
+        printf("               LOGIN        \n");
         printf("====================================\n");
         printf("Username: ");
         scanf("%s", user->username);

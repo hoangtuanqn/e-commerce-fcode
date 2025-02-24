@@ -17,14 +17,18 @@ void view_ui_seller() {
     msg_bold("\n========== Menu ==========\n");
     printf("1. View All Category\n");
     printf("2. Add Category\n");
-    printf("3. Delete Category\n");
+    printf("3. Update Category\n");
+    printf("4. Delete Category\n");
     printf("\n");
-    printf("4. View All Product\n");
-    printf("5. Add Product\n");
-    printf("6. Update Product\n");
-    printf("7. Delete Product\n");
+    printf("5. View All Product\n");
+    printf("6. Add Product\n");
+    printf("7. Update Product\n");
+    printf("8. Delete Product\n");
     printf("\n");
 
+    printf("9. View All Order\n");
+    printf("10. Update Order Status\n");
+    printf("\n");
     printf("0. Logout\n");
     printf("Enter your choice: ");
 }

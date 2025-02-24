@@ -27,18 +27,18 @@ int main() {
             default:
                 msg_error("Invalid choice. Please try again. \n");
         }
-    } while (is_logged_in == 0);
+        if(is_logged_in) {
+            switch (current_user.account_type) {
+                case 1:
+                    // view_ui_buyer();
+                    break;
+                case 2:
+                    seller();
+                    break;
+            }
+        }
+    } while (is_pause_program == 0);
 
     // Logged in user
-    if(is_logged_in) {
-        switch (current_user.account_type) {
-            case 1:
-                // view_ui_buyer();
-                break;
-            case 2:
-                seller();
-                break;
-        }
-    }
     return 0;
 }

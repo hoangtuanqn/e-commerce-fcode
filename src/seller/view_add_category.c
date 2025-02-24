@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "../../includes/global.h"
 #include "../../includes/function.h"
-#include "../../includes/seller/add_category.h"
+#include "../../includes/seller/view_add_category.h"
 
 int is_exist_category(char *category_name) {
     trim_trailing_spaces(category_name);

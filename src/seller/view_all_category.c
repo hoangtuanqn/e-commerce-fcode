@@ -26,6 +26,9 @@ int view_all_category() {
         username[0] = '\n';
         category[0] = '\n';
     }
+    if(!i) {
+        msg_error("No category found!\n");
+    }
     printf("============END============\n\n");
     fclose(file);
     return i;
