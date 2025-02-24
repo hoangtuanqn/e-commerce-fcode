@@ -63,21 +63,24 @@ void view_add_to_cart() {
 
     Cart cart[1000];
     int cnt = 0;
-    while(!feof(file)) {
-        fgets(cart[cnt].username, sizeof(cart[cnt].username), file);
+    int found_user = 0;
+    
+    // Đọc toàn bộ nội dung file
+    char line[1000];
+    while(fgets(cart[cnt].username, sizeof(cart[cnt].username), file)) {
         trim_trailing_spaces(cart[cnt].username);
-        if(cart[cnt].username[0] == '\n') {
-            break;
+        if(strlen(cart[cnt].username) == 0) {
+            continue;
         }
+        
         cart[cnt].cnt = 0;
-        char info_id_and_quantity[1000];
-        int is_suitable = 0;
-        while(fgets(info_id_and_quantity, sizeof(info_id_and_quantity), file) != NULL) {
-            if(info_id_and_quantity[0] == '\n') {
-                break;
-            }
-            trim_trailing_spaces(info_id_and_quantity);
-            char *token = strtok(info_id_and_quantity, " ");
+        
+        // Đọc các sản phẩm của user này
+        while(fgets(line, sizeof(line), file)) {
+            trim_trailing_spaces(line);
+            if(strlen(line) == 0) break;
+            
+            char *token = strtok(line, " ");
             if(token != NULL) {
                 cart[cnt].product_id[cart[cnt].cnt] = atoi(token);
             }
@@ -85,42 +88,69 @@ void view_add_to_cart() {
             if(token != NULL) {
                 cart[cnt].quantity[cart[cnt].cnt] = atoi(token);
             }
-            if(strcmp(cart[cnt].username, current_user.username) == 0) {
-                if(id_product == cart[cnt].product_id[cart[cnt].cnt]) {
-                    is_suitable = 1;
-                    cart[cnt].quantity[cart[cnt].cnt] += quantity_product;
+            cart[cnt].cnt++;
+        }
+
+        // Xử lý nếu là user hiện tại
+        if(strcmp(cart[cnt].username, current_user.username) == 0) {
+            found_user = 1;
+            int found_product = 0;
+            for(int i = 0; i < cart[cnt].cnt; i++) {
+                if(cart[cnt].product_id[i] == id_product) {
+                    cart[cnt].quantity[i] += quantity_product;
+                    found_product = 1;
+                    break;
                 }
             }
-            cart[cnt].cnt++;
-        }
-        if(!is_suitable) {
-            strcpy(cart[cnt].username, current_user.username);
-            cart[cnt].product_id[cart[cnt].cnt] = id_product;
-            cart[cnt].quantity[cart[cnt].cnt] = quantity_product;
-            cart[cnt].cnt++;
+            if(!found_product) {
+                cart[cnt].product_id[cart[cnt].cnt] = id_product;
+                cart[cnt].quantity[cart[cnt].cnt] = quantity_product;
+                cart[cnt].cnt++;
+            }
+            
+            // Sắp xếp theo id tăng dần
+            for(int i = 0; i < cart[cnt].cnt - 1; i++) {
+                for(int j = i + 1; j < cart[cnt].cnt; j++) {
+                    if(cart[cnt].product_id[i] > cart[cnt].product_id[j]) {
+                        int temp_id = cart[cnt].product_id[i];
+                        cart[cnt].product_id[i] = cart[cnt].product_id[j];
+                        cart[cnt].product_id[j] = temp_id;
+                        
+                        int temp_quantity = cart[cnt].quantity[i];
+                        cart[cnt].quantity[i] = cart[cnt].quantity[j];
+                        cart[cnt].quantity[j] = temp_quantity;
+                    }
+                }
+            }
         }
         cnt++;
-        fgets(cart[cnt].username, sizeof(cart[cnt].username), file);
-
     }
+
+    // Nếu lần đầu thêm vô giỏ hàng, sẽ bắt đầu thêm mới
+    if(!found_user) {
+        strcpy(cart[cnt].username, current_user.username);
+        cart[cnt].product_id[0] = id_product;
+        cart[cnt].quantity[0] = quantity_product;
+        cart[cnt].cnt = 1;
+        cnt++;
+    }
+
     fclose(file);
+    
+    // Ghi lại file
     FILE *file_cart = fopen("data/carts.txt", "w");
     if (file_cart == NULL) {
         msg_error("Error opening file for writing!\n");
         return;
     }
-    for(int i = 0; i < cnt; ++i) {
+
+    // Ghi lại toàn bộ dữ liệu
+    for(int i = 0; i < cnt; i++) {
         fprintf(file_cart, "%s\n", cart[i].username);
-        for(int j = 0; j < cart[i].cnt; ++j) {
-            if(cart[i].product_id[j] != 0) {
-                fprintf(file_cart, "%d ", cart[i].product_id[j]);
-                fprintf(file_cart, "%d\n", cart[i].quantity[j]);
-            }
+        for(int j = 0; j < cart[i].cnt; j++) {
+            fprintf(file_cart, "%d %d\n", cart[i].product_id[j], cart[i].quantity[j]);
         }
         fprintf(file_cart, "\n");
     }
     fclose(file_cart);
-
-
-
 }

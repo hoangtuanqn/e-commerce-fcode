@@ -7,6 +7,7 @@
 #include "../../includes/buyer/view_ui.h"
 #include "../../includes/buyer/view_browse_products.h"
 #include "../../includes/buyer/view_add_to_cart.h"
+#include "../../includes/buyer/view_all_cart.h"
 
 void buyer() {
     int choice;
@@ -27,9 +28,12 @@ void buyer() {
                 // view_search_products();
                 break;
             case 3:
+                system("cls");
                 view_add_to_cart();
                 break;
             case 4:
+                system("cls");
+                view_all_cart();
                 break;
             default:
                 msg_error("Invalid choice!\n\n");
