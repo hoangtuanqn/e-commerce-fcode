@@ -25,7 +25,7 @@ void view_delete_category() {
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");
-    int listCategory[1000], i = 0, is_valid = 1;
+    int list_category[1000], i = 0, is_valid = 1;
     while (token != NULL) {
         int category_id = atoi(token);
         if(category_id > quantity) {
@@ -33,7 +33,7 @@ void view_delete_category() {
             printf("%d!\n", category_id);
             is_valid = 0;
         }
-        listCategory[i++] = category_id;
+        list_category[i++] = category_id;
         token = strtok(NULL, " ");
     }
     if(!is_valid) {
@@ -42,7 +42,7 @@ void view_delete_category() {
     }
 
     
-    quick_sort(listCategory, 0, i - 1);
+    quick_sort(list_category, 0, i - 1);
 
     char user_name[1000][1000], category_name[1000][1000]; // lưu trữ dữ liệu chính của tất cả file
     char user_name_temp[1000], category_name_temp[1000]; // lữ trữ 1 dữ liệu người dùng qua mỗi lần lặp
@@ -53,7 +53,7 @@ void view_delete_category() {
         trim_trailing_spaces(category_name_temp);
         if(strcmp(user_name_temp, current_user.username) == 0 && cntList < i) {
             cnt++;
-            if(cnt == listCategory[cntList]) {
+            if(cnt == list_category[cntList]) {
                 ++cntList;
                 continue;
             } else {

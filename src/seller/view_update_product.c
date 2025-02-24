@@ -27,7 +27,7 @@ void view_update_product() {
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");
-    int listProduct[1000], i = 0, is_valid = 1;
+    int list_product[1000], i = 0, is_valid = 1;
     while (token != NULL) {
         int product_id = atoi(token);
         if(product_id > result || product_id < 1) {
@@ -35,7 +35,7 @@ void view_update_product() {
             printf("%d!\n", product_id);
             is_valid = 0;
         }
-        listProduct[i++] = product_id;
+        list_product[i++] = product_id;
         token = strtok(NULL, " ");
     }
     if(!is_valid) {
@@ -44,7 +44,7 @@ void view_update_product() {
     }
 
     
-    quick_sort(listProduct, 0, i - 1);
+    quick_sort(list_product, 0, i - 1);
 
     char user_name[50][1000], product_name[50][1000], description[50][1000], price[50][1000], category_id[50][1000], quantity[50][1000];
     char user_name_temp[100], product_name_temp[100], description_temp[100], price_temp[100], category_id_temp[100], quantity_temp[100];
@@ -64,7 +64,7 @@ void view_update_product() {
         trim_trailing_spaces(category_id_temp);
         if(strcmp(user_name_temp, current_user.username) == 0 && cntList < i) {
             cnt++;
-            if(cnt == listProduct[cntList]) {
+            if(cnt == list_product[cntList]) {
                 strcpy(user_name[j], user_name_temp);
                 int quantity_category = view_all_category();
                 do {
