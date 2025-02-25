@@ -14,6 +14,7 @@
 #include "../../includes/seller/view_add_product.h"
 #include "../../includes/seller/view_update_product.h"
 #include "../../includes/seller/view_delete_product.h"
+#include "../../includes/seller/view_all_orders.h"
 
 void seller() {
     int choice;
@@ -57,6 +58,10 @@ void seller() {
             case 8:
                 system("cls");
                 view_delete_product();
+                break;
+            case 9:
+                system("cls");
+                view_all_orders();
                 break;
             default:
                 msg_error("Invalid choice!\n\n");

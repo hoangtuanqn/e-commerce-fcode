@@ -18,6 +18,7 @@ SRC = main.c \
 	  src/seller/view_add_product.c \
 	  src/seller/view_update_product.c \
 	  src/seller/view_delete_product.c \
+	  src/seller/view_all_orders.c \
 	  src/buyer/buyer.c \
 	  src/buyer/view_ui.c \
 	  src/buyer/view_browse_products.c \

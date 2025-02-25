@@ -10,5 +10,6 @@ char *check_name_category(int category_id);
 int is_email_exists(const char *email);
 int is_phone_exists(const char *phone);
 void delete_cart();
+int load_products(Product products[]);
 #endif
 
