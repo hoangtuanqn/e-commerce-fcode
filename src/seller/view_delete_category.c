@@ -21,7 +21,7 @@ void view_delete_category() {
     }
     
 
-    printf("Enter the list of category id to delete: ");
+    printf("Enter the category IDs to delete, separated by spaces: ");
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");

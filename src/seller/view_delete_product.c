@@ -21,7 +21,7 @@ void view_delete_product() {
     }
     
 
-    printf("Enter the list of product id to delete: ");
+    printf("Please enter the product IDs you wish to delete, separated by spaces: ");
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");

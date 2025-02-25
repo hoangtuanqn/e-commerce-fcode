@@ -79,7 +79,7 @@ void view_update_category() {
     }
     
 
-    printf("Enter the list of category id to update: ");
+    printf("Please enter the category IDs you wish to update, separated by spaces: ");
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");

@@ -106,7 +106,7 @@ void delete_specific_product() {
     getchar();
     char list_id[100];
 
-    printf("Enter the product id to delete: ");
+    printf("Enter the product ID(s) to delete, separated by spaces: ");
     fgets(list_id, sizeof(list_id), stdin);
     trim_trailing_spaces(list_id);
     char *token = strtok(list_id, " ");

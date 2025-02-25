@@ -23,7 +23,7 @@ void view_update_product() {
     }
     
 
-    printf("Enter the list of product id to update: ");
+    printf("Please enter the product IDs you wish to update, separated by spaces: ");
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");
