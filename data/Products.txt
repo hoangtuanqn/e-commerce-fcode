@@ -12,7 +12,7 @@ PC NE
 PC NE 2
 tuanqn
 Laptop
-This is Laptop
+PC
 4.00
 201
 Beautiful Laptop

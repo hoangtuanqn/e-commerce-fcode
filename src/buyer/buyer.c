@@ -10,6 +10,7 @@
 #include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_delete_cart.h"
 #include "../../includes/buyer/view_check_out.h"
+#include "../../includes/buyer/view_search_products.h"
 void buyer() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
@@ -26,7 +27,7 @@ void buyer() {
                 view_browse_products();
                 break;
             case 2:
-                // view_search_products();
+                view_search_products();
                 break;
             case 3:
                 system("cls");
