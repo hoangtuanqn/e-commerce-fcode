@@ -9,6 +9,27 @@
 #include "../../includes/buyer/view_all_cart.h"
 #include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_check_out.h"
+char *name_seller(int product_id) { 
+    FILE *file = fopen("data/products.txt", "r");   
+    if (file == NULL) {
+        msg_error("Error opening file for reading!\n");
+        return NULL;
+    }
+    int cnt = 0;
+    char line[512];
+    while(fgets(line, sizeof(line), file) != NULL) {
+        ++cnt;
+        trim_trailing_spaces(line);
+        if(cnt == product_id) {
+            return strdup(line);
+        }
+        for(int i = 1; i <= 5; ++i) {
+            fgets(line, sizeof(line), file);
+        }
+    }
+    fclose(file);
+    return NULL;
+}
 Cart check_list_product_in_cart() {
     Cart cart;
     FILE *file_cart = fopen("data/carts.txt", "r");
@@ -40,13 +61,6 @@ Cart check_list_product_in_cart() {
 void view_check_out() {
     int choice;
     float total_payment = view_all_cart();
-    do {
-        printf("Please confirm you want to purchase the above items? (1. Yes 0. No): ");
-        scanf("%d", &choice);
-        if(choice == 0) {
-            return;
-        }
-    } while (choice < 0 || choice > 1);
 
     char desc[5000];
     FILE *file = fopen("data/carts.txt", "r");
@@ -59,8 +73,18 @@ void view_check_out() {
     if(total_payment <= 0) {
         msg_error("There are no orders in the shopping cart!\n");
         fclose(file); // Ensure the file is closed before returning
+        msg_error("\n============END============\n\n");
+        
         return;
     } else {
+        do {
+            printf("Please confirm you want to purchase the above items? (1. Yes 0. No): ");
+            scanf("%d", &choice);
+            if(choice == 0) {
+                return;
+            }
+        } while (choice < 0 || choice > 1);
+
         getchar();
         printf("Enter notes for order (If any): ");
         fgets(desc, sizeof(desc), stdin);
@@ -136,20 +160,29 @@ void view_check_out() {
     time_t now;
     struct tm *local;
     time(&now);
-    local = localtime(&now); // Convert to local time
-    fprintf(file_order, "%s\n", current_user.username); // Use current_address instead of current_user
-    fprintf(file_order, "%s\n", current_address.email);
-    fprintf(file_order, "%s\n", current_address.phone);
-    fprintf(file_order, "%s\n", current_address.full_name);
-    fprintf(file_order, "%s\n", current_address.address);
-    fprintf(file_order, "%.2f\n", total_payment); // Assuming total_payment is calculated earlier
-    fprintf(file_order, "%02d-%02d-%d %02d:%02d:%02d\n",
-           local->tm_mday, local->tm_mon + 1, local->tm_year + 1900,
-           local->tm_hour, local->tm_min, local->tm_sec);
+    local = localtime(&now);
+
+    // Lưu từng sản phẩm trong giỏ hàng thành các đơn hàng riêng biệt
     for(int i = 0; i < cart.cnt; i++) {
-         fprintf(file_order, "%d %d\n", cart.product_id[i], cart.quantity[i]);
+        fprintf(file_order, "%s\n", name_seller(cart.product_id[i]));     // username người bán
+        fprintf(file_order, "%s\n", current_user.username);               // username người mua
+        fprintf(file_order, "%s\n", current_address.email);               // email người mua
+        fprintf(file_order, "%s\n", current_address.phone);               // số điện thoại người mua
+        fprintf(file_order, "%s\n", current_address.full_name);             // địa chỉ người mua
+        fprintf(file_order, "%s\n", current_address.address);             // địa chỉ người mua
+        fprintf(file_order, "%02d-%02d-%d %02d:%02d:%02d\n",             // thời gian mua
+               local->tm_mday, local->tm_mon + 1, local->tm_year + 1900,
+               local->tm_hour, local->tm_min, local->tm_sec);
+        fprintf(file_order, "%s\n", desc);                   
+           // Tính tổng tiền cho sản phẩm này
+        float item_total = cart.product_id[i] * cart.quantity[i];
+        fprintf(file_order, "%.2f\n", item_total);
+        fprintf(file_order, "%d\n", cart.product_id[i]);
+        fprintf(file_order, "%d\n\n", cart.quantity[i]);
+        
+
     }
-    fprintf(file_order, "%s\n\n", desc);
+    
     fclose(file_order);
     delete_cart();
     

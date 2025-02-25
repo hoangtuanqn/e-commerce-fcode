@@ -4,13 +4,13 @@ This is Laptop
 2.13
 201
 Beautiful Laptop
-tuanqn
+tuanqn2
 PC
 PC NE
 3.00
 201
 PC NE 2
-tuanqn
+tuanqn3
 Laptop
 PC
 4.00
