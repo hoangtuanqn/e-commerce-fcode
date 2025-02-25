@@ -11,6 +11,7 @@
 #include "../../includes/buyer/view_delete_cart.h"
 #include "../../includes/buyer/view_check_out.h"
 #include "../../includes/buyer/view_search_products.h"
+#include "../../includes/buyer/view_order_history.h"
 void buyer() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
@@ -44,6 +45,10 @@ void buyer() {
             case 6:
                 system("cls");
                 view_check_out();
+                break;
+            case 7:
+                system("cls");
+                view_order_history();
                 break;
             default:
                 msg_error("Invalid choice!\n\n");

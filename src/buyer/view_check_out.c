@@ -38,13 +38,22 @@ Cart check_list_product_in_cart() {
     return cart;
 }
 void view_check_out() {
+    int choice;
+    float total_payment = view_all_cart();
+    do {
+        printf("Please confirm you want to purchase the above items? (1. Yes 0. No): ");
+        scanf("%d", &choice);
+        if(choice == 0) {
+            return;
+        }
+    } while (choice < 0 || choice > 1);
+
     char desc[5000];
     FILE *file = fopen("data/carts.txt", "r");
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");
         return;
     }
-    float total_payment = view_all_cart();
     msg_error("\n========== Check Out ==========\n\n");
     User current_address;
     if(total_payment <= 0) {
