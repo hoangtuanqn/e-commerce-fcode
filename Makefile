@@ -23,7 +23,8 @@ SRC = main.c \
 	  src/buyer/view_browse_products.c \
 	  src/buyer/view_add_to_cart.c \
 	  src/buyer/view_all_cart.c \
-	  src/buyer/view_check_out.c 
+	  src/buyer/view_check_out.c \
+	  src/buyer/view_delete_cart.c
 
 # Các file object
 OBJ = $(SRC:.c=.o)

@@ -12,6 +12,12 @@ typedef struct {
     char shop_name[100];       // Only for sellers
     char warehouse_address[200]; // Only for sellers
 } User;
+typedef struct {
+    char username[50];
+    int product_id[100];
+    int quantity[100];
+    int cnt;
+} Cart;
 extern int is_logged_in;
 extern int is_pause_program;
 

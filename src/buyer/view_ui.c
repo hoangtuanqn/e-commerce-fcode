@@ -20,9 +20,10 @@ void view_ui_buyer() {
     printf("1. Browse Products\n");
     printf("2. Search for products\n");
     printf("\n");
-    printf("3. Add to cart\n");
-    printf("4. View cart\n");
-    printf("5. Checkout\n");
+    printf("3. View cart\n");
+    printf("4. Add to cart\n");
+    printf("5. Delete from cart\n");
+    printf("6. Checkout\n");
 
     printf("\n");
     printf("0. Logout\n");
@@ -34,3 +35,10 @@ void view_selection_address() {
     printf("2. Use other information to receive goods\n");
     printf("Enter your choice: ");
 }
+void view_delete_from_cart() {
+    msg_error("\n========== Delete from cart ==========\n");
+    printf("1. Delete all products\n");
+    printf("2. Delete a specific product\n");
+    printf("Enter your choice: ");
+}
+

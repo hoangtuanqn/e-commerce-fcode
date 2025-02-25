@@ -9,63 +9,6 @@
 #include "../../includes/buyer/view_all_cart.h"
 #include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_check_out.h"
-void delete_cart() {
-    FILE *file_cart = fopen("data/carts.txt", "r");
-    if (file_cart == NULL) {    
-        msg_error("Error opening carts file for reading!\n");
-        return;
-    }
-
-    Cart cart[1000];
-    int cnt = 0;
-    char line[1000];
-
-    // Đọc toàn bộ nội dung file
-    while (fgets(cart[cnt].username, sizeof(cart[cnt].username), file_cart)) {
-        trim_trailing_spaces(cart[cnt].username);
-        if (strlen(cart[cnt].username) == 0) {
-            continue;
-        }
-
-        cart[cnt].cnt = 0;
-
-        // Đọc các sản phẩm của user này
-        while (fgets(line, sizeof(line), file_cart)) {
-            trim_trailing_spaces(line);
-            if (strlen(line) == 0) break;
-
-            char *token = strtok(line, " ");
-            if (token != NULL) {
-                cart[cnt].product_id[cart[cnt].cnt] = atoi(token);
-            }
-            token = strtok(NULL, " ");
-            if (token != NULL) {
-                cart[cnt].quantity[cart[cnt].cnt] = atoi(token);
-            }
-            cart[cnt].cnt++;
-        }
-        cnt++;
-    }
-    fclose(file_cart);
-
-    // Ghi lại file mà không có thông tin của người dùng hiện tại
-    FILE *file_cart_new = fopen("data/carts.txt", "w");
-    if (file_cart_new == NULL) {
-        msg_error("Error opening file for writing!\n");
-        return;
-    }
-
-    for (int i = 0; i < cnt; i++) {
-        if (strcmp(cart[i].username, current_user.username) != 0) {
-            fprintf(file_cart_new, "%s\n", cart[i].username);
-            for (int j = 0; j < cart[i].cnt; j++) {
-                fprintf(file_cart_new, "%d %d\n", cart[i].product_id[j], cart[i].quantity[j]);
-            }
-            fprintf(file_cart_new, "\n");
-        }
-    }
-    fclose(file_cart_new);
-}
 Cart check_list_product_in_cart() {
     Cart cart;
     FILE *file_cart = fopen("data/carts.txt", "r");
