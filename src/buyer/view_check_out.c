@@ -11,7 +11,7 @@
 #include "../../includes/buyer/view_check_out.h"
 void delete_cart() {
     FILE *file_cart = fopen("data/carts.txt", "r");
-    if (file_cart == NULL) {
+    if (file_cart == NULL) {    
         msg_error("Error opening carts file for reading!\n");
         return;
     }

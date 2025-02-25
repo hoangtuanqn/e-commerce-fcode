@@ -75,7 +75,7 @@ void view_add_to_cart() {
         
         cart[cnt].cnt = 0;
         
-        // Đọc các sản phẩm của user này
+        // Đọc các sản phẩm trong đơn hàng của user này
         while(fgets(line, sizeof(line), file)) {
             trim_trailing_spaces(line);
             if(strlen(line) == 0) break;
@@ -97,6 +97,14 @@ void view_add_to_cart() {
             int found_product = 0;
             for(int i = 0; i < cart[cnt].cnt; i++) {
                 if(cart[cnt].product_id[i] == id_product) {
+                    if(cart[cnt].quantity[i] + quantity_product > check_quantity_product(id_product)) {
+                        msg_error("Currently, there are ");
+                        printf("%d ", cart[cnt].quantity[i]);
+                        msg_error("products in the cart. Adding ");
+                        printf("%d ", quantity_product);
+                        msg_error("will exceed the quantity in the stock.\n");
+                        return;
+                    }
                     cart[cnt].quantity[i] += quantity_product;
                     found_product = 1;
                     break;
