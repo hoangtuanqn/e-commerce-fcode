@@ -7,8 +7,93 @@
 #include "../../includes/function.h"
 #include "../../includes/buyer/view_ui.h"
 #include "../../includes/buyer/view_all_cart.h"
+#include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_check_out.h"
+void delete_cart() {
+    FILE *file_cart = fopen("data/carts.txt", "r");
+    if (file_cart == NULL) {
+        msg_error("Error opening carts file for reading!\n");
+        return;
+    }
 
+    Cart cart[1000];
+    int cnt = 0;
+    char line[1000];
+
+    // Đọc toàn bộ nội dung file
+    while (fgets(cart[cnt].username, sizeof(cart[cnt].username), file_cart)) {
+        trim_trailing_spaces(cart[cnt].username);
+        if (strlen(cart[cnt].username) == 0) {
+            continue;
+        }
+
+        cart[cnt].cnt = 0;
+
+        // Đọc các sản phẩm của user này
+        while (fgets(line, sizeof(line), file_cart)) {
+            trim_trailing_spaces(line);
+            if (strlen(line) == 0) break;
+
+            char *token = strtok(line, " ");
+            if (token != NULL) {
+                cart[cnt].product_id[cart[cnt].cnt] = atoi(token);
+            }
+            token = strtok(NULL, " ");
+            if (token != NULL) {
+                cart[cnt].quantity[cart[cnt].cnt] = atoi(token);
+            }
+            cart[cnt].cnt++;
+        }
+        cnt++;
+    }
+    fclose(file_cart);
+
+    // Ghi lại file mà không có thông tin của người dùng hiện tại
+    FILE *file_cart_new = fopen("data/carts.txt", "w");
+    if (file_cart_new == NULL) {
+        msg_error("Error opening file for writing!\n");
+        return;
+    }
+
+    for (int i = 0; i < cnt; i++) {
+        if (strcmp(cart[i].username, current_user.username) != 0) {
+            fprintf(file_cart_new, "%s\n", cart[i].username);
+            for (int j = 0; j < cart[i].cnt; j++) {
+                fprintf(file_cart_new, "%d %d\n", cart[i].product_id[j], cart[i].quantity[j]);
+            }
+            fprintf(file_cart_new, "\n");
+        }
+    }
+    fclose(file_cart_new);
+}
+Cart check_list_product_in_cart() {
+    Cart cart;
+    FILE *file_cart = fopen("data/carts.txt", "r");
+    if (file_cart == NULL) {
+        msg_error("Error opening carts file for reading!\n"); // Corrected error message
+        return cart;
+    }
+    cart.cnt = 0; // Initialize cart.cnt to avoid undefined behavior
+    char line[512];
+    while(fgets(line, sizeof(line), file_cart) != NULL) {
+        trim_trailing_spaces(line);
+        if(strcmp(line, current_user.username) == 0) {
+            strcpy(cart.username, line); // Use strcpy to copy the username
+            while(fgets(line, sizeof(line), file_cart) != NULL) {
+                if(line[0] == '\n' || strlen(line) == 0) {
+                    break;
+                }
+                trim_trailing_spaces(line);
+                if (sscanf(line, "%d %d", &cart.product_id[cart.cnt], &cart.quantity[cart.cnt]) == 2) { // Check if sscanf was successful
+                    cart.cnt++; // Increment the count for the current user
+                }
+            }
+            break;
+        }
+    }
+    fclose(file_cart);
+    return cart;
+}
 void view_check_out() {
     char desc[5000];
     FILE *file = fopen("data/carts.txt", "r");
@@ -27,6 +112,7 @@ void view_check_out() {
         getchar();
         printf("Enter notes for order (If any): ");
         fgets(desc, sizeof(desc), stdin);
+        trim_trailing_spaces(desc);
         if(strlen(desc) > 5000) {
             msg_error("Notes must be less than 5000 characters!\n");
             return;
@@ -82,6 +168,14 @@ void view_check_out() {
     }
     msg_error("\n============END============\n\n");
     fclose(file);
+
+    FILE *file_cart = fopen("data/carts.txt", "r");
+    if (file_cart == NULL) {
+        msg_error("Error opening carts file for reading!\n"); // Corrected error message
+        return;
+    }
+    Cart cart = check_list_product_in_cart();
+
     FILE *file_order = fopen("data/orders.txt", "a");
     if (file_order == NULL) {
         msg_error("Error opening orders file for writing!\n");
@@ -100,10 +194,12 @@ void view_check_out() {
     fprintf(file_order, "%02d-%02d-%d %02d:%02d:%02d\n",
            local->tm_mday, local->tm_mon + 1, local->tm_year + 1900,
            local->tm_hour, local->tm_min, local->tm_sec);
-    fprintf(file_order, "%s\n", desc);
-
-
+    for(int i = 0; i < cart.cnt; i++) {
+         fprintf(file_order, "%d %d\n", cart.product_id[i], cart.quantity[i]);
+    }
+    fprintf(file_order, "%s\n\n", desc);
     fclose(file_order);
+    delete_cart();
     
     return;
 }
