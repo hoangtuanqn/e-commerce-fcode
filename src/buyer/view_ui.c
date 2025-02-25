@@ -28,3 +28,9 @@ void view_ui_buyer() {
     printf("0. Logout\n");
     printf("Enter your choice: ");
 }
+void view_selection_address() {
+    printf("\n========== Address Selection ==========\n");
+    printf("1. Use current information to receive goods\n");
+    printf("2. Use other information to receive goods\n");
+    printf("Enter your choice: ");
+}

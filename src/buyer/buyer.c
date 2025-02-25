@@ -8,7 +8,7 @@
 #include "../../includes/buyer/view_browse_products.h"
 #include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_all_cart.h"
-
+#include "../../includes/buyer/view_check_out.h"
 void buyer() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
@@ -34,6 +34,10 @@ void buyer() {
             case 4:
                 system("cls");
                 view_all_cart();
+                break;
+            case 5:
+                system("cls");
+                view_check_out();
                 break;
             default:
                 msg_error("Invalid choice!\n\n");

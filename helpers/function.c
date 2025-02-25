@@ -66,3 +66,45 @@ char *check_name_category(int category_id) {
     fclose(file);
     return NULL;
 }
+int is_email_exists(const char *email) {
+    FILE *file = fopen("data/users.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 0;
+    }
+
+    char line[512];
+    while (fgets(line, sizeof(line), file)) {
+        char existing_email[100];
+        if (sscanf(line, "%*s %*s %99s", existing_email) == 1) {
+            if (strcmp(existing_email, email) == 0) {
+                fclose(file);
+                return 1; 
+            }
+        }
+    }
+
+    fclose(file);
+    return 0;
+}
+int is_phone_exists(const char *phone) {
+    FILE *file = fopen("data/users.txt", "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 0;
+    }
+
+    char line[512];
+    while (fgets(line, sizeof(line), file)) {
+        char existing_phone[12];
+        if (sscanf(line, "%*s %*s %*s %11s", existing_phone) == 1) {
+            if (strcmp(existing_phone, phone) == 0) {
+                fclose(file);
+                return 1; 
+            }
+        }
+    }
+
+    fclose(file);
+    return 0;
+}

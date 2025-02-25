@@ -1,18 +1,18 @@
 tuanqn
 Laptop
 This is Laptop
-200.00
+2.13
 201
 Beautiful Laptop
 tuanqn
 PC
 PC NE
-200.00
+3.00
 201
 PC NE 2
 tuanqn
 Laptop
 This is Laptop
-200.00
+4.00
 201
 Beautiful Laptop
