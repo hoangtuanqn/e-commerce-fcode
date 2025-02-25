@@ -27,6 +27,12 @@ void view_check_out() {
         getchar();
         printf("Enter notes for order (If any): ");
         fgets(desc, sizeof(desc), stdin);
+        if(strlen(desc) > 5000) {
+            msg_error("Notes must be less than 5000 characters!\n");
+            return;
+        } else if(strlen(desc) == 0) {
+            strcpy(desc, "No notes");
+        }
         view_selection_address();
         int choice;
         scanf("%d", &choice);
@@ -85,7 +91,7 @@ void view_check_out() {
     struct tm *local;
     time(&now);
     local = localtime(&now); // Convert to local time
-    fprintf(file_order, "%s\n", current_address.username); // Use current_address instead of current_user
+    fprintf(file_order, "%s\n", current_user.username); // Use current_address instead of current_user
     fprintf(file_order, "%s\n", current_address.email);
     fprintf(file_order, "%s\n", current_address.phone);
     fprintf(file_order, "%s\n", current_address.full_name);
@@ -95,9 +101,9 @@ void view_check_out() {
            local->tm_mday, local->tm_mon + 1, local->tm_year + 1900,
            local->tm_hour, local->tm_min, local->tm_sec);
     fprintf(file_order, "%s\n", desc);
-    fprintf(file_order, "\n");
+
+
     fclose(file_order);
-    fclose(file);
     
     return;
 }
