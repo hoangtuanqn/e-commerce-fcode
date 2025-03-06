@@ -20,7 +20,7 @@ int main() {
                 register_form(&user);
                 break;
             case 2:
-                login_form(&user);
+                login_form();
                 break;
             case 3:
                 printf("Exit successfully\n");

@@ -207,3 +207,63 @@ int load_products(Product products[]) {
     fclose(file);
     return count; // Trả về số lượng sản phẩm đã đọc
 }
+void get_all_user() {
+    FILE *file = fopen("data/users.txt", "r");
+    if (file == NULL) {
+        msg_error("Error opening users file for reading!\n");
+        return;
+    }
+
+    int count = 0;
+    char line[200];
+    
+    // Reset list_user array
+    memset(list_user, 0, sizeof(list_user));
+
+    while (fgets(line, sizeof(line), file) && count < MAX_USERS) {
+        trim_trailing_spaces(line);
+        if (strlen(line) == 0) continue;  // Bỏ qua dòng trống
+
+        strcpy(list_user[count].username, line);
+
+        // Đọc các thông tin khác
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        strcpy(list_user[count].password, line);
+
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        strcpy(list_user[count].email, line);
+
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        strcpy(list_user[count].phone, line);
+
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        strcpy(list_user[count].full_name, line);
+
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        strcpy(list_user[count].address, line);
+
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        list_user[count].account_type = atoi(line);
+
+        // Nếu là seller (account_type = 2) thì đọc thêm thông tin shop
+        if (list_user[count].account_type == 2) {
+            fgets(line, sizeof(line), file);
+            trim_trailing_spaces(line);
+            strcpy(list_user[count].shop_name, line);
+
+            fgets(line, sizeof(line), file);
+            trim_trailing_spaces(line);
+            strcpy(list_user[count].warehouse_address, line);
+        }
+
+        count++;
+    }
+
+    fclose(file);
+}

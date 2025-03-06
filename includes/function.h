@@ -11,5 +11,6 @@ int is_email_exists(const char *email);
 int is_phone_exists(const char *phone);
 void delete_cart();
 int load_products(Product products[]);
+void get_all_user(); // get xong lưu vào biến list_user
 #endif
 
