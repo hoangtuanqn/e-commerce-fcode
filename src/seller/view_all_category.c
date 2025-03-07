@@ -8,6 +8,7 @@
 #include "../../includes/seller/function_seller.h"
 #include "../../includes/seller/view_ui.h"
 void view_all_category() {
+    read_category_data();
     printf("\n========== All Category ==========\n");
     int cnt = 0;
     for(int i = 0; i < counter_category_all; ++i) {

@@ -168,46 +168,6 @@ void delete_cart() {
     }
     fclose(file_cart_new);
 }
-int load_products(Product products[]) {
-    FILE *file = fopen("data/products.txt", "r");
-    if (file == NULL) {
-        msg_error("Error opening products file for reading!\n");
-        return 0;
-    }
-
-    int count = 0;
-    char username[100], category[100], name[100], price[100], quantity[100], description[100];
-
-    while (fgets(username, sizeof(username), file) != NULL && count < MAX_PRODUCTS) {
-        trim_trailing_spaces(username);
-        if(strlen(username) == 0) {
-            break;
-        }
-
-        fgets(category, sizeof(category), file);
-        trim_trailing_spaces(category);
-
-        fgets(name, sizeof(name), file);
-        trim_trailing_spaces(name);
-
-        fgets(price, sizeof(price), file);
-        trim_trailing_spaces(price);
-
-        fgets(quantity, sizeof(quantity), file);
-        trim_trailing_spaces(quantity);
-
-        fgets(description, sizeof(description), file);
-        trim_trailing_spaces(description);
-
-        products[count].id = count + 1; // ID sản phẩm tính từ 1
-        strcpy(products[count].name, name);
-        count++;
-    }
-
-    fclose(file);
-    return count; // Trả về số lượng sản phẩm đã đọc
-}
-
 
 // Hàm đọc dữ liệu người dùng từ file
 void read_user_data() {

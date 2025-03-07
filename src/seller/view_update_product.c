@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "../../includes/global.h"
 #include "../../includes/function.h"
+#include "../../includes/seller/global_seller.h"
+#include "../../includes/seller/function_seller.h"
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/view_all_category.h"
 #include "../../includes/seller/view_all_product.h"
@@ -66,16 +68,17 @@ void view_update_product() {
             cnt++;
             if(cnt == list_product[cntList]) {
                 strcpy(user_name[j], user_name_temp);
-                int quantity_category = view_all_category();
+                // int quantity_category = view_all_category();
+                view_all_category();
                 do {
                     printf("Enter new category ID for ID %d: ", cnt);
                     fgets(category_id_temp, sizeof(category_id_temp), stdin);
                     trim_trailing_spaces(category_id_temp);
                     strcpy(category_id[j], category_id_temp);
-                    if(atoi(category_id_temp) < 1 || atoi(category_id_temp) > quantity_category) {
+                    if(atoi(category_id_temp) < 1 || atoi(category_id_temp) > counter_category_seller) {
                         msg_error("Category ID is invalid!\n");
                     }
-                } while (atoi(category_id_temp) < 1 || atoi(category_id_temp) > quantity_category);
+                } while (atoi(category_id_temp) < 1 || atoi(category_id_temp) > counter_category_seller);
 
                 do {
                     printf("Enter new product name for ID %d: ", cnt);

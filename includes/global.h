@@ -20,10 +20,10 @@ typedef struct {
     int cnt;
 } Cart;
 
-typedef struct {        
-    int id;
-    char name[100];
-} Product;
+// typedef struct {        
+//     int id;
+//     char name[100];
+// } Product;
 
 extern int is_logged_in;
 extern int is_pause_program;

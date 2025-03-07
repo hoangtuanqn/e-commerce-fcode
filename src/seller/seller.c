@@ -21,11 +21,11 @@
 void seller() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
-    read_category_data(); // đọc tất cả category
     view_ui_seller_header();
     do {
         view_ui_seller();
         scanf("%d", &choice);
+        getchar();
         switch (choice) {
             case 0:
                 is_logged_in = 0;
@@ -36,7 +36,6 @@ void seller() {
                 break;
             case 2:
                 system("cls");
-                getchar();
                 view_add_category();
                 break;
             case 3:

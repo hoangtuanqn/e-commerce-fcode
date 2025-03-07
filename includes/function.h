@@ -13,7 +13,7 @@ int is_phone_exists(const char *phone);
 int contains_dangerous_chars(const char *input); // hàm kiểm tra kí tự độc hại
 char *input_string(char *input); // xử lý dữ liệu đầu vào
 void delete_cart();
-int load_products(Product products[]);
+// int load_products(Product products[]);
 
 
 void read_user_data(); // Đọc dữ liệu từ file user xong lưu vào biến list_user
