@@ -27,16 +27,8 @@ int handle_login(char *username, char *password) {
             strcmp(list_user[i].password, password) == 0) {
             
             // Copy thông tin user vào current_user
-            strcpy(current_user.username, list_user[i].username);
-            strcpy(current_user.password, list_user[i].password);
-            strcpy(current_user.full_name, list_user[i].full_name);
-            strcpy(current_user.email, list_user[i].email); 
-            strcpy(current_user.phone, list_user[i].phone);
-            strcpy(current_user.address, list_user[i].address);
-            current_user.account_type = list_user[i].account_type;
-            strcpy(current_user.shop_name, list_user[i].shop_name);
-            strcpy(current_user.warehouse_address, list_user[i].warehouse_address);
-            
+            current_user = list_user[i]; // gán dữ liệu trực tiếp
+          
             return 1;
         }
     }
@@ -53,11 +45,15 @@ void login_form() {
         printf("====================================\n");
         printf("               LOGIN        \n");
         printf("====================================\n");
-        printf("Username: ");
-        scanf("%s", username);
+        do {
+            printf("Username: ");
+            scanf("%s", username);
+        } while(!input_string(username));
         
-        printf("Password: ");
-        scanf("%s", password);
+        do {
+            printf("Password: ");
+            scanf("%s", password);
+        } while(!input_string(password));
 
         if (handle_login(username, password)) {
             is_logged_in = 1;

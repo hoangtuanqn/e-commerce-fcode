@@ -9,6 +9,8 @@ SRC = main.c \
 	  helpers/function.c \
 	  helpers/view_ui.c \
 	  src/seller/seller.c \
+	  src/seller/global_seller.c \
+	  src/seller/function_seller.c \
 	  src/seller/view_add_category.c \
 	  src/seller/view_ui.c \
 	  src/seller/view_all_category.c \

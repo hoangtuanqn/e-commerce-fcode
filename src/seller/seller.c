@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "../../includes/global.h"
 #include "../../includes/function.h"
+#include "../../includes/seller/global_seller.h"
+#include "../../includes/seller/function_seller.h"
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/view_add_category.h"
 #include "../../includes/seller/view_all_category.h"
@@ -19,6 +21,7 @@
 void seller() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
+    read_category_data(); // đọc tất cả category
     view_ui_seller_header();
     do {
         view_ui_seller();
