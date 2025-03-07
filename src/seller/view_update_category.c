@@ -9,7 +9,7 @@
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/view_all_category.h"
 int update_product_category(char *user_name_old, char *category_name) {
-    printf("--%s---%s--\n", user_name_old, category_name);
+    // printf("--%s---%s--\n", user_name_old, category_name);
     if(strcmp(user_name_old, category_name) == 0) {
         return 0;
     }
