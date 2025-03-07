@@ -103,6 +103,14 @@ int contains_dangerous_chars(const char *input) {
     }
     return 0; // Không có ký tự đặc biệt
 }
+char *input_string(char *input) {
+    trim_trailing_spaces(input);
+    if(contains_dangerous_chars(input)) {
+        msg_error("Error: The input contains potentially dangerous special characters!\n");
+        return NULL;
+    }
+    return input;
+}
 void delete_cart() {
     FILE *file_cart = fopen("data/carts.txt", "r");
     if (file_cart == NULL) {    

@@ -10,7 +10,8 @@ char *check_name_category(int category_id);
 int is_username_exists(const char *username);
 int is_email_exists(const char *email);
 int is_phone_exists(const char *phone);
-int contains_dangerous_chars(const char *input);
+int contains_dangerous_chars(const char *input); // hàm kiểm tra kí tự độc hại
+char *input_string(char *input); // xử lý dữ liệu đầu vào
 void delete_cart();
 int load_products(Product products[]);
 

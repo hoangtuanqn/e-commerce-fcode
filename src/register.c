@@ -5,7 +5,6 @@
 #include "../includes/function.h"
 #include "../includes/register.h"
 
-
 void register_form(User *user) {
     printf("====================================\n");
     printf("       USER REGISTRATION        \n");
@@ -58,11 +57,15 @@ void register_form(User *user) {
     // Drift command fails, use getchar() to remove character '\n'
     getchar();
 
-    printf("Full Name: ");
-    gets(user->full_name);
+    do {
+        printf("Full Name: ");
+        gets(user->full_name);
+    } while(!input_string(user->full_name));
 
-    printf("Address: ");
-    gets(user->address);
+    do {
+        printf("Address: ");
+        gets(user->address);
+    } while(!input_string(user->address));
 
     do {
         printf("Account Type (1: Buyer, 2: Seller): ");
@@ -75,11 +78,17 @@ void register_form(User *user) {
     // Drift command fails, use getchar() to remove character '\n'
     getchar();
     if (user->account_type == 2) {
-        printf("Shop Name: ");
-        gets(user->shop_name);
+        
+        do {
+            printf("Shop Name: ");
+            gets(user->shop_name);
+        } while(!input_string(user->shop_name));
 
-        printf("Warehouse Address: ");
-        gets(user->warehouse_address);
+        
+        do {
+            printf("Warehouse Address: ");
+            gets(user->warehouse_address);
+        } while(!input_string(user->warehouse_address));
     } else {
         strcpy(user->shop_name, ".");
         strcpy(user->warehouse_address, ".");
