@@ -10,7 +10,7 @@
 void view_all_category() {
     printf("\n========== All Category ==========\n");
     int cnt = 0;
-    for(int i = 0; i < counter_category; ++i) {
+    for(int i = 0; i < counter_category_all; ++i) {
         if(strcmp(category_data[i].username, current_user.username) == 0) {
             printf("%d. \033[32m%s\033[0m\n", ++cnt, category_data[i].category);
         }

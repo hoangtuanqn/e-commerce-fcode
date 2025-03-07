@@ -36,6 +36,7 @@ void seller() {
                 break;
             case 2:
                 system("cls");
+                getchar();
                 view_add_category();
                 break;
             case 3:
