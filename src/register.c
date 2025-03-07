@@ -5,37 +5,22 @@
 #include "../includes/function.h"
 #include "../includes/register.h"
 
-int handle_register(User *user) {
-    if (user == NULL) {
-        msg_error("Invalid user data!\n");
-        return 0;
-    }
-
-    FILE *file = fopen("data/users.txt", "a");
-    if (file == NULL) {
-        perror("Error opening file");
-        return 0;
-    }
-
-    if (fprintf(file, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n%s\n%s\n",
-                user->username, user->password, user->email, user->phone,
-                user->full_name, user->address, user->account_type,
-                user->shop_name, user->warehouse_address) < 0) {
-        msg_error("Error writing to file!\n");
-        fclose(file);
-        return 0;
-    }
-
-    fclose(file);
-    return 1;
-}
 
 void register_form(User *user) {
     printf("====================================\n");
     printf("       USER REGISTRATION        \n");
     printf("====================================\n");
-    printf("Username: ");
-    scanf("%s", user->username);
+    int username_exists = 1;
+    do {
+        printf("Username: ");
+        scanf("%s", user->email);
+        username_exists = is_username_exists(user->username);
+        if (username_exists) {
+            msg_error("Username already exists! Please enter another username.\n");
+        } else {
+            username_exists = 0;
+        }
+    } while (username_exists);
     
     printf("Password: ");
     scanf("%s", user->password);
@@ -100,7 +85,8 @@ void register_form(User *user) {
         strcpy(user->warehouse_address, ".");
     }
 
-    if (handle_register(user) == 1) {
+    // tiến hành ghi dữ liệu người dùng
+    if (write_user_data(user) == 1) {
         is_logged_in = 1;
         current_user = *user;
         msg_success("\nRegistration Successful!\n");

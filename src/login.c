@@ -8,21 +8,23 @@
 
 User current_user;
 
-int handle_login(User *user) {
-    if (user == NULL) {
+int handle_login(char *username, char *password) {
+    if (strlen(username) == 0 || strlen(password) == 0) {
         return 0;
     }
+    // printf("%s---%s--%d--%d--%d", username, password, strlen(username), strlen(password), MAX_USERS);
 
     // Duyệt qua mảng list_user để tìm user phù hợp
-    for(int i = 0; i < MAX_USERS; i++) {
+    for(int i = 0; i < counter_user; i++) {
         // Nếu username rỗng thì break vì đã hết user
+        // printf("%s-%s\n", list_user[i].username, list_user[i].password);
         if(strlen(list_user[i].username) == 0) {
             break;
         }
 
         // Kiểm tra username và password
-        if (strcmp(list_user[i].username, user->username) == 0 && 
-            strcmp(list_user[i].password, user->password) == 0) {
+        if (strcmp(list_user[i].username, username) == 0 && 
+            strcmp(list_user[i].password, password) == 0) {
             
             // Copy thông tin user vào current_user
             strcpy(current_user.username, list_user[i].username);
@@ -44,7 +46,6 @@ int handle_login(User *user) {
 
 void login_form() {
     int is_re_login = 1;
-    User user;
     char username[50];
     char password[50];
 
@@ -58,11 +59,7 @@ void login_form() {
         printf("Password: ");
         scanf("%s", password);
 
-        // Copy credentials to user struct
-        strcpy(user.username, username);
-        strcpy(user.password, password);
-
-        if (handle_login(&user)) {
+        if (handle_login(username, password)) {
             is_logged_in = 1;
             is_re_login = 0;
             msg_success("Login successful!\n");

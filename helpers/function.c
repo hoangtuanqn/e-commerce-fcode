@@ -69,47 +69,39 @@ char *check_name_category(int category_id) {
     fclose(file);
     return NULL;
 }
-int is_email_exists(const char *email) {
-    FILE *file = fopen("data/users.txt", "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        return 0;
-    }
-
-    char line[512];
-    while (fgets(line, sizeof(line), file)) {
-        char existing_email[100];
-        if (sscanf(line, "%*s %*s %99s", existing_email) == 1) {
-            if (strcmp(existing_email, email) == 0) {
-                fclose(file);
-                return 1; 
-            }
+int is_username_exists(const char *username) {
+    for(int i = 0; i < counter_user; ++i) {
+        if(strcmp(list_user[i].username, username) == 0) {
+            return 1;
         }
     }
-
-    fclose(file);
+    return 0;
+}
+int is_email_exists(const char *email) {
+    for(int i = 0; i < counter_user; ++i) {
+        if(strcmp(list_user[i].email, email) == 0) {
+            return 1;
+        }
+    }
     return 0;
 }
 int is_phone_exists(const char *phone) {
-    FILE *file = fopen("data/users.txt", "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        return 0;
-    }
-
-    char line[512];
-    while (fgets(line, sizeof(line), file)) {
-        char existing_phone[12];
-        if (sscanf(line, "%*s %*s %*s %11s", existing_phone) == 1) {
-            if (strcmp(existing_phone, phone) == 0) {
-                fclose(file);
-                return 1; 
-            }
+    for(int i = 0; i < counter_user; ++i) {
+        if(strcmp(list_user[i].phone, phone) == 0) {
+            return 1;
         }
     }
-
-    fclose(file);
     return 0;
+}
+int contains_dangerous_chars(const char *input) {
+    const char *dangerous_chars = "'\";--<>|&$(){}[]";
+    
+    for (int i = 0; input[i] != '\0'; i++) {
+        if (strchr(dangerous_chars, input[i]) != NULL) {
+            return 1; // Phát hiện ký tự đặc biệt
+        }
+    }
+    return 0; // Không có ký tự đặc biệt
 }
 void delete_cart() {
     FILE *file_cart = fopen("data/carts.txt", "r");
@@ -207,63 +199,89 @@ int load_products(Product products[]) {
     fclose(file);
     return count; // Trả về số lượng sản phẩm đã đọc
 }
-void get_all_user() {
+
+
+// Hàm đọc dữ liệu người dùng từ file
+void read_user_data() {
     FILE *file = fopen("data/users.txt", "r");
     if (file == NULL) {
         msg_error("Error opening users file for reading!\n");
         return;
     }
-
-    int count = 0;
     char line[200];
     
     // Reset list_user array
-    memset(list_user, 0, sizeof(list_user));
+    // memset(list_user, 0, sizeof(list_user));
 
-    while (fgets(line, sizeof(line), file) && count < MAX_USERS) {
+    while (fgets(line, sizeof(line), file) && counter_user < MAX_USERS) {
         trim_trailing_spaces(line);
         if (strlen(line) == 0) continue;  // Bỏ qua dòng trống
 
-        strcpy(list_user[count].username, line);
+        strcpy(list_user[counter_user].username, line);
 
         // Đọc các thông tin khác
         fgets(line, sizeof(line), file);
         trim_trailing_spaces(line);
-        strcpy(list_user[count].password, line);
+        strcpy(list_user[counter_user].password, line);
 
         fgets(line, sizeof(line), file);
         trim_trailing_spaces(line);
-        strcpy(list_user[count].email, line);
+        strcpy(list_user[counter_user].email, line);
 
         fgets(line, sizeof(line), file);
         trim_trailing_spaces(line);
-        strcpy(list_user[count].phone, line);
+        strcpy(list_user[counter_user].phone, line);
 
         fgets(line, sizeof(line), file);
         trim_trailing_spaces(line);
-        strcpy(list_user[count].full_name, line);
+        strcpy(list_user[counter_user].full_name, line);
 
         fgets(line, sizeof(line), file);
         trim_trailing_spaces(line);
-        strcpy(list_user[count].address, line);
+        strcpy(list_user[counter_user].address, line);
 
         fgets(line, sizeof(line), file);
         trim_trailing_spaces(line);
-        list_user[count].account_type = atoi(line);
+        list_user[counter_user].account_type = atoi(line);
 
         // Nếu là seller (account_type = 2) thì đọc thêm thông tin shop
-        if (list_user[count].account_type == 2) {
-            fgets(line, sizeof(line), file);
-            trim_trailing_spaces(line);
-            strcpy(list_user[count].shop_name, line);
+        // if (list_user[counter_user].account_type == 2) {
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        strcpy(list_user[counter_user].shop_name, line);
 
-            fgets(line, sizeof(line), file);
-            trim_trailing_spaces(line);
-            strcpy(list_user[count].warehouse_address, line);
-        }
+        fgets(line, sizeof(line), file);
+        trim_trailing_spaces(line);
+        strcpy(list_user[counter_user].warehouse_address, line);
+        // }
 
-        count++;
+        counter_user++;
     }
 
     fclose(file);
+}
+
+int write_user_data(User *user) {
+    if (user == NULL) {
+        msg_error("Invalid user data!\n");
+        return 0;
+    }
+
+    FILE *file = fopen("data/users.txt", "a");
+    if (file == NULL) {
+        perror("Error opening file");
+        return 0;
+    }
+
+    if (fprintf(file, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n%s\n%s\n",
+                user->username, user->password, user->email, user->phone,
+                user->full_name, user->address, user->account_type,
+                user->shop_name, user->warehouse_address) < 0) {
+        msg_error("Error writing to file!\n");
+        fclose(file);
+        return 0;
+    }
+
+    fclose(file);
+    return 1;
 }

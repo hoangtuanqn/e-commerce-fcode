@@ -14,7 +14,7 @@ int main() {
     do {
         view_ui_start();
         scanf("%d", &choice);
-
+        read_user_data(); // đọc dữ liệu từ file user;
         switch (choice) {
             case 1:
                 register_form(&user);
