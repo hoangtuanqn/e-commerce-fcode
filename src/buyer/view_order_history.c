@@ -9,7 +9,7 @@
 // Hàm hiển thị lịch sử đơn hàng
 void view_order_history() {
     Product products[MAX_PRODUCTS];
-    int product_count = load_products(products); // Tải sản phẩm từ file
+    read_product_data();
 
     FILE *file = fopen("data/orders.txt", "r");
     if (file == NULL) {
@@ -68,8 +68,8 @@ void view_order_history() {
         int product_id, quantity;
         while (fscanf(file, "%d\n", &product_id) == 1 && fscanf(file, "%d\n", &quantity) == 1) {
             // Tìm tên sản phẩm dựa trên ID
-            if (product_id > 0 && product_id <= product_count) {
-                printf("   - Product Name: \033[32m%s\033[0m, Quantity: \033[32m%d\033[0m\n", products[product_id - 1].name, quantity);
+            if (product_id > 0 && product_id <= counter_product_all) {
+                printf("   - Product Name: \033[32m%s\033[0m, Quantity: \033[32m%d\033[0m\n", products[product_id - 1].name_product, quantity);
             } else {
                 printf("   - Product ID: %d, Quantity: %d (Invalid ID)\n", product_id, quantity);
             }

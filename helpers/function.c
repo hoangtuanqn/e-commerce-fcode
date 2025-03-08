@@ -263,3 +263,100 @@ int write_user_data(User *user) {
     fclose(file);
     return 1;
 }
+
+// Đọc hết dữ liệu trong file category
+void read_category_data() {
+    counter_category_all = 0;
+    counter_category_seller = 0;
+    FILE *file = fopen("data/categories.txt", "r");
+    if (file == NULL) {
+        msg_error("Error opening file for reading!\n");
+        return;
+    }
+
+    Category category_tmp;
+    char line[256];
+
+    while (fgets(line, sizeof(line), file)) {
+        // Skip empty lines
+        trim_trailing_spaces(line);
+        if(strlen(line) == 0) continue;
+        
+        // Read username
+        strcpy(category_tmp.username, line);
+
+        // Read category
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(category_tmp.category, line);
+
+        // Add to array
+        category_data[counter_category_all] = category_tmp;
+        
+        // Update counters
+        if(strcmp(category_tmp.username, current_user.username) == 0) {
+            counter_category_seller++;
+        }
+        counter_category_all++;
+    }
+    fclose(file);
+}
+
+// Đọc hết dữ liệu trong file product
+void read_product_data() {
+    counter_product_all = 0;
+    counter_product_seller = 0;
+    FILE *file = fopen("data/products.txt", "r");
+    if (file == NULL) {
+        msg_error("Error opening file for reading!\n");
+        return;
+    }
+
+    Product product_tmp;
+    char line[256];
+
+    while (fgets(line, sizeof(line), file)) {
+        // Skip empty lines
+        trim_trailing_spaces(line);
+        if(strlen(line) == 0) continue;
+        
+        // Read username
+        strcpy(product_tmp.username, line);
+
+        // Read category
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(product_tmp.category, line);
+
+        // Read product name
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(product_tmp.name_product, line);
+
+        // Read price
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        product_tmp.price = atof(line);
+
+        // Read quantity 
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        product_tmp.quantity = atoi(line);
+
+        // Read description
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(product_tmp.description, line);
+
+        // Add to array
+        product_data[counter_product_all] = product_tmp;
+        
+        // Update counters
+        if(strcmp(product_tmp.username, current_user.username) == 0) {
+            counter_product_seller++;
+        }
+        counter_product_all++;
+    }
+
+    fclose(file);
+}

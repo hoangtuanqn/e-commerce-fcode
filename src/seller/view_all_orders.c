@@ -7,8 +7,8 @@
 typedef struct {        
     int id;
     char name[100];
-} Product;
-int load_products(Product products[]) {
+} Product_;
+int load_products(Product_ products[]) {
     FILE *file = fopen("data/products.txt", "r");
     if (file == NULL) {
         msg_error("Error opening products file for reading!\n");
@@ -50,7 +50,7 @@ int load_products(Product products[]) {
 
 // Hàm hiển thị danh sách đã bán
 void view_all_orders() {
-    Product products[MAX_PRODUCTS];
+    Product_ products[MAX_PRODUCTS];
     int product_count = load_products(products); // Tải sản phẩm từ file
 
     FILE *file = fopen("data/orders.txt", "r");
@@ -107,14 +107,14 @@ void view_all_orders() {
         printf("-> Notes: \033[32m%s\033[0m\n", desc);
 
         // Đọc và in ra các sản phẩm trong đơn hàng
-        printf("-> Products:\n");
+        printf("-> Product_s:\n");
         int product_id, quantity;
         while (fscanf(file, "%d\n", &product_id) == 1 && fscanf(file, "%d\n", &quantity) == 1) {
             // Tìm tên sản phẩm dựa trên ID
             if (product_id > 0 && product_id <= product_count) {
-                printf("   - Product Name: \033[32m%s\033[0m, Quantity: \033[32m%d\033[0m\n", products[product_id - 1].name, quantity);
+                printf("   - Product_ Name: \033[32m%s\033[0m, Quantity: \033[32m%d\033[0m\n", products[product_id - 1].name, quantity);
             } else {
-                printf("   - Product ID: %d, Quantity: %d (Invalid ID)\n", product_id, quantity);
+                printf("   - Product_ ID: %d, Quantity: %d (Invalid ID)\n", product_id, quantity);
             }
         }
         printf("--------------------------------\n");

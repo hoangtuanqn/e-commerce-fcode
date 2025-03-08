@@ -16,6 +16,8 @@ void buyer() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
     view_ui_buyer_header();
+    read_category_data();
+    read_product_data();
     do {
         view_ui_buyer();
         scanf("%d", &choice);

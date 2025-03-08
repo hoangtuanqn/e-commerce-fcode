@@ -19,5 +19,10 @@ void delete_cart();
 
 void read_user_data(); // Đọc dữ liệu từ file user xong lưu vào biến list_user
 int write_user_data(User *user); // Ghi dữ liệu vào file users
+
+void read_category_data();
+void read_product_data();
+
+
 #endif
 
