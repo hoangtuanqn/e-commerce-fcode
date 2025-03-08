@@ -34,6 +34,26 @@ void read_category_data() {
     fclose(file);
 }
 
+void write_category_data() {
+    FILE *file = fopen("data/categories.txt", "w");
+    if (file == NULL) {
+        msg_error("Error opening file for reading!\n");
+        return;
+    }
+    for(int i = 0; i < counter_category_all; ++i) {
+        if(strlen(category_data[i].category) > 0) {
+            fprintf(file, 
+                "%s\n%s\n", 
+                category_data[i].username, 
+                category_data[i].category
+            );
+        }
+    }
+    fclose(file);
+}
+
+
+
 // Đọc hết dữ liệu trong file product
 void read_product_data() {
     counter_product_all = 0;
@@ -80,14 +100,31 @@ void write_product_data() {
         return;
     }
     for(int i = 0; i < counter_product_all; ++i) {
-        fprintf(file, 
-            "%s\n%s\n%s\n%s\n%s\n%s\n", 
-            product_data[i].username, 
-            product_data[i].category, 
-            product_data[i].name_product, 
-            product_data[i].price, 
-            product_data[i].quantity, 
-            product_data[i].description);
+        if(strlen(product_data[i].name_product) > 0) {
+
+            fprintf(file, 
+                "%s\n%s\n%s\n%s\n%s\n%s\n", 
+                product_data[i].username, 
+                product_data[i].category, 
+                product_data[i].name_product, 
+                product_data[i].price, 
+                product_data[i].quantity, 
+                product_data[i].description
+            );
+
+        }
     }
+ 
     fclose(file);
+}
+
+int counter_products_in_category(char *name_your_category) {
+    int count = 0;
+    for(int i = 0; i < counter_product_all; ++i) {
+        if(strcmp(product_data[i].category, name_your_category) == 0 && 
+            strcmp(product_data[i].username, current_user.username) == 0) {
+                ++count;
+        }
+    }
+    return count;
 }
