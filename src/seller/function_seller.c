@@ -14,23 +14,31 @@ void read_category_data() {
         msg_error("Error opening file for reading!\n");
         return;
     }
-    char username[50], category[100];
-    while (fgets(username, sizeof(username), file) != NULL) {
-        trim_trailing_spaces(username);
-        fgets(category, sizeof(category), file);
-        trim_trailing_spaces(category);
-        if(username[0] != '\n') {
-            strcpy(category_data[counter_category_all].username, username);
-            strcpy(category_data[counter_category_all].category, category);
 
-            if(strcmp(category_data[counter_category_all].username, current_user.username)) {
-                counter_category_seller++;
-            }
-            // printf("%s-%d-ok\n", category, strlen(category));
-            counter_category_all++;
+    Category category_tmp;
+    char line[256];
+
+    while (fgets(line, sizeof(line), file)) {
+        // Skip empty lines
+        trim_trailing_spaces(line);
+        if(strlen(line) == 0) continue;
+        
+        // Read username
+        strcpy(category_tmp.username, line);
+
+        // Read category
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(category_tmp.category, line);
+
+        // Add to array
+        category_data[counter_category_all] = category_tmp;
+        
+        // Update counters
+        if(strcmp(category_tmp.username, current_user.username) == 0) {
+            counter_category_seller++;
         }
-        username[0] = '\n';
-        category[0] = '\n';
+        counter_category_all++;
     }
     fclose(file);
 }
@@ -43,8 +51,7 @@ void write_category_data() {
     }
     for(int i = 0; i < counter_category_all; ++i) {
         if(strlen(category_data[i].category) > 0) {
-            fprintf(file, 
-                "%s\n%s\n", 
+            fprintf(file, "%s\n%s\n\n", 
                 category_data[i].username, 
                 category_data[i].category
             );
@@ -69,9 +76,11 @@ void read_product_data() {
     char line[256];
 
     while (fgets(line, sizeof(line), file)) {
-        // Read username
+        // Skip empty lines
         trim_trailing_spaces(line);
         if(strlen(line) == 0) continue;
+        
+        // Read username
         strcpy(product_tmp.username, line);
 
         // Read category
@@ -99,10 +108,10 @@ void read_product_data() {
         trim_trailing_spaces(line);
         strcpy(product_tmp.description, line);
 
-        // Add to array if valid product
+        // Add to array
         product_data[counter_product_all] = product_tmp;
         
-        // Increment counters
+        // Update counters
         if(strcmp(product_tmp.username, current_user.username) == 0) {
             counter_product_seller++;
         }
@@ -120,20 +129,16 @@ void write_product_data() {
     }
     for(int i = 0; i < counter_product_all; ++i) {
         if(strlen(product_data[i].name_product) > 0) {
-
-            fprintf(file, 
-                "%s\n%s\n%s\n%.2f\n%d\n%s\n", 
-                product_data[i].username, 
-                product_data[i].category, 
-                product_data[i].name_product, 
-                product_data[i].price, 
-                product_data[i].quantity, 
+            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n\n", 
+                product_data[i].username,
+                product_data[i].category,
+                product_data[i].name_product,
+                product_data[i].price,
+                product_data[i].quantity,
                 product_data[i].description
             );
-
         }
     }
- 
     fclose(file);
 }
 
