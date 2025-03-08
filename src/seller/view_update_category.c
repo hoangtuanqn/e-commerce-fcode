@@ -24,25 +24,44 @@ int update_product_category(char *user_name_old, char *category_name) {
     }
     return cnt;
 }
-void view_update_category() {
-    FILE *file = fopen("data/categories.txt", "r");
-    if (file == NULL) {
-        msg_error("Error opening file for reading!\n");
-        return;
+void handle_update_category(int *list_edit_category, int count) {
+    char category_new[100];
+    int count_your_category = 0, affected = 0;
+    for(int i = 0; i < counter_category_all; ++i) {
+        if(strcmp(category_data[i].username, current_user.username) == 0) {
+            ++count_your_category;
+            for(int j = 0; j < count; ++j) {
+                if(count_your_category == list_edit_category[j]) {
+                    do {
+                        printf("Enter new category name for ID %d: ", count_your_category);
+                        fgets(category_new, sizeof(category_new), stdin);
+                    } while(!input_string(category_new));
+                    affected += update_product_category(category_data[i].category, category_new);
+                    strcpy(category_data[i].category, category_new);
+                } else if(count_your_category < list_edit_category[j]) {
+                    break;
+                }
+            }
+        }
     }
+    write_category_data();
+    write_product_data();
+    msg_success("Update successfully!\n");
+    printf("Affected %d products. \n\n", affected);
+}
+void view_update_category() {
     char list_id[1000];
     view_all_category();
     if(!counter_category_seller) {
         msg_error("Currently, there are no categories available. Update is not possible.\n");
         return;
     }
-    
 
     printf("Please enter the category IDs you wish to update, separated by spaces: ");
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");
-    int listCategory[1000], i = 0, is_valid = 1;
+    int list_category[1000], i = 0, is_valid = 1;
     while (token != NULL) {
         int category_id = atoi(token);
         if(category_id > counter_category_seller) {
@@ -50,7 +69,7 @@ void view_update_category() {
             printf("%d!\n", category_id);
             is_valid = 0;
         }
-        listCategory[i++] = category_id;
+        list_category[i++] = category_id;
         token = strtok(NULL, " ");
     }
     if(!is_valid) {
@@ -58,58 +77,8 @@ void view_update_category() {
         return;
     }
 
-    
-    quick_sort(listCategory, 0, i - 1);
-
-    char user_name[50][1000], category_name[50][1000];
-    char category_name_old[50][1000];
-    char temp_user[100], temp_category[100];
-    int category_index = 0, list_index = 0, total_entries = 0;
-
-    // Read and process each line pair from the file
-    while (fgets(temp_user, sizeof(temp_user), file) && 
-           fgets(temp_category, sizeof(temp_category), file)) {
-        
-        trim_trailing_spaces(temp_user);
-        trim_trailing_spaces(temp_category);
-        
-        // Store original category name for later reference
-        strcpy(category_name_old[total_entries], temp_category);
-        strcpy(user_name[total_entries], temp_user);
-        strcpy(category_name[total_entries], temp_category);
-
-        // Check if this is a category we want to update
-        if (strcmp(temp_user, current_user.username) == 0 && list_index < i) {
-            category_index++;
-            
-            if (category_index == listCategory[list_index]) {
-                printf("Enter new category name for ID %d: ", category_index);
-                fgets(temp_category, sizeof(temp_category), stdin);
-                trim_trailing_spaces(temp_category);
-                strcpy(category_name[total_entries], temp_category);
-                list_index++;
-            }
-        }
-
-        total_entries++;
-    }
-
-
-    // Tác động đến các sản phẩm có cùng danh mục
-    msg_success("Update successfully!\n");
-    fclose(file);
-    file = fopen("data/categories.txt", "w");
-    int affected = 0;
     read_product_data();
-    for(int k = 0; k < total_entries; k++) {
-        if(strlen(user_name[k]) != 0) {
-            affected += update_product_category(category_name_old[k], category_name[k]);
-            fprintf(file, "%s\n%s\n", user_name[k], category_name[k]);
-        }
-    }
-    write_product_data();
-    printf("Affected %d products. \n\n", affected);
-    fclose(file);
-   
+    quick_sort(list_category, 0, i - 1);
+    handle_update_category(list_category, i);
 }
    
