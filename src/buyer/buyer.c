@@ -18,9 +18,11 @@ void buyer() {
     view_ui_buyer_header();
     read_category_data();
     read_product_data();
+    read_cart_data();
     do {
         view_ui_buyer();
         scanf("%d", &choice);
+        getchar();
         switch (choice) {
             case 0:
                 is_logged_in = 0;

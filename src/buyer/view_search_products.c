@@ -8,82 +8,73 @@
 
 // Hàm tìm kiếm sản phẩm theo từ khóa
 void view_search_products() {
-    FILE *file = fopen("data/products.txt", "r");
-    if (file == NULL) {
-        msg_error("Error opening file for reading!\n");
-        return;
-    }
-
-    char username[100], category[100], name_product[100], price[100], quantity[100], description[100];
     char keyword[100];
+    char temp_name[200];
+    char unique_categories[MAX_CATEGORIES][100];
+    int unique_count = 0;
 
-    // Nhập từ khóa tìm kiếm từ người dùng
-    getchar();
+    // Get search keyword
     printf("Enter search keyword: ");
     fgets(keyword, sizeof(keyword), stdin);
     trim_trailing_spaces(keyword);
 
-    // Chuyển đổi từ khóa về chữ thường
+    // Convert keyword to lowercase
     for (int i = 0; keyword[i]; i++) {
         keyword[i] = tolower(keyword[i]);
     }
 
     printf("\n========== Search Results ==========\n");
-    int found = 0; // Biến đánh dấu có tìm thấy sản phẩm hay không
-    int id_product = 0;
-    while (!feof(file)) {
-        fgets(username, sizeof(username), file);
-        trim_trailing_spaces(username);
-        if(username[0] == '\n') {
-            break;
+    int found = 0;
+
+    // Find unique categories first
+    for(int i = 0; i < counter_category_all; i++) {
+        int is_unique = 1;
+        for(int j = 0; j < unique_count; j++) {
+            if(strcmp(category_data[i].category, unique_categories[j]) == 0) {
+                is_unique = 0;
+                break;
+            }
         }
-        ++id_product;
-
-        fgets(category, sizeof(category), file);
-        trim_trailing_spaces(category);
-
-        fgets(name_product, sizeof(name_product), file);
-        trim_trailing_spaces(name_product);
-
-        fgets(price, sizeof(price), file);
-        trim_trailing_spaces(price);
-
-        fgets(quantity, sizeof(quantity), file);
-        trim_trailing_spaces(quantity);
-
-        fgets(description, sizeof(description), file);
-        trim_trailing_spaces(description);
-
-        // Chuyển đổi tên sản phẩm về chữ thường
-        char name_product_lower[100];
-        strcpy(name_product_lower, name_product);
-        for (int i = 0; name_product_lower[i]; i++) {
-            name_product_lower[i] = tolower(name_product_lower[i]);
+        if(is_unique) {
+            strcpy(unique_categories[unique_count], category_data[i].category);
+            unique_count++;
         }
+    }
 
-        // Kiểm tra xem tên sản phẩm có chứa từ khóa không
-        if (strstr(name_product_lower, keyword) != NULL) {
-            printf("->\tProduct ID: \033[32m%d\033[0m\n", id_product);
-            printf("->\tProduct Name: \033[32m%s\033[0m\n", name_product);
-            printf("->\tSeller: \033[32m%s\033[0m\n", username);
-            printf("->\tPrice: \033[32m$%s\033[0m\n", price);
-            printf("->\tQuantity: \033[32m%s\033[0m\n", quantity);
-            printf("->\tDescription: \033[32m%s\033[0m\n", description);
-            printf("--------------------------------\n");
-            found = 1; // Đánh dấu đã tìm thấy ít nhất một sản phẩm
+    // Display products by category
+    for(int cat = 0; cat < unique_count; cat++) {
+        int category_has_products = 0;
+        
+        // Check if category has matching products before printing header
+        for(int i = 0; i < counter_product_all; ++i) {
+            strcpy(temp_name, product_data[i].name_product);
+            for(int j = 0; temp_name[j]; j++) {
+                temp_name[j] = tolower(temp_name[j]);
+            }
+
+            if(strstr(temp_name, keyword) != NULL && 
+               strcmp(product_data[i].category, unique_categories[cat]) == 0) {
+                if(!category_has_products) {
+                    printf("\n\033[1;33m=== Category: %s ===\033[0m\n", unique_categories[cat]);
+                    category_has_products = 1;
+                }
+                
+                printf("->\tProduct ID: \033[32m%d\033[0m\n", i + 1);
+                printf("->\tProduct Name: \033[32m%s\033[0m\n", product_data[i].name_product);
+                printf("->\tSeller: \033[32m%s\033[0m\n", product_data[i].username);
+                printf("->\tPrice: \033[32m$%.2f\033[0m\n", product_data[i].price);
+                printf("->\tQuantity: \033[32m%d\033[0m\n", product_data[i].quantity);
+                printf("->\tDescription: \033[32m%s\033[0m\n", product_data[i].description);
+                printf("--------------------------------\n");
+                found = 1;
+            }
         }
-        name_product[0] = '\n';
-        category[0] = '\n';
-        price[0] = '\n';
-        quantity[0] = '\n';
-        description[0] = '\n';
     }
 
     if (!found) {
         msg_error("No products found with the keyword ");
-        printf("%s\n", keyword);
+        printf("\"%s\"\n", keyword);
     }
 
-    printf("============END============\n\n");
-    fclose(file);
+    printf("\n============END============\n\n");
 }

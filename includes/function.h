@@ -23,6 +23,8 @@ int write_user_data(User *user); // Ghi dữ liệu vào file users
 void read_category_data();
 void read_product_data();
 
+void read_cart_data();
+// void write_cart_data();
 
 #endif
 

@@ -38,8 +38,7 @@ int handle_login(char *username, char *password) {
 
 void login_form() {
     int is_re_login = 1;
-    char username[50];
-    char password[50];
+    char username[50], password[50];
 
     do {
         printf("====================================\n");
