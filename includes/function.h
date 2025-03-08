@@ -16,10 +16,10 @@ int is_validation_number(float value, float min_value, float max_value);
 void delete_cart();
 // int load_products(Product products[]);
 
-
+void delete_all_cart();
 void read_user_data(); // Đọc dữ liệu từ file user xong lưu vào biến list_user
 int write_user_data(User *user); // Ghi dữ liệu vào file users
-
+void write_cart_data();
 void read_category_data();
 void read_product_data();
 

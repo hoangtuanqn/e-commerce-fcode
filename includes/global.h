@@ -51,7 +51,7 @@ extern Cart cart_data[MAX_CARTS];
 
 extern int counter_category_seller;
 extern int counter_product_seller;
-extern int counter_cart_buyer; // số đơn hàng của người dùng
+extern int counter_cart_all; // số đơn hàng của người dùng
 
 
 #endif

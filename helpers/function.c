@@ -121,62 +121,10 @@ char *input_string(char *input) {
     }
     return input;
 }
-void delete_cart() {
-    // FILE *file_cart = fopen("data/carts.txt", "r");
-    // if (file_cart == NULL) {    
-    //     msg_error("Error opening carts file for reading!\n");
-    //     return;
-    // }
-
-    // Cart cart[1000];
-    // int cnt = 0;
-    // char line[1000];
-
-    // // Đọc toàn bộ nội dung file
-    // while (fgets(cart[cnt].username, sizeof(cart[cnt].username), file_cart)) {
-    //     trim_trailing_spaces(cart[cnt].username);
-    //     if (strlen(cart[cnt].username) == 0) {
-    //         continue;
-    //     }
-
-    //     cart[cnt].cnt = 0;
-
-    //     // Đọc các sản phẩm của user này
-    //     while (fgets(line, sizeof(line), file_cart)) {
-    //         trim_trailing_spaces(line);
-    //         if (strlen(line) == 0) break;
-
-    //         char *token = strtok(line, " ");
-    //         if (token != NULL) {
-    //             cart[cnt].product_id[cart[cnt].cnt] = atoi(token);
-    //         }
-    //         token = strtok(NULL, " ");
-    //         if (token != NULL) {
-    //             cart[cnt].quantity[cart[cnt].cnt] = atoi(token);
-    //         }
-    //         cart[cnt].cnt++;
-    //     }
-    //     cnt++;
-    // }
-    // fclose(file_cart);
-
-    // // Ghi lại file mà không có thông tin của người dùng hiện tại
-    // FILE *file_cart_new = fopen("data/carts.txt", "w");
-    // if (file_cart_new == NULL) {
-    //     msg_error("Error opening file for writing!\n");
-    //     return;
-    // }
-
-    // for (int i = 0; i < cnt; i++) {
-    //     if (strcmp(cart[i].username, current_user.username) != 0) {
-    //         fprintf(file_cart_new, "%s\n", cart[i].username);
-    //         for (int j = 0; j < cart[i].cnt; j++) {
-    //             fprintf(file_cart_new, "%d %d\n", cart[i].product_id[j], cart[i].quantity[j]);
-    //         }
-    //         fprintf(file_cart_new, "\n");
-    //     }
-    // }
-    // fclose(file_cart_new);
+void delete_all_cart() {
+    int cart_index = current_user.id_cart;
+    strcpy(cart_data[cart_index].buyer, "");
+    write_cart_data();
 }
 
 // Hàm đọc dữ liệu người dùng từ file
@@ -362,7 +310,7 @@ void read_product_data() {
 }
 
 void read_cart_data() {
-    counter_cart_buyer = 0;
+    counter_cart_all = 0;
     FILE *file = fopen("data/carts.txt", "r");
     if (file == NULL) {
         msg_error("Error opening file for reading!\n");
@@ -371,25 +319,69 @@ void read_cart_data() {
     char line[1000];
 
     while (fgets(line, sizeof(line), file)) {
-        int i = 0;  // số đơn hàng của 1 người, sẽ bị reset lại
         trim_trailing_spaces(line);
-        if(strlen(line) == 0) continue;
+        if(strlen(line) == 0) {
+            continue; // Skip empty lines between users
+        }
         
         // Đọc username buyer
-        strcpy(cart_data[counter_cart_buyer].buyer, line);
-        if(strcpy(line, current_user.username) == 0) {
-            current_user.id_cart = counter_cart_buyer; // lưu chỉ mục giỏ hàng
+        strcpy(cart_data[counter_cart_all].buyer, line);
+        cart_data[counter_cart_all].quantity = 0; // Reset counter for products
+
+        // Check if this is current user's cart
+        if(strcmp(line, current_user.username) == 0) {
+            current_user.id_cart = counter_cart_all;
         }
 
-        // đọc id các sản phẩm
-        fgets(line, sizeof(line), file);
-        trim_trailing_spaces(line);
-        sscanf(line, "%d %d", &cart_data[counter_cart_buyer].id_product[i], &cart_data[counter_cart_buyer].quantity_product[i]);
-        ++i;    
+        // Read products until empty line or EOF
+        while (fgets(line, sizeof(line), file)) {
+            trim_trailing_spaces(line);
+            if(strlen(line) == 0) break; // Empty line means end of this user's cart
 
-        ++counter_cart_buyer; // tổng số người trong giỏ hàng
+            // Read product ID and quantity
+            int product_id, quantity;
+            if(sscanf(line, "%d %d", &product_id, &quantity) == 2) {
+                // Save product ID and its quantity
+                cart_data[counter_cart_all].id_product[cart_data[counter_cart_all].quantity] = product_id;
+                cart_data[counter_cart_all].quantity_product[cart_data[counter_cart_all].quantity] = quantity;
+                cart_data[counter_cart_all].quantity++; // Increment number of products in cart
+            }
+        }
+
+        counter_cart_all++; // Move to next user
     }
-    // printf("---%d----", counter_cart_buyer);
+
+    fclose(file);
+}
+void write_cart_data() {
+    FILE *file = fopen("data/carts.txt", "w");
+    if (file == NULL) {
+        msg_error("Error opening cart file for writing!\n");
+        return;
+    }
+
+    // Write each cart to file
+    for(int i = 0; i < counter_cart_all; i++) {
+        // Skip empty carts
+        if(strlen(cart_data[i].buyer) == 0) {
+            continue;
+        }
+
+        // Write buyer username
+        fprintf(file, "%s\n", cart_data[i].buyer);
+
+        // Write product IDs and quantities
+        for(int j = 0; j < cart_data[i].quantity; j++) {
+            fprintf(file, "%d %d\n", 
+                cart_data[i].id_product[j],
+                cart_data[i].quantity_product[j]);
+        }
+
+        // Add empty line between carts unless it's the last cart
+        if(i < counter_cart_all - 1) {
+            fprintf(file, "\n");
+        }
+    }
 
     fclose(file);
 }

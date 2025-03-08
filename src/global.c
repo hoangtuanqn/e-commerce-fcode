@@ -15,7 +15,7 @@ int counter_product_all = 0;
 int counter_category_seller = 0;
 int counter_product_seller = 0;
 
-int counter_cart_buyer = 0;
+int counter_cart_all = 0;
 Category category_data[MAX_CATEGORIES];
 Product product_data[MAX_CATEGORIES];
 Cart cart_data[MAX_CARTS];
