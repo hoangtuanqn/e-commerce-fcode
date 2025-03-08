@@ -19,11 +19,19 @@ typedef struct {
     int quantity[100];
     int cnt;
 } Cart;
+typedef struct {
+    char username[50];
+    char category[100];
+} Category;
+typedef struct {
+    char username[50];
+    char category[100];
+    char name_product[2000];
+    float price;
+    int quantity;
+    char description[2000];
+} Product;
 
-// typedef struct {        
-//     int id;
-//     char name[100];
-// } Product;
 
 extern int is_logged_in;
 extern int is_pause_program;

@@ -103,8 +103,18 @@ int contains_dangerous_chars(const char *input) {
     }
     return 0; // Không có ký tự đặc biệt
 }
+int is_validation_number(float value, float min_value, float max_value) {
+    if(value < min_value || value > max_value) {
+        return 0;
+    }
+    return 1;
+}
 char *input_string(char *input) {
     trim_trailing_spaces(input);
+    if(strlen(input) == 0) {
+        msg_error("Error: Please enter data!\n");
+        return NULL;
+    }
     if(contains_dangerous_chars(input)) {
         msg_error("Error: The input contains potentially dangerous special characters!\n");
         return NULL;

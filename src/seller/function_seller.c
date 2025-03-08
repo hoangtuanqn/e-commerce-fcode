@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "../../includes/global.h"
 #include "../../includes/function.h"
 #include "../../includes/seller/global_seller.h"
@@ -63,33 +64,51 @@ void read_product_data() {
         msg_error("Error opening file for reading!\n");
         return;
     }
+
     Product product_tmp;
-    while (fgets(product_tmp.username, sizeof(product_tmp.username), file) != NULL) {
-        trim_trailing_spaces(product_tmp.username);
+    char line[256];
 
-        fgets(product_tmp.category, sizeof(product_tmp.category), file);
-        trim_trailing_spaces(product_tmp.category);
+    while (fgets(line, sizeof(line), file)) {
+        // Read username
+        trim_trailing_spaces(line);
+        if(strlen(line) == 0) continue;
+        strcpy(product_tmp.username, line);
 
-        fgets(product_tmp.name_product, sizeof(product_tmp.name_product), file);
-        trim_trailing_spaces(product_tmp.name_product);
+        // Read category
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(product_tmp.category, line);
 
-        fgets(product_tmp.price, sizeof(product_tmp.price), file);
-        trim_trailing_spaces(product_tmp.price);
+        // Read product name
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(product_tmp.name_product, line);
 
-        fgets(product_tmp.quantity, sizeof(product_tmp.quantity), file);
-        trim_trailing_spaces(product_tmp.quantity);
+        // Read price
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        product_tmp.price = atof(line);
 
-        fgets(product_tmp.description, sizeof(product_tmp.description), file);
-        trim_trailing_spaces(product_tmp.description);
+        // Read quantity 
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        product_tmp.quantity = atoi(line);
 
-        if(product_tmp.username[0] != '\n') {
-            product_data[counter_product_all] = product_tmp;
-            if(strcmp(product_tmp.username, current_user.username) == 0) {
-                counter_product_seller++;
-            }
-            counter_product_all++;
-        } 
+        // Read description
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(product_tmp.description, line);
+
+        // Add to array if valid product
+        product_data[counter_product_all] = product_tmp;
+        
+        // Increment counters
+        if(strcmp(product_tmp.username, current_user.username) == 0) {
+            counter_product_seller++;
+        }
+        counter_product_all++;
     }
+
     fclose(file);
 }
 
@@ -103,7 +122,7 @@ void write_product_data() {
         if(strlen(product_data[i].name_product) > 0) {
 
             fprintf(file, 
-                "%s\n%s\n%s\n%s\n%s\n%s\n", 
+                "%s\n%s\n%s\n%.2f\n%d\n%s\n", 
                 product_data[i].username, 
                 product_data[i].category, 
                 product_data[i].name_product, 
