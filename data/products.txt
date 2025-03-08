@@ -16,3 +16,9 @@ This is Laptop
 2.13
 201
 Beautiful Laptop
+tuanqn
+Laptop
+1
+1.00
+1
+1

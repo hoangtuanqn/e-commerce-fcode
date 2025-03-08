@@ -11,7 +11,7 @@
 
 void handle_add_product(Product *product) {
     read_product_data();
-    product_data[++counter_product_all] = *product;
+    product_data[counter_product_all++] = *product;
     write_product_data();
     msg_success("Product added successfully!\n\n");
 }
