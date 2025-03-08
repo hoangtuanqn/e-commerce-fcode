@@ -9,21 +9,11 @@
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/view_all_category.h"
 
-int handle_add_product(char *product_name, char *category_name, float price, int quantity, char *description) {
-    if (product_name[0] == '\n') {
-        msg_error("Product name cannot be empty!\n\n");
-        return 0;
-    }
-
-    FILE *file = fopen("data/products.txt", "a");
-    if (file == NULL) {
-        msg_error("Error opening file for appending!\n");
-        return 0;
-    }
-    fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n", current_user.username, category_name, product_name, price, quantity, description); // Ghi thông tin sản phẩm
-    fclose(file);
+void handle_add_product(Product *product) {
+    read_product_data();
+    product_data[++counter_product_all] = *product;
+    write_product_data();
     msg_success("Product added successfully!\n\n");
-    return 1;
 }
 
 void view_add_product() {
@@ -39,7 +29,7 @@ void view_add_product() {
     do {
         printf("Enter id category: ");
         scanf("%d", &category_id);
-        if(is_validation_number(category_id, 1, counter_category_seller)) {
+        if(!is_validation_number(category_id, 1, counter_category_seller)) {
             msg_error("Valid data entry required\n");
         } else {
             // Get category name from id
@@ -104,13 +94,7 @@ void view_add_product() {
     
     if (confirm == 'y' || confirm == 'Y') {
         // Call function to add product using the Product struct
-        handle_add_product(
-            product.name_product,
-            product.category,
-            product.price,
-            product.quantity,
-            product.description
-        );
+        handle_add_product(&product);
     } else {
         msg_error("Product addition cancelled!\n");
     }

@@ -24,6 +24,8 @@ void seller() {
     view_ui_seller_header();
     do {
         view_ui_seller();
+        read_category_data();
+        read_product_data();
         scanf("%d", &choice);
         getchar();
         switch (choice) {
