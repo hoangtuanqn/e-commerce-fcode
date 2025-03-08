@@ -9,35 +9,165 @@
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/view_all_category.h"
 #include "../../includes/seller/view_all_product.h"
+void handle_update_product(int *list_edit_product, int count) {
+    Product temp_product[20];  // Biến tạm để lưu thông tin cập nhật
+    int category_id;
+    int count_your_product = 0;
+    int update_success = 1;  // Flag kiểm tra quá trình update
 
-void view_update_product() {
-    FILE *file = fopen("data/products.txt", "r");
-    if (file == NULL) {
-        msg_error("Error opening file for reading!\n");
-        return;
+    // Copy dữ liệu hiện tại vào biến tạm
+    memcpy(temp_product, product_data, sizeof(Product) * counter_product_all);
+
+    read_product_data();
+    for(int i = 0; i < counter_product_all && update_success; ++i) {
+        if(strcmp(product_data[i].username, current_user.username) == 0) {
+            ++count_your_product;
+            for(int j = 0; j < count; ++j) {
+                if(count_your_product == list_edit_product[j]) {
+                    printf("\033[1;33m\n=== Updating Product ID %d ===\n\033[0m", count_your_product);
+                    printf("(Press Enter to keep current value)\n\n");
+                    
+                    // Update category
+                    view_all_category();
+                    do {
+                        char category_input[10];
+                        printf("Enter new category ID (current: %s): ", temp_product[i].category);
+                        fgets(category_input, sizeof(category_input), stdin);
+                        trim_trailing_spaces(category_input);
+                        
+                        if(strlen(category_input) == 0) {
+                            break; // Giữ nguyên category cũ
+                        }
+                        
+                        category_id = atoi(category_input);
+                        if(!is_validation_number(category_id, 1, counter_category_seller)) {
+                            msg_error("Valid category ID required\n");
+                        } else {
+                            strcpy(temp_product[i].category, check_name_category(category_id));
+                            break;
+                        }
+                    } while (1);
+
+                    // Update product name
+                    do {
+                        char name[200];
+                        printf("Enter new product name (current: %s): ", temp_product[i].name_product);
+                        fgets(name, sizeof(name), stdin);
+                        trim_trailing_spaces(name);
+                        
+                        if(strlen(name) == 0) {
+                            break; // Giữ nguyên tên cũ
+                        }
+                        
+                        if (!input_string(name)) {
+                            msg_error("Invalid product name!\n");
+                            update_success = 0;
+                            break;
+                        }
+                        strcpy(temp_product[i].name_product, name);
+                    } while (0);
+
+                    if (!update_success) break;
+
+                    // Update price
+                    do {
+                        char price[20];
+                        printf("Enter new price (current: %.2f): ", temp_product[i].price);
+                        fgets(price, sizeof(price), stdin);
+                        trim_trailing_spaces(price);
+                        
+                        if(strlen(price) == 0) {
+                            break; // Giữ nguyên giá cũ
+                        }
+                        
+                        float price_val = atof(price);
+                        if (price_val <= 0 || price_val > 2e19) {
+                            msg_error("Invalid input! Price must be greater than 0\n");
+                        } else {
+                            temp_product[i].price = price_val;
+                            break;
+                        }
+                    } while (1);
+
+                    // Update quantity  
+                    do {
+                        char quantity[20];
+                        printf("Enter new quantity (current: %d): ", temp_product[i].quantity);
+                        fgets(quantity, sizeof(quantity), stdin);
+                        trim_trailing_spaces(quantity);
+                        
+                        if(strlen(quantity) == 0) {
+                            break; // Giữ nguyên số lượng cũ
+                        }
+                        
+                        int quantity_val = atoi(quantity);
+                        if (quantity_val <= 0 || quantity_val > 2e19) {
+                            msg_error("Invalid input! Quantity must be greater than 0\n");
+                        } else {
+                            temp_product[i].quantity = quantity_val;
+                            break;
+                        }
+                    } while (1);
+
+                    // Update description
+                    do {
+                        char desc[2000];
+                        printf("Enter new description (current: %s): ", temp_product[i].description);
+                        fgets(desc, sizeof(desc), stdin);
+                        trim_trailing_spaces(desc);
+                        
+                        if(strlen(desc) == 0) {
+                            break; // Giữ nguyên mô tả cũ
+                        }
+                        
+                        if (!input_string(desc)) {
+                            msg_error("Invalid description!\n");
+                            update_success = 0;
+                            break;
+                        }
+                        strcpy(temp_product[i].description, desc);
+                    } while (0);
+
+                    if (!update_success) break;
+
+                    printf("\033[1;33m\n=== Product Updated ===\n\033[0m\n\n");
+
+                }
+            }
+        }
     }
-    getchar();
-    char list_id[1000];
-    int result = view_all_product();
-    if(!result) {
+
+    // Nếu tất cả updates thành công, copy từ temp vào product_data
+    if (update_success) {
+        memcpy(product_data, temp_product, sizeof(Product) * counter_product_all);
+        write_product_data();
+        msg_success("Products updated successfully!\n");
+    } else {
+        msg_error("Update failed! No changes were made.\n");
+    }
+}
+void view_update_product() {
+    char list_id[20];
+    view_all_product();
+    if(!counter_product_seller) {
         msg_error("Currently, there are no products available. Update is not possible.\n");
         return;
     }
-    
 
+    printf("Note: You can update maximum 20 products at once\n");
     printf("Please enter the product IDs you wish to update, separated by spaces: ");
     fgets(list_id, sizeof(list_id), stdin);
 
     char *token = strtok(list_id, " ");
-    int list_product[1000], i = 0, is_valid = 1;
-    while (token != NULL) {
+    int list_delete_product[1000], i = 0, is_valid = 1;
+    while (token != NULL && i < 20) { // Thêm
         int product_id = atoi(token);
-        if(product_id > result || product_id < 1) {
+        if(product_id > counter_product_seller || product_id < 1) {
             msg_error("Invalid product id ");
             printf("%d!\n", product_id);
             is_valid = 0;
         }
-        list_product[i++] = product_id;
+        list_delete_product[i++] = product_id;
         token = strtok(NULL, " ");
     }
     if(!is_valid) {
@@ -46,107 +176,6 @@ void view_update_product() {
     }
 
     
-    quick_sort(list_product, 0, i - 1);
-
-    char user_name[50][1000], product_name[50][1000], description[50][1000], price[50][1000], category_id[50][1000], quantity[50][1000];
-    char user_name_temp[100], product_name_temp[100], description_temp[100], price_temp[100], category_id_temp[100], quantity_temp[100];
-    int cnt = 0, cntList = 0, j = 0;
-        
-    while(fgets(user_name_temp, sizeof(user_name_temp), file) != NULL && 
-          fgets(category_id_temp, sizeof(category_id_temp), file) != NULL &&
-          fgets(product_name_temp, sizeof(product_name_temp), file) != NULL &&
-          fgets(price_temp, sizeof(price_temp), file) != NULL &&
-          fgets(quantity_temp, sizeof(quantity_temp), file) != NULL &&
-          fgets(description_temp, sizeof(description_temp), file) != NULL) {
-        trim_trailing_spaces(user_name_temp);
-        trim_trailing_spaces(product_name_temp);
-        trim_trailing_spaces(description_temp);
-        trim_trailing_spaces(price_temp);
-        trim_trailing_spaces(quantity_temp);
-        trim_trailing_spaces(category_id_temp);
-        if(strcmp(user_name_temp, current_user.username) == 0 && cntList < i) {
-            cnt++;
-            if(cnt == list_product[cntList]) {
-                strcpy(user_name[j], user_name_temp);
-                // int quantity_category = view_all_category();
-                view_all_category();
-                do {
-                    printf("Enter new category ID for ID %d: ", cnt);
-                    fgets(category_id_temp, sizeof(category_id_temp), stdin);
-                    trim_trailing_spaces(category_id_temp);
-                    strcpy(category_id[j], category_id_temp);
-                    if(atoi(category_id_temp) < 1 || atoi(category_id_temp) > counter_category_seller) {
-                        msg_error("Category ID is invalid!\n");
-                    }
-                } while (atoi(category_id_temp) < 1 || atoi(category_id_temp) > counter_category_seller);
-
-                do {
-                    printf("Enter new product name for ID %d: ", cnt);
-                    fgets(product_name_temp, sizeof(product_name_temp), stdin);
-                    trim_trailing_spaces(product_name_temp);
-                    strcpy(product_name[j], product_name_temp);
-                    if(strlen(product_name_temp) == 0) {
-                        msg_error("Product name cannot be empty!\n");
-                    }
-                } while (strlen(product_name_temp) == 0);
-
-                do {
-                    printf("Enter new price for ID %d: ", cnt);
-                    fgets(price_temp, sizeof(price_temp), stdin);
-                    trim_trailing_spaces(price_temp);
-                    strcpy(price[j], price_temp);
-                    if(atof(price_temp) < 0) {
-                        msg_error("Price must be greater than 0!\n");
-                    }
-                } while (atof(price_temp) < 0);
-
-                do {
-                    printf("Enter new quantity for ID %d: ", cnt);
-                    fgets(quantity_temp, sizeof(quantity_temp), stdin);
-                    trim_trailing_spaces(quantity_temp);
-                    strcpy(quantity[j], quantity_temp);
-                    if(atoi(quantity_temp) < 1) {
-                        msg_error("Quantity must be greater than 0!\n");
-                    }
-                } while (atoi(quantity_temp) < 1);
-
-                do {
-                    printf("Enter new description for ID %d: ", cnt);
-                    fgets(description_temp, sizeof(description_temp), stdin);
-                    trim_trailing_spaces(description_temp);
-                    strcpy(description[j], description_temp);
-                } while (strlen(description_temp) == 0);
-
-                ++cntList;
-            } else {
-                strcpy(user_name[j], user_name_temp);
-                strcpy(category_id[j], category_id_temp);
-                strcpy(product_name[j], product_name_temp);
-                strcpy(price[j], price_temp);
-                strcpy(quantity[j], quantity_temp);
-                strcpy(description[j], description_temp);
-            }
-        } else {
-            strcpy(user_name[j], user_name_temp);
-            strcpy(category_id[j], category_id_temp);
-            strcpy(product_name[j], product_name_temp);
-            strcpy(price[j], price_temp);
-            strcpy(quantity[j], quantity_temp);
-            strcpy(description[j], description_temp);
-        }
-
-        j++;
-    }
-
-    msg_success("Update successfully!\n");
-    fclose(file);
-    file = fopen("data/products.txt", "w");
-    for(int k = 0; k < j; k++) {
-        if(strlen(user_name[k]) != 0) {
-            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n", user_name[k], check_name_category(atoi(category_id[k])) ? check_name_category(atoi(category_id[k])) : category_id[k], product_name[k], atof(price[k]), atoi(quantity[k]) , description[k]);
-        }
-    }
-    fclose(file);
-   
+    quick_sort(list_delete_product, 0, i - 1);
+    handle_update_product(list_delete_product, i);
 }
-   
