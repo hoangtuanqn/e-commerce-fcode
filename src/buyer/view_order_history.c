@@ -40,7 +40,7 @@ void view_order_history() {
             }
             printf("-> Shipping Fee: \033[32m$%.2f\033[0m\n", order_data[i].shipping_fee);
             printf("-> Total: \033[32m$%.2f\033[0m\n", order_data[i].total);
-            printf("--------------------------------\n");
+            printf("--------------------------------\n\n");
         }
     }
 

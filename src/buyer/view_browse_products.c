@@ -66,7 +66,9 @@ void view_browse_products() {
     if(choice == 0) {
         // Hiển thị tất cả sản phẩm
         for(int i = 0; i < counter_product_all; ++i) {
-            display_product(product_data[i], i + 1);
+            if(product_data[i].quantity > 0) {
+                display_product(product_data[i], i + 1);
+            }
         }
     } else if(choice > 0 && choice <= counter_category_all) {
         // Lấy tên danh mục được chọn
@@ -97,7 +99,10 @@ void view_browse_products() {
             // Hiển thị sản phẩm trong danh mục đã chọn
             int products_found = 0;
             for(int i = 0; i < counter_product_all; ++i) {
-                if(strcmp(product_data[i].category, selected_category) == 0) {
+                if(
+                    strcmp(product_data[i].category, selected_category) == 0 &&
+                    product_data[i].quantity > 0 
+                ) {
                     display_product(product_data[i], i + 1);
                     products_found++;
                 }

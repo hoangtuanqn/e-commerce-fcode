@@ -20,11 +20,14 @@ void view_add_to_cart() {
     do {
         printf("Enter the product id to add to cart: ");
         scanf("%d", &id_product);
-        if(id_product <= 0 || id_product > counter_product_all) {
+        if(id_product < 1 || id_product > counter_product_all) {
             msg_error("Invalid product id ");
             printf("%d!\n", id_product);
+        } else if(product_data[id_product - 1].quantity <= 0) {
+            printf("ID: %d ", id_product);
+            msg_error("no more products in stock \n");
         }
-    } while (id_product <= 0 || id_product > counter_product_all);
+    } while (id_product <= 0 || id_product > counter_product_all || product_data[id_product - 1].quantity <= 0);
 
     // Get quantity
     int quantity_in_stock = product_data[id_product - 1].quantity;
