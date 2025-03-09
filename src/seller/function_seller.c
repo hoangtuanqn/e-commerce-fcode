@@ -26,27 +26,6 @@ void write_category_data() {
 
 
 
-void write_product_data() {
-    FILE *file = fopen("data/products.txt", "w");
-    if (file == NULL) {
-        msg_error("Error opening file for reading!\n");
-        return;
-    }
-    for(int i = 0; i < counter_product_all; ++i) {
-        if(strlen(product_data[i].name_product) > 0) {
-            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n\n", 
-                product_data[i].username,
-                product_data[i].category,
-                product_data[i].name_product,
-                product_data[i].price,
-                product_data[i].quantity,
-                product_data[i].description
-            );
-        }
-    }
-    fclose(file);
-}
-
 int counter_products_in_category(char *name_your_category) {
     int count = 0;
     for(int i = 0; i < counter_product_all; ++i) {

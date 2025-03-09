@@ -8,7 +8,6 @@
 
 float view_all_cart() {
     float total_amount = 0;
-    const float shipping_fee = 5.00;
     int product_count = 0;
     
     printf("\n========== Shopping Cart ==========\n");
@@ -50,8 +49,8 @@ float view_all_cart() {
     
     if (product_count > 0) {
         printf("Order total: \033[32m$%.2f\033[0m\n", total_amount);
-        printf("Shipping: \033[32m$%.2f\033[0m\n", shipping_fee);
-        printf("Total: \033[31m$%.2f\033[0m\n", total_amount + shipping_fee);
+        printf("Shipping: \033[32m$%.2f\033[0m\n", SHIPPING_FEE);
+        printf("Total: \033[31m$%.2f\033[0m\n", total_amount + SHIPPING_FEE);
     }
     
     printf("============END============\n\n");

@@ -9,7 +9,7 @@
 #include "../../includes/buyer/view_all_cart.h"
 #include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_delete_cart.h"
-// #include "../../includes/buyer/view_check_out.h"
+#include "../../includes/buyer/view_check_out.h"
 #include "../../includes/buyer/view_search_products.h"
 #include "../../includes/buyer/view_order_history.h"
 void buyer() {
@@ -19,6 +19,7 @@ void buyer() {
     read_category_data();
     read_product_data();
     read_cart_data();
+    read_order_data();
     do {
         view_ui_buyer();
         scanf("%d", &choice);
@@ -48,7 +49,7 @@ void buyer() {
                 break;
             case 6:
                 system("cls");
-                // view_check_out();
+                view_check_out();
                 break;
             case 7:
                 system("cls");

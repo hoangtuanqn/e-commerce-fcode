@@ -1,9 +1,11 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
-#define MAX_USERS 500
-#define MAX_CATEGORIES 1000
-#define MAX_PRODUCTS 1000
-#define MAX_CARTS 200
+#define MAX_USERS 500 // LƯU TRỮ SỐ THÀNH VIÊN TỐI ĐA
+#define MAX_CATEGORIES 1000 // LƯU TRỮ SỐ DANH MỤC TỐI ĐA
+#define MAX_PRODUCTS 1000 // LỮU TRỮ SỐ SẢN PHẨM TỐI ĐA
+#define MAX_CARTS 200 // SỐ TRỮ TRONG GIỎ HÀNG TỐI ĐA
+#define MAX_ORDERS 200 // LƯU TRỮ SẢN PHẨM ĐÃ ĐẶT HÀNG
+#define SHIPPING_FEE 5.00 // PHÍ VẬN CHUYỂN
 typedef struct {
     char username[50];
     char password[50];
@@ -37,6 +39,21 @@ typedef struct {
     int quantity; // Số lượng sản phẩm
 } Cart;
 
+typedef struct {
+    char buyer[50]; // tên người mua
+    char email[100];
+    char phone[20];
+    char full_name[100];
+    char address[200];
+    char time_buy[200];
+    char note[500];
+    int id_product[200];
+    int quantity_product[200];
+    float total_product[200];
+    float total;
+    int quantity; // số lượng sản phẩm mua
+} Order;
+
 extern int is_logged_in;
 extern int is_pause_program;
 extern User current_user;
@@ -48,10 +65,11 @@ extern int counter_product_all;
 extern Category category_data[MAX_CATEGORIES];
 extern Product product_data[MAX_PRODUCTS];
 extern Cart cart_data[MAX_CARTS];
+extern Order order_data[MAX_ORDERS];
 
 extern int counter_category_seller;
 extern int counter_product_seller;
 extern int counter_cart_all; // số đơn hàng của người dùng
-
+extern int counter_order_all;
 
 #endif

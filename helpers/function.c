@@ -47,6 +47,65 @@ void quick_sort(int arr[], int low, int high) {
         quick_sort(arr, pi + 1, high);
     }
 }
+int is_validation_email(char *email) {
+    if (!email || strlen(email) == 0) {
+        return 0;
+    }
+
+    // Check for @ symbol
+    char *at = strchr(email, '@');
+    if (!at) {
+        return 0;
+    }
+
+    // Check for . after @
+    char *dot = strchr(at, '.');
+    if (!dot || dot == at + 1) {
+        return 0;
+    }
+
+    // Check minimum length requirements
+    if (at - email < 1 || // At least 1 char before @
+        strlen(dot) < 3 || // At least 2 chars after dot
+        dot - at < 2) {    // At least 1 char between @ and dot
+        return 0;
+    }
+
+    // Check for invalid characters
+    for (int i = 0; email[i]; i++) {
+        if (!isalnum(email[i]) && email[i] != '@' && email[i] != '.' && 
+            email[i] != '_' && email[i] != '-') {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+int is_validation_phone(char *phone) {
+    if (!phone || strlen(phone) == 0) {
+        return 0;
+    }
+
+    // Check length (assuming valid phone numbers are 10-11 digits)
+    int len = strlen(phone);
+    if (len < 10 || len > 11) {
+        return 0;
+    }
+
+    // First digit should be 0
+    if (phone[0] != '0') {
+        return 0;
+    }
+
+    // Check if all characters are digits
+    for (int i = 0; phone[i]; i++) {
+        if (!isdigit(phone[i])) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
 char *check_name_category(int category_id) {
     FILE *file = fopen("data/categories.txt", "r");
     if (file == NULL) {
@@ -120,11 +179,6 @@ char *input_string(char *input) {
         return NULL;
     }
     return input;
-}
-void delete_all_cart() {
-    int cart_index = current_user.id_cart;
-    strcpy(cart_data[cart_index].buyer, "");
-    write_cart_data();
 }
 
 // Hàm đọc dữ liệu người dùng từ file
@@ -383,5 +437,154 @@ void write_cart_data() {
         }
     }
 
+    fclose(file);
+}
+
+void delete_all_cart() {
+    int cart_index = current_user.id_cart;
+    strcpy(cart_data[cart_index].buyer, "");
+    write_cart_data();
+}
+
+void read_order_data() {
+    FILE *file = fopen("data/orders.txt", "r");
+    if (file == NULL) {
+        msg_error("Error opening orders file for reading!\n");
+        return;
+    }
+
+    counter_order_all = 0;
+    char line[2000];
+
+    while (fgets(line, sizeof(line), file)) {
+        trim_trailing_spaces(line);
+        if(strlen(line) == 0) {
+            continue; // Skip empty lines between orders
+        }
+
+        // Read buyer username
+        strcpy(order_data[counter_order_all].buyer, line);
+
+        // Read email
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(order_data[counter_order_all].email, line);
+
+        // Read phone
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(order_data[counter_order_all].phone, line);
+
+        // Read full name
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(order_data[counter_order_all].full_name, line);
+
+        // Read address
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(order_data[counter_order_all].address, line);
+
+        // Read time
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(order_data[counter_order_all].time_buy, line);
+
+        // Read note
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(order_data[counter_order_all].note, line);
+
+        // Read products and their details
+        int product_count = 0;
+        while (fgets(line, sizeof(line), file)) {
+            trim_trailing_spaces(line);
+            if(strlen(line) == 0) break; // Empty line indicates end of order
+
+            // Try to parse as product line first
+            int id, quantity;
+            float price;
+            if(sscanf(line, "%d %d %f", &id, &quantity, &price) == 3) {
+                order_data[counter_order_all].id_product[product_count] = id;
+                order_data[counter_order_all].quantity_product[product_count] = quantity;
+                order_data[counter_order_all].total_product[product_count] = price;
+                product_count++;
+            } else {
+                // Not a product line, must be the total
+                order_data[counter_order_all].total = atof(line);
+                break;
+            }
+        }
+
+        counter_order_all++;
+        if(counter_order_all >= MAX_ORDERS) {
+            msg_error("Maximum orders limit reached!\n");
+            break;
+        }
+    }
+
+    fclose(file);
+}
+
+void write_order_data() {
+    FILE *file = fopen("data/orders.txt", "w");
+    if (file == NULL) {
+        msg_error("Error opening orders file for writing!\n");
+        return;
+    }
+
+    for(int i = 0; i < counter_order_all; i++) {
+        // Skip empty orders
+        if(strlen(order_data[i].buyer) == 0) {
+            continue;
+        }
+
+        // Write order header information
+        fprintf(file, "%s\n", order_data[i].buyer);
+        fprintf(file, "%s\n", order_data[i].email);
+        fprintf(file, "%s\n", order_data[i].phone);
+        fprintf(file, "%s\n", order_data[i].full_name);
+        fprintf(file, "%s\n", order_data[i].address);
+        fprintf(file, "%s\n", order_data[i].time_buy);
+        fprintf(file, "%s\n", order_data[i].note);
+
+        // Write product details
+        for(int j = 0; j < order_data[i].quantity; j++) {
+            fprintf(file, "%d %d %.2f\n", 
+                order_data[i].id_product[j],
+                order_data[i].quantity_product[j],
+                order_data[i].total_product[j]);
+        }
+
+        // Write total
+        fprintf(file, "%.2f", order_data[i].total);
+
+        // Add separator between orders
+        if(i < counter_order_all - 1) {
+            fprintf(file, "\n\n");
+        }
+    }
+
+    fclose(file);
+}
+
+void write_product_data() {
+    FILE *file = fopen("data/products.txt", "w");
+    if (file == NULL) {
+        msg_error("Error opening file for reading!\n");
+        return;
+    }
+    for(int i = 0; i < counter_product_all; ++i) {
+        if(strlen(product_data[i].name_product) > 0) {
+            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n\n", 
+                product_data[i].username,
+                product_data[i].category,
+                product_data[i].name_product,
+                product_data[i].price,
+                product_data[i].quantity,
+                product_data[i].description
+            );
+        }
+    }
     fclose(file);
 }
