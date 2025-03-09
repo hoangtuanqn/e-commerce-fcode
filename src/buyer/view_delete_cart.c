@@ -10,7 +10,7 @@
 #include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_check_out.h"
 
-void handle_delete_product(int product_id) {
+void handle_delete_cart(int product_id) {
     int cart_index = current_user.id_cart;
     
     // Find product in cart
@@ -71,7 +71,7 @@ void delete_specific_product() {
     // Delete products and update cart
     int cart_index = current_user.id_cart;
     for(int i = 0; i < cnt_list_id_product; i++) {
-        handle_delete_product(list_id_product[i]);
+        handle_delete_cart(list_id_product[i]);
     }
 
     // If cart is empty after deletion, remove user's cart completely

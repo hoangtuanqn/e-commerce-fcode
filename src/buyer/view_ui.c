@@ -22,11 +22,15 @@ void view_ui_buyer() {
     printf("\n");
     printf("3. View cart\n");
     printf("4. Add to cart\n");
+
+    printf("\n");
     printf("5. Delete from cart\n");
     printf("6. Checkout\n");
-    printf("\n");
-    
     printf("7. View Orders\n");
+    
+    printf("\n");
+    printf("8. Change information\n");
+
 
     printf("\n");
     printf("0. Logout\n");

@@ -8,8 +8,8 @@
 
 // Hàm tìm kiếm sản phẩm theo từ khóa
 void view_search_products() {
-    char keyword[100];
-    char temp_name[200];
+    char keyword[2000];
+    char temp_name[2000];
     char unique_categories[MAX_CATEGORIES][100];
     int unique_count = 0;
 

@@ -38,9 +38,13 @@ void handle_check_out(Order *delivery_info) {
             msg_error("Invalid product ID in cart!\n");
             continue;
         }
-
+        
         Product *product = &product_data[product_id - 1];
         
+        // bỏ qua đơn hàng nếu số lượng trong giỏ > số lượng trong kho
+        if(quantity > product->quantity) {
+            continue;
+        }
         // Validate product stock
         if(quantity > product->quantity) {
             msg_error("Product ");
@@ -194,7 +198,7 @@ void view_check_out() {
     // Save changes
     write_order_data();
     write_product_data();
-    // delete_all_cart();
+    delete_all_cart();
     
     msg_success("\nOrder placed successfully!\n");
     msg_success("Please wait for the seller to confirm your order.\n");

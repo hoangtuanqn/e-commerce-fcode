@@ -9,7 +9,7 @@
 #include "../../includes/seller/view_ui.h"
 #include "../../includes/seller/view_all_product.h"
 
-void handle_delete_product_(int *list_product_delete, int count) {
+void handle_delete_product(int *list_product_delete, int count) {
     int count_your_product = 0;
     read_product_data();
     for(int i = 0; i < counter_product_all; ++i) {
@@ -58,5 +58,5 @@ void view_delete_product() {
     }
 
     quick_sort(list_product, 0, i - 1);
-    handle_delete_product_(list_product, i);
+    handle_delete_product(list_product, i);
 }

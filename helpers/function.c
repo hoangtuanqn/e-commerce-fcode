@@ -408,6 +408,7 @@ void read_cart_data() {
     fclose(file);
 }
 void write_cart_data() {
+    read_product_data();
     FILE *file = fopen("data/carts.txt", "w");
     if (file == NULL) {
         msg_error("Error opening cart file for writing!\n");
@@ -421,11 +422,27 @@ void write_cart_data() {
             continue;
         }
 
+        int cnt = 0;
+        // check trước khi thêm vào
+        for(int j = 0; j < cart_data[i].quantity; j++) {
+            int id_product = cart_data[i].id_product[j];
+            if(cart_data[i].quantity > product_data[id_product].quantity) {
+                ++cnt;
+            }
+        
+        }
+        if(cnt == cart_data[i].quantity) continue;
+
+
         // Write buyer username
         fprintf(file, "%s\n", cart_data[i].buyer);
 
         // Write product IDs and quantities
         for(int j = 0; j < cart_data[i].quantity; j++) {
+            int id_product = cart_data[i].id_product[j];
+            if(cart_data[i].quantity > product_data[id_product].quantity) {
+                continue;
+            }
             fprintf(file, "%d %d\n", 
                 cart_data[i].id_product[j],
                 cart_data[i].quantity_product[j]);

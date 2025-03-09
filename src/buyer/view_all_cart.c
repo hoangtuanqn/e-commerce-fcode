@@ -7,6 +7,7 @@
 #include "../../includes/seller/view_ui.h"
 
 float view_all_cart() {
+    read_product_data();
     float total_amount = 0;
     int product_count = 0;
     
@@ -30,7 +31,7 @@ float view_all_cart() {
         int quantity = cart_data[cart_index].quantity_product[j];
         
         // Kiểm tra product_id hợp lệ
-        if (product_id <= 0 || product_id > counter_product_all) {
+        if (product_id <= 0 || product_id > counter_product_all || product_data[product_id - 1].quantity <= quantity) {
 
             continue;
         }
