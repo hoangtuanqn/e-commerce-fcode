@@ -69,8 +69,29 @@ void delete_specific_product() {
     }
 
     // Delete products and update cart
+    int cart_index = current_user.id_cart;
     for(int i = 0; i < cnt_list_id_product; i++) {
         handle_delete_product(list_id_product[i]);
+    }
+
+    // If cart is empty after deletion, remove user's cart completely
+    if(cart_data[cart_index].quantity == 0) {
+        // Shift all carts after this one left
+        for(int i = cart_index; i < counter_cart_all - 1; i++) {
+            strcpy(cart_data[i].buyer, cart_data[i + 1].buyer);
+            cart_data[i].quantity = cart_data[i + 1].quantity;
+            for(int j = 0; j < cart_data[i + 1].quantity; j++) {
+                cart_data[i].id_product[j] = cart_data[i + 1].id_product[j];
+                cart_data[i].quantity_product[j] = cart_data[i + 1].quantity_product[j];
+            }
+        }
+        counter_cart_all--;
+        
+        // Reset the last cart
+        memset(&cart_data[counter_cart_all], 0, sizeof(Cart));
+        
+        // Update current user's cart index
+        current_user.id_cart = -1;
     }
 
     // Save changes to file

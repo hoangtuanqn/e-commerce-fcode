@@ -41,8 +41,27 @@ void view_add_to_cart() {
         }
     } while (quantity_product <= 0 || quantity_product > quantity_in_stock);
 
-    // Get cart index for current user
-    int cart_index = current_user.id_cart;
+    // Find or create cart for current user
+    int cart_index = -1;
+    for(int i = 0; i < counter_cart_all; i++) {
+        if(strcmp(cart_data[i].buyer, current_user.username) == 0) {
+            cart_index = i;
+            break;
+        }
+    }
+
+    // If user doesn't have a cart, create new one
+    if(cart_index == -1) {
+        if(counter_cart_all >= MAX_CARTS) {
+            msg_error("System cart storage is full!\n");
+            return;
+        }
+        cart_index = counter_cart_all;
+        strcpy(cart_data[cart_index].buyer, current_user.username);
+        cart_data[cart_index].quantity = 0;
+        counter_cart_all++;
+        current_user.id_cart = cart_index;
+    }
 
     // Check if product already exists in cart
     int product_exists = 0;
@@ -76,6 +95,7 @@ void view_add_to_cart() {
     // Save cart data to file
     write_cart_data();
 
-    msg_success("Product added to cart successfully!\n\n");
-
+    msg_success("Product added to cart successfully!\n");
+    // printf("Product: %s\n", product_data[id_product - 1].name_product);
+    // printf("Quantity: %d\n\n", quantity_product);
 }
