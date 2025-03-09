@@ -53,7 +53,9 @@ void view_search_products() {
             }
 
             if(strstr(temp_name, keyword) != NULL && 
-               strcmp(product_data[i].category, unique_categories[cat]) == 0) {
+               strcmp(product_data[i].category, unique_categories[cat]) == 0 &&
+               product_data[i].quantity > 0
+            ) {
                 if(!category_has_products) {
                     printf("\n\033[1;33m=== Category: %s ===\033[0m\n", unique_categories[cat]);
                     category_has_products = 1;
