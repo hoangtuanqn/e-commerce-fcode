@@ -48,6 +48,7 @@ typedef struct {
     char time_buy[200];
     char note[500];
     int id_product[200];
+    float shipping_fee; // phí giao hàng
     int quantity_product[200];
     float total_product[200];
     float total;

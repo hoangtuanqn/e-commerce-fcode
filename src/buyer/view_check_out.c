@@ -60,9 +60,9 @@ void handle_check_out(Order *delivery_info) {
         // Update product quantity
         product->quantity -= quantity;
     }
-
+    delivery_info->shipping_fee = SHIPPING_FEE;
     delivery_info->quantity = product_count;
-    delivery_info->total = total + SHIPPING_FEE;
+    delivery_info->total = total + delivery_info->shipping_fee;
 }
 
 void view_check_out() {

@@ -495,6 +495,10 @@ void read_order_data() {
         trim_trailing_spaces(line);
         strcpy(order_data[counter_order_all].note, line);
 
+        // Read shipping fee
+        if(!fgets(line, sizeof(line), file)) break;
+        order_data[counter_order_all].total = atof(line);
+
         // Read products and their details
         int product_count = 0;
         while (fgets(line, sizeof(line), file)) {
@@ -547,6 +551,7 @@ void write_order_data() {
         fprintf(file, "%s\n", order_data[i].address);
         fprintf(file, "%s\n", order_data[i].time_buy);
         fprintf(file, "%s\n", order_data[i].note);
+        fprintf(file, "%.2f\n", order_data[i].shipping_fee);
 
         // Write product details
         for(int j = 0; j < order_data[i].quantity; j++) {
