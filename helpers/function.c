@@ -497,7 +497,7 @@ void read_order_data() {
 
         // Read shipping fee
         if(!fgets(line, sizeof(line), file)) break;
-        order_data[counter_order_all].total = atof(line);
+        order_data[counter_order_all].shipping_fee = atof(line);
 
         // Read products and their details
         int product_count = 0;
@@ -519,6 +519,8 @@ void read_order_data() {
                 break;
             }
         }
+        order_data[counter_order_all].quantity = product_count;
+
 
         counter_order_all++;
         if(counter_order_all >= MAX_ORDERS) {
