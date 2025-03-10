@@ -9,11 +9,13 @@
 #include "../../includes/seller/view_ui.h"
 void view_all_category() {
     read_category_data();
+    read_product_data();
+
     printf("\n========== All Category ==========\n");
     int cnt = 0;
     for(int i = 0; i < counter_category_all; ++i) {
         if(strcmp(category_data[i].username, current_user.username) == 0) {
-            printf("%d. \033[32m%s\033[0m\n", ++cnt, category_data[i].category);
+            printf("%d. \033[36m%s\033[0m - %d product\n", ++cnt, category_data[i].category, category_data[i].quantity_product);
         }
     }
     if(!cnt) {

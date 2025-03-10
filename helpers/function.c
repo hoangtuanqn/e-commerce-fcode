@@ -340,6 +340,7 @@ void read_category_data() {
         if(strcmp(category_tmp.username, current_user.username) == 0) {
             counter_category_seller++;
         }
+        category_data[counter_category_all].quantity_product = 0;
         counter_category_all++;
     }
     fclose(file);
@@ -397,6 +398,19 @@ void read_product_data() {
         // Update counters
         if(strcmp(product_tmp.username, current_user.username) == 0) {
             counter_product_seller++;
+        }
+
+        // Kiểm tra đơn hàng ở mỗi category
+        for(int k = 0; k < counter_category_all; ++k) {
+            if(
+                strcmp(product_tmp.username, current_user.username) == 0 && 
+                strcmp(category_data[k].username, current_user.username) == 0 && 
+                strcmp(product_tmp.category, category_data[k].category) == 0
+            ) {
+
+                category_data[k].quantity_product++;
+                break;
+            }
         }
         counter_product_all++;
     }

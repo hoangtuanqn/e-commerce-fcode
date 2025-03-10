@@ -23,6 +23,7 @@ typedef struct {
 typedef struct {
     char username[50];
     char category[100];
+    int quantity_product;
 } Category;
 typedef struct {
     char username[50];

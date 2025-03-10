@@ -31,6 +31,7 @@ void seller() {
         switch (choice) {
             case 0:
                 is_logged_in = 0;
+                remove_remember_login();
                 return;
             case 1:
                 system("cls");

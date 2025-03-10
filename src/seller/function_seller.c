@@ -23,9 +23,6 @@ void write_category_data() {
     fclose(file);
 }
 
-
-
-
 int counter_products_in_category(char *name_your_category) {
     int count = 0;
     for(int i = 0; i < counter_product_all; ++i) {
