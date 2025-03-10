@@ -99,6 +99,7 @@ void register_form(User *user) {
         is_logged_in = 1;
         current_user = *user;
         msg_success("\nRegistration Successful!\n");
+        handle_remember_login();
     } else {
         msg_error("Registration Failed!\n");
     }

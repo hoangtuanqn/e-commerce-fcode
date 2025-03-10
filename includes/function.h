@@ -35,6 +35,8 @@ void read_cart_data();
 
 void check_remember_login(); // kiểm tra trong file đăng nhập
 void remove_remember_login();
+void handle_remember_login();
+
 // void write_cart_data();
 
 #endif

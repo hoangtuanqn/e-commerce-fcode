@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "../includes/global.h"
+#include "../includes/view_ui.h"
 void trim_trailing_spaces(char *str) {
     int len = strlen(str);
     while (len > 0 && isspace(str[len - 1])) {
@@ -689,4 +690,28 @@ void check_remember_login() {
 }
 void remove_remember_login() {
     remove("data/remember_login.txt");
+}
+void handle_remember_login() {
+    int choice;
+    do {
+        view_ui_remember();
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1: {
+                FILE *fp = fopen("data/remember_login.txt", "a");
+                if (fp == NULL) {
+                    msg_error("Cannot open file!");
+                    return;
+                }
+                fprintf(fp, "%s\n%s\n", current_user.username, current_user.password);
+                fclose(fp);
+
+                return;
+            }
+            case 0:
+                return;
+            default:
+                msg_error("Invalid Choice");
+        }
+    } while(1);
 }

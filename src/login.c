@@ -40,30 +40,6 @@ int handle_login(char *username, char *password) {
 
     return 0;
 }
-void handle_remember_login() {
-    int choice;
-    do {
-        view_ui_remember();
-        scanf("%d", &choice);
-        switch (choice) {
-            case 1: {
-                FILE *fp = fopen("data/remember_login.txt", "a");
-                if (fp == NULL) {
-                    msg_error("Cannot open file!");
-                    return;
-                }
-                fprintf(fp, "%s\n%s\n", current_user.username, current_user.password);
-                fclose(fp);
-
-                return;
-            }
-            case 0:
-                return;
-            default:
-                msg_error("Invalid Choice");
-        }
-    } while(1);
-}
 void login_form() {
     int is_re_login = 1;
     char username[50], password[50];
