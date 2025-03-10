@@ -31,6 +31,11 @@ void view_ui_seller() {
     printf("\n");
     printf("11. Change password\n");
     printf("\n");
+    msg_bold("\n========== TRASH ==========\n");
+    printf("12. Category deleted\n");
+    printf("13. Product deleted\n");
+
+
 
     printf("0. Logout\n");
     printf("Enter your choice: ");
