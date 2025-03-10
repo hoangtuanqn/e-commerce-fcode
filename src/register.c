@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <string.h>  // Add this for memset, strcmp, strcpy
 #include <math.h>
-#include <string.h>
+#include <stdlib.h>
 #include "../includes/global.h"
 #include "../includes/function.h"
 #include "../includes/register.h"
@@ -9,93 +10,137 @@ void register_form(User *user) {
     printf("====================================\n");
     printf("       USER REGISTRATION        \n");
     printf("====================================\n");
-    int username_exists = 1;
+
+    // Clear any existing data in user struct
+    memset(user, 0, sizeof(User));
+    
     do {
         printf("Username: ");
-        scanf("%s", user->email);
-        username_exists = is_username_exists(user->username);
-        if (username_exists) {
+        fgets(user->username, sizeof(user->username), stdin);
+        if(!input_string(user->username)) {
+            msg_error("Invalid username format!\n");
+            continue;
+        }
+        if(is_username_exists(user->username)) {
             msg_error("Username already exists! Please enter another username.\n");
         } else {
-            username_exists = 0;
+            break;
         }
-    } while (username_exists);
-    
-    printf("Password: ");
-    scanf("%s", user->password);
-    
-    printf("Confirm Password: ");
-    char confirm_password[50];
-    scanf("%s", confirm_password);
-    
-    while (strcmp(user->password, confirm_password) != 0) {
-        printf("Passwords do not match! Please re-enter: ");
-        scanf("%s", confirm_password);
-    }
+    } while (1);
 
-    int email_exists;
+    do {
+        printf("Password: ");
+        fgets(user->password, sizeof(user->password), stdin);
+        trim_trailing_spaces(user->password);
+        // if(!input_string(user->password)) {
+        //     msg_error("Invalid password format!\n");
+        //     continue;
+        // }
+        break;
+    } while (1);
+
+    do {
+        printf("Confirm Password: ");
+        char confirm_password[50];
+        fgets(confirm_password, sizeof(confirm_password), stdin);
+        trim_trailing_spaces(confirm_password);
+        
+        if(strcmp(user->password, confirm_password) != 0) {
+            msg_error("Passwords do not match!\n");
+        } else {
+            break;
+        }
+    } while (1);
+
     do {
         printf("Email: ");
-        scanf("%s", user->email);
-        email_exists = is_email_exists(user->email);
-        if (email_exists) {
-            msg_error("Email already exists! Please enter another email.\n");
+        fgets(user->email, sizeof(user->email), stdin);
+        if(!input_string(user->email) || !is_validation_email(user->email)) {
+            msg_error("Invalid email format!\n");
+            continue;
         }
-    } while (email_exists);
-    
-    
-    int phone_exists;
+        if(is_email_exists(user->email)) {
+            msg_error("Email already exists! Please enter another email.\n");
+        } else {
+            break;
+        }
+    } while (1);
+
     do {
         printf("Phone Number: ");
-        scanf("%s", user->phone);
-        phone_exists = is_phone_exists(user->phone);
-        if (phone_exists) {
-            msg_error("Phone already exists! Please enter another phone.\n");
+        fgets(user->phone, sizeof(user->phone), stdin);
+        if(!input_string(user->phone) || !is_validation_phone(user->phone)) {
+            msg_error("Invalid phone number format!\n");
+            continue;
         }
-    } while (phone_exists);
-
-    // Drift command fails, use getchar() to remove character '\n'
-    getchar();
+        if(is_phone_exists(user->phone)) {
+            msg_error("Phone already exists! Please enter another phone.\n");
+        } else {
+            break;
+        }
+    } while (1);
 
     do {
         printf("Full Name: ");
-        gets(user->full_name);
-    } while(!input_string(user->full_name));
+        fgets(user->full_name, sizeof(user->full_name), stdin);
+        if(!input_string(user->full_name)) {
+            msg_error("Invalid name format!\n");
+        } else {
+            break;
+        }
+    } while (1);
 
     do {
         printf("Address: ");
-        gets(user->address);
-    } while(!input_string(user->address));
+        fgets(user->address, sizeof(user->address), stdin);
+        if(!input_string(user->address)) {
+            msg_error("Invalid address format!\n");
+        } else {
+            break;
+        }
+    } while (1);
 
     do {
         printf("Account Type (1: Buyer, 2: Seller): ");
-        scanf("%d", &user->account_type);
-        if (user->account_type < 1 || user->account_type > 2) {
-            printf("Invalid account type!\n");
-        }
-    } while (user->account_type < 1 || user->account_type > 2);
-
-    // Drift command fails, use getchar() to remove character '\n'
-    getchar();
-    if (user->account_type == 2) {
+        char type[10];
+        fgets(type, sizeof(type), stdin);
+        trim_trailing_spaces(type);
+        user->account_type = atoi(type);
         
+        if(user->account_type != 1 && user->account_type != 2) {
+            msg_error("Invalid account type! Please enter 1 or 2.\n");
+        } else {
+            break;
+        }
+    } while (1);
+
+    if(user->account_type == 2) {
         do {
             printf("Shop Name: ");
-            gets(user->shop_name);
-        } while(!input_string(user->shop_name));
+            fgets(user->shop_name, sizeof(user->shop_name), stdin);
+            if(!input_string(user->shop_name)) {
+                msg_error("Invalid shop name format!\n");
+            } else {
+                break;
+            }
+        } while (1);
 
-        
         do {
             printf("Warehouse Address: ");
-            gets(user->warehouse_address);
-        } while(!input_string(user->warehouse_address));
+            fgets(user->warehouse_address, sizeof(user->warehouse_address), stdin);
+            if(!input_string(user->warehouse_address)) {
+                msg_error("Invalid warehouse address format!\n");
+            } else {
+                break;
+            }
+        } while (1);
     } else {
         strcpy(user->shop_name, ".");
         strcpy(user->warehouse_address, ".");
     }
 
-    // tiến hành ghi dữ liệu người dùng
-    if (add_user_data(user) == 1) {
+    // Add user data
+    if(add_user_data(user)) {
         is_logged_in = 1;
         current_user = *user;
         msg_success("\nRegistration Successful!\n");

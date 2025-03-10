@@ -261,7 +261,7 @@ int add_user_data(User *user) {
         return 0;
     }
 
-    if (fprintf(file, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n%s\n%s\n",
+    if (fprintf(file, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n%s\n%s\n\n",
                 user->username, user->password, user->email, user->phone,
                 user->full_name, user->address, user->account_type,
                 user->shop_name, user->warehouse_address) < 0) {
@@ -698,7 +698,7 @@ void handle_remember_login() {
         scanf("%d", &choice);
         switch (choice) {
             case 1: {
-                FILE *fp = fopen("data/remember_login.txt", "a");
+                FILE *fp = fopen("data/remember_login.txt", "w");
                 if (fp == NULL) {
                     msg_error("Cannot open file!");
                     return;

@@ -30,6 +30,7 @@ int main() {
             view_ui_start();
             scanf("%d", &choice);
             read_user_data(); // đọc dữ liệu từ file user;
+            getchar();
             switch (choice) {
                 case 1:
                     register_form(&user);
@@ -38,7 +39,7 @@ int main() {
                     login_form();
                     break;
                 case 3:
-                    printf("Exit successfully\n");
+                    msg_success("Exit successfully\n");
                     return 0;
                 default:
                     msg_error("Invalid choice. Please try again. \n");
