@@ -32,11 +32,9 @@ void register_form(User *user) {
         printf("Password: ");
         fgets(user->password, sizeof(user->password), stdin);
         trim_trailing_spaces(user->password);
-        // if(!input_string(user->password)) {
-        //     msg_error("Invalid password format!\n");
-        //     continue;
-        // }
-        break;
+        if(validate_password(user->password)) {
+            break;
+        }
     } while (1);
 
     do {

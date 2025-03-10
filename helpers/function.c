@@ -732,3 +732,34 @@ void handle_remember_login() {
         }
     } while(1);
 }
+int validate_password(char *password) {
+    int length = strlen(password);
+    int hasUpper = 0, hasDigit = 0, hasSpecial = 0;
+    const char *specialChars = "!@#$%^&*";
+
+    if (length < 8) {
+        msg_error("Error: Password must be at least 8 characters long.\n");
+        return 0;
+    }
+
+    for (int i = 0; i < length; i++) {
+        if (isupper(password[i])) hasUpper = 1;
+        if (isdigit(password[i])) hasDigit = 1;
+        if (strchr(specialChars, password[i])) hasSpecial = 1;
+    }
+
+    if (!hasUpper) {
+        msg_error("Error: Password must contain at least one uppercase letter.\n");
+        return 0;
+    }
+    if (!hasDigit) {
+        msg_error("Error: Password must contain at least one digit.\n");
+        return 0;
+    }
+    if (!hasSpecial) {
+        msg_error("Error: Password must contain at least one special character (!@#$%%^&*).\n");
+        return 0;
+    }
+
+    return 1;
+}

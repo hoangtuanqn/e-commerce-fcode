@@ -13,25 +13,27 @@ void view_change_password() {
         scanf("%s", password_old);
         if(strcmp(current_user.password, password_old) != 0) {
             msg_error("Old password is incorrect\n");
-        }
+        } else if(input_string(password_old)) break;
 
-    } while(!input_string(password_old) || strcmp(current_user.password, password_old) != 0);
+    } while(1);
 
     do {
         printf("Enter the new password: ");
         scanf("%s", password_new);
         if(strcmp(current_user.password, password_new) == 0) {
             msg_error("The new password cannot be the same as the old password.\n");
+        } else if(input_string(password_new) && validate_password(password_new)) {
+            break;
         }
-    } while(!input_string(password_new) || strcmp(current_user.password, password_new) == 0);
+    } while(1);
 
     do {
         printf("Re-enter new password: ");
         scanf("%s", repeat_password_new);
         if(strcmp(password_new, repeat_password_new) != 0) {
             msg_error("The new password cannot be the same as the old password.\n");
-        }
-    } while(!input_string(repeat_password_new) || strcmp(password_new, repeat_password_new) != 0);
+        } else if(input_string(repeat_password_new)) break;
+    } while(1);
 
     strcpy(list_user[current_user.id_list_user].password, password_new);
     strcpy(current_user.password, password_new);

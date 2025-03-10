@@ -41,6 +41,8 @@ void read_order_data();
 void write_order_data();
 
 
+int validate_password(char *password);
+
 
 #endif
 
