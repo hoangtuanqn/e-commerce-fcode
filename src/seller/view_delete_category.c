@@ -11,24 +11,42 @@
 void handle_delete_category(int *list_category_delete, int count) {
     int count_your_category = 0;
     read_product_data();
+    // First pass: check if all categories can be deleted
+    int can_delete_all = 1;
     for(int i = 0; i < counter_category_all; ++i) {
         if(strcmp(category_data[i].username, current_user.username) == 0) {
             ++count_your_category;
             for(int j = 0; j < count; ++j) {
                 if(count_your_category == list_category_delete[j]) {
-                    // Kiểm tra xem có sản phẩm trong danh mục hay chưa
-                    if(counter_products_in_category(category_data[i].category) > 0) {
-                        msg_error("You cannot delete the ");
+                    if(category_data[i].quantity_product > 0) {
+                        msg_error("Cannot delete ");
                         printf("%s", category_data[i].category);
-                        msg_error(" category because it has 5.\n");
-                    } else {
-                        strcpy(category_data[i].category, "");
+                        msg_error(" category because there are products.\n");
+                        can_delete_all = 0;
+                        break;
                     }
-                } else if(count_your_category < list_category_delete[j]) {
-                    break;
                 }
             }
         }
+        if(!can_delete_all) break;
+    }
+
+    // Second pass: delete categories only if all can be deleted
+    if(can_delete_all) {
+        count_your_category = 0;
+        for(int i = 0; i < counter_category_all; ++i) {
+            if(strcmp(category_data[i].username, current_user.username) == 0) {
+                ++count_your_category;
+                for(int j = 0; j < count; ++j) {
+                    if(count_your_category == list_category_delete[j]) {
+                        strcpy(category_data[i].category, "");
+                    }
+                }
+            }
+        }
+        msg_success("Deleted successfully!\n");
+    } else {
+        msg_error("Operation cancelled: Some categories cannot be deleted.\n");
     }
     write_category_data();
 }
