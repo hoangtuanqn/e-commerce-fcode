@@ -12,9 +12,10 @@
 #include "../../includes/buyer/view_check_out.h"
 #include "../../includes/buyer/view_search_products.h"
 #include "../../includes/buyer/view_order_history.h"
+#include "../../includes/buyer/view_change_password.h"
+
 void buyer() {
     int choice;
-    int pause = 0; // 1 là pause, 0 là không pause
     view_ui_buyer_header();
     read_category_data();
     read_product_data();
@@ -27,6 +28,7 @@ void buyer() {
         switch (choice) {
             case 0:
                 is_logged_in = 0;
+                remove_remember_login();
                 return;
             case 1:
                 system("cls");
@@ -55,9 +57,12 @@ void buyer() {
                 system("cls");
                 view_order_history();
                 break;
+            case 8:
+                system("cls");
+                view_change_password();
             default:
                 msg_error("Invalid choice!\n\n");
         }
-    } while (!pause);
+    } while (1);
 
 }

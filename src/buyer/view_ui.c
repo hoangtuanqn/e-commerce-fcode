@@ -29,7 +29,7 @@ void view_ui_buyer() {
     printf("7. View Orders\n");
     
     printf("\n");
-    printf("8. Change information\n");
+    printf("8. Change password\n");
 
 
     printf("\n");
@@ -48,4 +48,10 @@ void view_delete_from_cart() {
     printf("2. Delete a specific product\n");
     printf("Enter your choice: ");
 }
-
+void view_add_more_to_cart() {
+    msg_error("\n========== Add More Products ==========\n");
+    printf("Do you want to add more products to cart?\n");
+    printf("1. Yes\n");
+    printf("2. No\n");
+    printf("Enter your choice: ");
+}

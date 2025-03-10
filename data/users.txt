@@ -1,5 +1,5 @@
 tuanqn
-tuanqn
+tuan2
 phamhoangtuanqn@gmail.com
 0812665001
 Pham Hoang Tuan
@@ -7,7 +7,6 @@ Quang Ngai, Viet Nam
 2
 Tuan Shop
 Quang Ngai, Viet Nam
-
 
 tuan
 tuan
@@ -18,4 +17,3 @@ Quang N
 1
 .
 .
-

@@ -17,6 +17,7 @@ typedef struct {
     char shop_name[100];       // Only for sellers
     char warehouse_address[200]; // Only for sellers
     int id_cart; // không cần quan tâm cái này vì nó là chỉ mục giỏ hàng của người dùng này trong cart_data
+    int id_list_user; // không cần quan tâm. Nó là chỉ mục trong biến list_user
 } User;
 
 typedef struct {

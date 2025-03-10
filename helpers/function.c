@@ -183,6 +183,7 @@ char *input_string(char *input) {
 
 // Hàm đọc dữ liệu người dùng từ file
 void read_user_data() {
+    counter_user = 0;
     FILE *file = fopen("data/users.txt", "r");
     if (file == NULL) {
         msg_error("Error opening users file for reading!\n");
@@ -198,6 +199,10 @@ void read_user_data() {
         if (strlen(line) == 0) continue;  // Bỏ qua dòng trống
 
         strcpy(list_user[counter_user].username, line);
+
+        if(strcmp(list_user[counter_user].username, current_user.username) == 0) {
+            current_user.id_list_user = counter_user;
+        }
 
         // Đọc các thông tin khác
         fgets(line, sizeof(line), file);
@@ -233,7 +238,9 @@ void read_user_data() {
         fgets(line, sizeof(line), file);
         trim_trailing_spaces(line);
         strcpy(list_user[counter_user].warehouse_address, line);
-        // }
+
+        // printf("----%s-----\n", list_user[counter_user].username);
+        // printf("----%s-----\n", list_user[counter_user].password);
 
         counter_user++;
     }
@@ -241,7 +248,7 @@ void read_user_data() {
     fclose(file);
 }
 
-int write_user_data(User *user) {
+int add_user_data(User *user) {
     if (user == NULL) {
         msg_error("Invalid user data!\n");
         return 0;
@@ -264,6 +271,39 @@ int write_user_data(User *user) {
 
     fclose(file);
     return 1;
+}
+void write_user_data() {
+    FILE *file = fopen("data/users.txt", "w");
+    if (file == NULL) {
+        msg_error("Error opening users file for writing!\n");
+        return;
+    }
+
+    for (int i = 0; i < counter_user; i++) {
+        // Skip empty users
+        if (strlen(list_user[i].username) == 0) {
+            continue;
+        }
+
+        fprintf(file, "%s\n%s\n%s\n%s\n%s\n%s\n%d\n%s\n%s\n",
+            list_user[i].username,
+            list_user[i].password,
+            list_user[i].email,
+            list_user[i].phone,
+            list_user[i].full_name,
+            list_user[i].address,
+            list_user[i].account_type,
+            list_user[i].shop_name,
+            list_user[i].warehouse_address
+        );
+
+        // Add newline between users except for the last one
+        if (i < counter_user - 1) {
+            fprintf(file, "\n");
+        }
+    }
+
+    fclose(file);
 }
 
 // Đọc hết dữ liệu trong file category
@@ -611,4 +651,42 @@ void write_product_data() {
         }
     }
     fclose(file);
+}
+
+void check_remember_login() {
+    read_user_data();
+    FILE *file = fopen("data/remember_login.txt", "r");
+    if (file == NULL) {
+        msg_error("Error opening orders file for writing!\n");
+        return;
+    }
+
+    char username[50], password[50];
+    
+    // Read username and password from remember_login.txt
+    if (fgets(username, sizeof(username), file) != NULL &&
+        fgets(password, sizeof(password), file) != NULL) {
+        
+        trim_trailing_spaces(username);
+        trim_trailing_spaces(password);
+
+        // Check credentials against user list
+        for (int i = 0; i < counter_user; i++) {
+            if (strcmp(list_user[i].username, username) == 0 && 
+                strcmp(list_user[i].password, password) == 0) {
+                
+                // Set current user and login status
+                current_user = list_user[i];
+                is_logged_in = 1;
+                fclose(file);
+                return;
+            }
+        }
+    }
+
+    fclose(file);
+    return;
+}
+void remove_remember_login() {
+    remove("data/remember_login.txt");
 }

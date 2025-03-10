@@ -29,8 +29,9 @@ SRC = main.c \
 	  src/buyer/view_check_out.c \
 	  src/buyer/view_delete_cart.c \
 	  src/buyer/view_search_products.c \
-	  src/buyer/view_order_history.c
-
+	  src/buyer/view_order_history.c \
+	  src/buyer/view_change_password.c
+	  
 # Các file object
 OBJ = $(SRC:.c=.o)
 

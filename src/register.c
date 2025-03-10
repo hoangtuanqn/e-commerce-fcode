@@ -95,7 +95,7 @@ void register_form(User *user) {
     }
 
     // tiến hành ghi dữ liệu người dùng
-    if (write_user_data(user) == 1) {
+    if (add_user_data(user) == 1) {
         is_logged_in = 1;
         current_user = *user;
         msg_success("\nRegistration Successful!\n");

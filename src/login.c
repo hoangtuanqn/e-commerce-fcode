@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+
 #include "../includes/global.h"
 #include "../includes/login.h"
 #include "../includes/view_ui.h"
@@ -23,6 +25,9 @@ int handle_login(char *username, char *password) {
         }
 
         // Kiểm tra username và password
+        // printf("----%s-----%s------\n", list_user[i].username, list_user[i].password);
+        // printf("----%s-----%s------\n", username, password);
+        // printf("---%d--", counter_user);
         if (strcmp(list_user[i].username, username) == 0 && 
             strcmp(list_user[i].password, password) == 0) {
             
@@ -35,7 +40,30 @@ int handle_login(char *username, char *password) {
 
     return 0;
 }
+void handle_remember_login() {
+    int choice;
+    do {
+        view_ui_remember();
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1: {
+                FILE *fp = fopen("data/remember_login.txt", "a");
+                if (fp == NULL) {
+                    msg_error("Cannot open file!");
+                    return;
+                }
+                fprintf(fp, "%s\n%s\n", current_user.username, current_user.password);
+                fclose(fp);
 
+                return;
+            }
+            case 0:
+                return;
+            default:
+                msg_error("Invalid Choice");
+        }
+    } while(1);
+}
 void login_form() {
     int is_re_login = 1;
     char username[50], password[50];
@@ -58,6 +86,7 @@ void login_form() {
             is_logged_in = 1;
             is_re_login = 0;
             msg_success("Login successful!\n");
+            handle_remember_login();
         } else {
             msg_error("Invalid username or password!\n");
             is_re_login = view_ui_re_login();

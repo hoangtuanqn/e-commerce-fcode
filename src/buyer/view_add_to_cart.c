@@ -5,10 +5,10 @@
 #include <ctype.h>
 #include "../../includes/global.h"
 #include "../../includes/function.h"
+#include "../../includes/view_ui.h"
 #include "../../includes/buyer/view_browse_products.h"
 #include "../../includes/buyer/view_add_to_cart.h"
-
-void view_add_to_cart() {
+void handle_add_to_cart() {
     int id_product;
     view_browse_products();
     if (counter_product_all <= 0) {
@@ -101,4 +101,14 @@ void view_add_to_cart() {
     msg_success("Product added to cart successfully!\n");
     // printf("Product: %s\n", product_data[id_product - 1].name_product);
     // printf("Quantity: %d\n\n", quantity_product);
+}
+void view_add_to_cart() {
+    handle_add_to_cart();
+    view_add_more_to_cart();
+    int choice;
+    scanf("%d", &choice);
+    if(choice == 1) {
+        view_add_to_cart();
+    }
+
 }

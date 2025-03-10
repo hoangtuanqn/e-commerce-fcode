@@ -26,3 +26,9 @@ int view_ui_re_login() {
     }
     return choice;
 }
+void view_ui_remember() {
+    printf("\n=== Do you want to save login information for next time? ===\n");
+    printf("1. Yes\n");
+    printf("0. No\n");
+    printf("Enter your choice: ");
+}
