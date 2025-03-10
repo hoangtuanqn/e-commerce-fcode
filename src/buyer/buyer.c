@@ -43,6 +43,7 @@ void buyer() {
                 break;
             case 4:
                 system("cls");
+                view_browse_products();
                 view_add_to_cart();
                 break;
             case 5:

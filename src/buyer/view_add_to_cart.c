@@ -6,11 +6,9 @@
 #include "../../includes/global.h"
 #include "../../includes/function.h"
 #include "../../includes/view_ui.h"
-#include "../../includes/buyer/view_browse_products.h"
 #include "../../includes/buyer/view_add_to_cart.h"
 void handle_add_to_cart() {
     int id_product;
-    view_browse_products();
     if (counter_product_all <= 0) {
         msg_error("Currently, there are no products available. Add to cart is not possible.\n");
         return;
