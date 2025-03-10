@@ -34,11 +34,12 @@ void view_change_password() {
     } while(!input_string(repeat_password_new) || strcmp(password_new, repeat_password_new) != 0);
 
     strcpy(list_user[current_user.id_list_user].password, password_new);
+    strcpy(current_user.password, password_new);
+
     write_user_data();
     
-    printf("---%d----", current_user.id_list_user);
+    // printf("---%d----", current_user.id_list_user);
     msg_success("You have successfully changed your password.");
-    // Đăng xuất tài
-    is_logged_in = 0;
+    write_user_remember(); // cập nhật lại tk mk remember
     return;
 }

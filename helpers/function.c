@@ -705,6 +705,15 @@ void check_remember_login() {
 void remove_remember_login() {
     remove("data/remember_login.txt");
 }
+void write_user_remember() {
+    FILE *fp = fopen("data/remember_login.txt", "w");
+    if (fp == NULL) {
+        msg_error("Cannot open file!");
+        return;
+    }
+    fprintf(fp, "%s\n%s\n", current_user.username, current_user.password);
+    fclose(fp);
+}
 void handle_remember_login() {
     int choice;
     do {
@@ -712,13 +721,7 @@ void handle_remember_login() {
         scanf("%d", &choice);
         switch (choice) {
             case 1: {
-                FILE *fp = fopen("data/remember_login.txt", "w");
-                if (fp == NULL) {
-                    msg_error("Cannot open file!");
-                    return;
-                }
-                fprintf(fp, "%s\n%s\n", current_user.username, current_user.password);
-                fclose(fp);
+                write_user_remember();
 
                 return;
             }

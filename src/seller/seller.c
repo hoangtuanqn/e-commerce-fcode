@@ -18,6 +18,8 @@
 #include "../../includes/seller/view_delete_product.h"
 #include "../../includes/seller/view_all_orders.h"
 
+#include "../../includes/buyer/view_change_password.h" // tái sử dụng bên seller
+
 void seller() {
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
@@ -68,6 +70,10 @@ void seller() {
             case 9:
                 system("cls");
                 view_all_orders();
+                break;
+            case 11:
+                system("cls");
+                view_change_password();
                 break;
             default:
                 msg_error("Invalid choice!\n\n");

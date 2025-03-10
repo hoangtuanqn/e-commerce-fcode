@@ -29,6 +29,9 @@ void view_ui_seller() {
     printf("9. View All Order\n");
     printf("10. Update Order Status\n");
     printf("\n");
+    printf("11. Change password\n");
+    printf("\n");
+
     printf("0. Logout\n");
     printf("Enter your choice: ");
 }
