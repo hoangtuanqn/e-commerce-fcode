@@ -6,6 +6,12 @@
 #include <time.h>
 #include "../includes/global.h"
 #include "../includes/view_ui.h"
+#ifdef _WIN32
+    #include <io.h>
+    #define access _access
+#else
+    #include <unistd.h>
+#endif
 void trim_trailing_spaces(char *str) {
     int len = strlen(str);
     while (len > 0 && isspace(str[len - 1])) {
@@ -679,6 +685,9 @@ void write_product_data() {
 }
 
 void check_remember_login() {
+    if (access("data/remember_login.txt", 0) != 0) {
+        return;
+    }
     read_user_data();
     FILE *file = fopen("data/remember_login.txt", "r");
     if (file == NULL) {
