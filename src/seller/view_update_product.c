@@ -31,7 +31,7 @@ void handle_update_product(int *list_edit_product, int count) {
                     view_all_category();
                     do {
                         char category_input[10];
-                        printf("Enter new category ID (current: %s): ", temp_product[i].category);
+                        printf("Enter new category ID (current: %s) [Press Enter to skip]: ", temp_product[i].category);
                         fgets(category_input, sizeof(category_input), stdin);
                         trim_trailing_spaces(category_input);
                         
@@ -51,7 +51,7 @@ void handle_update_product(int *list_edit_product, int count) {
                     // Update product name
                     do {
                         char name[200];
-                        printf("Enter new product name (current: %s): ", temp_product[i].name_product);
+                        printf("Enter new product name (current: %s) [Press Enter to skip]: ", temp_product[i].name_product);
                         fgets(name, sizeof(name), stdin);
                         trim_trailing_spaces(name);
                         
@@ -65,14 +65,14 @@ void handle_update_product(int *list_edit_product, int count) {
                             break;
                         }
                         strcpy(temp_product[i].name_product, name);
-                    } while (0);
+                    } while (1);
 
                     if (!update_success) break;
 
                     // Update price
                     do {
                         char price[20];
-                        printf("Enter new price (current: %.2f): ", temp_product[i].price);
+                        printf("Enter new price (current: %.2f) [Press Enter to skip]: ", temp_product[i].price);
                         fgets(price, sizeof(price), stdin);
                         trim_trailing_spaces(price);
                         
@@ -92,7 +92,7 @@ void handle_update_product(int *list_edit_product, int count) {
                     // Update quantity  
                     do {
                         char quantity[20];
-                        printf("Enter new quantity (current: %d): ", temp_product[i].quantity);
+                        printf("Enter new quantity (current: %d) [Press Enter to skip]: ", temp_product[i].quantity);
                         fgets(quantity, sizeof(quantity), stdin);
                         trim_trailing_spaces(quantity);
                         
@@ -112,7 +112,7 @@ void handle_update_product(int *list_edit_product, int count) {
                     // Update description
                     do {
                         char desc[2000];
-                        printf("Enter new description (current: %s): ", temp_product[i].description);
+                        printf("Enter new description (current: %s) [Press Enter to skip]: ", temp_product[i].description);
                         fgets(desc, sizeof(desc), stdin);
                         trim_trailing_spaces(desc);
                         
@@ -126,7 +126,28 @@ void handle_update_product(int *list_edit_product, int count) {
                             break;
                         }
                         strcpy(temp_product[i].description, desc);
-                    } while (0);
+                    } while (1);
+
+                    // Status product
+                    do {
+                        char status_input[5];
+                        printf("Enter status (0: Hidden, 1: Visible) [Current: %d] [Press Enter to skip]: ", temp_product[i].status);
+                        fgets(status_input, sizeof(status_input), stdin);
+                        trim_trailing_spaces(status_input);
+                        
+                        if(strlen(status_input) == 0) {
+                            break; // Keep current status
+                        }
+                        
+                        int status_val = atoi(status_input);
+                        if (status_val != 0 && status_val != 1) {
+                            msg_error("Invalid input! Status must be 0 (Hidden) or 1 (Visible)\n");
+                        } else {
+                            temp_product[i].status = status_val;
+                            break;
+                        }
+                    } while (1);
+
 
                     if (!update_success) break;
 

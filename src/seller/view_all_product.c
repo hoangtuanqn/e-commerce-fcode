@@ -30,6 +30,9 @@ void view_all_product() {
                     printf("\tPrice: \033[32m$%.2f\033[0m\n", product_data[i].price);
                     printf("\tQuantity: \033[32m%d\033[0m\n", product_data[i].quantity);
                     printf("\tDescription: \033[32m%s\033[0m\n", product_data[i].description);
+                    printf("\tStatus: %s%s\033[0m\n", 
+                        product_data[i].status == 1 ? "\033[32m" : "\033[31m",  // Green for active, Red for inactive
+                        get_status(product_data[i].status));
                     printf("--------------------------------\n\n");
                 }
             }

@@ -46,6 +46,6 @@ void display_product(Product product, int id);
 
 int validate_password(char *password);
 
-
+char* get_status(int status);
 #endif
 

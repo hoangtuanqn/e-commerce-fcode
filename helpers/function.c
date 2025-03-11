@@ -682,7 +682,7 @@ void write_product_data() {
                 product_data[i].price,
                 product_data[i].quantity,
                 product_data[i].description,
-                product_data[i].status
+                product_data[i].quantity == 0 ? 2 : product_data[i].status
             );
         }
     }
@@ -811,4 +811,12 @@ void display_product(Product product, int id) {
     printf("->\tQuantity in stock: \033[32m%d\033[0m\n", product.quantity);
     printf("->\tDescription: \033[32m%s\033[0m\n", product.description);
     printf("--------------------------------\n");
+}
+char* get_status(int status) {
+    switch (status) {
+        case 0: return "Hidden";
+        case 1: return "Normal";
+        case 2: return "Out of stock";
+        default: return "Invalid status";
+    }
 }
