@@ -14,6 +14,7 @@
 
 #include "../../includes/seller/view_all_product.h"
 #include "../../includes/seller/view_best_selling_product.h"
+#include "../../includes/seller/view_out_of_stock_product.h"
 
 #include "../../includes/seller/view_add_product.h"
 #include "../../includes/seller/view_update_product.h"
@@ -63,7 +64,7 @@ void seller() {
                 break;
             case 7:
                 system("cls");
-                view_add_product();
+                view_out_of_stock_product();
                 break;
              case 8:
                 system("cls");
