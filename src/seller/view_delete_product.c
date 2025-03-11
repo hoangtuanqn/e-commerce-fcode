@@ -16,8 +16,22 @@ void handle_delete_product(int *list_product_delete, int count) {
         if(strcmp(product_data[i].username, current_user.username) == 0) {
             ++count_your_product;
             for(int j = 0; j < count; ++j) {
+
                 if(count_your_product == list_product_delete[j]) {
-                    strcpy(product_data[i].name_product, "");
+                    if(product_data[i].status == 3) {
+                        msg_error("Failed to delete the product with ID ");
+                        printf("%d\n", i + 1);
+                    } else {
+                        if(product_data[i].sold_quantity > 0) {
+                            // Có đơn hàng thì xóa mềm, để tránh bị lỗi khi xem order
+                            product_data[i].status = 3;
+                        } else {
+                            // Không có đơn hàng nào thì xóa luôn
+                            strcpy(product_data[i].name_product, "");
+                        }
+                        msg_success("Successfully deleted the product with ID ");
+                        printf("%d\n", count_your_product);
+                    }
                 } else if(count_your_product < list_product_delete[j]) {
                     break;
                 }
@@ -25,7 +39,6 @@ void handle_delete_product(int *list_product_delete, int count) {
         }
     }
     write_product_data();
-    msg_success("Delete product successfully!\n");
 }
 
 void view_delete_product() {

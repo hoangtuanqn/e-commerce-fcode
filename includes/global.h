@@ -33,6 +33,7 @@ typedef struct {
     int quantity;
     char description[2000];
     int status;
+    int sold_quantity;
 } Product;
 
 typedef struct {

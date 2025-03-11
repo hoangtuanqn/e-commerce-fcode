@@ -398,9 +398,15 @@ void read_product_data() {
         trim_trailing_spaces(line);
         strcpy(product_tmp.description, line);
 
+        // Read status
         if(!fgets(line, sizeof(line), file)) break;
         trim_trailing_spaces(line);
         product_tmp.status = atoi(line);
+
+        // Read sold quantity
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        product_tmp.sold_quantity = atoi(line);
 
         // Add to array
         product_data[counter_product_all] = product_tmp;
@@ -675,14 +681,15 @@ void write_product_data() {
     }
     for(int i = 0; i < counter_product_all; ++i) {
         if(strlen(product_data[i].name_product) > 0) {
-            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n%d\n\n", 
+            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n%d\n%d\n\n", 
                 product_data[i].username,
                 product_data[i].category,
                 product_data[i].name_product,
                 product_data[i].price,
                 product_data[i].quantity,
                 product_data[i].description,
-                product_data[i].quantity == 0 ? 2 : product_data[i].status
+                product_data[i].quantity == 0 ? 2 : product_data[i].status,
+                product_data[i].sold_quantity
             );
         }
     }
