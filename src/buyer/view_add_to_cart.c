@@ -25,7 +25,15 @@ void handle_add_to_cart() {
             printf("ID: %d ", id_product);
             msg_error("no more products in stock \n");
         }
-    } while (id_product <= 0 || id_product > counter_product_all || product_data[id_product - 1].quantity <= 0);
+        if(
+            id_product > 0 && 
+            id_product <= counter_product_all && 
+            product_data[id_product - 1].quantity > 0 && 
+            product_data[id_product - 1].status == 1
+        ) {
+            break;
+        }
+    } while (1);
 
     // Get quantity
     int quantity_in_stock = product_data[id_product - 1].quantity;

@@ -31,8 +31,12 @@ float view_all_cart() {
         int quantity = cart_data[cart_index].quantity_product[j];
         
         // Kiểm tra product_id hợp lệ
-        if (product_id <= 0 || product_id > counter_product_all || product_data[product_id - 1].quantity <= quantity) {
-
+        if (
+            product_id <= 0 || 
+            product_id > counter_product_all || 
+            product_data[product_id - 1].quantity <= quantity ||
+            !product_data[product_id - 1].status
+        ) {
             continue;
         }
         

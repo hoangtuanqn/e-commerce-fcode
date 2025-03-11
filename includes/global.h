@@ -32,6 +32,7 @@ typedef struct {
     float price;
     int quantity;
     char description[2000];
+    int status;
 } Product;
 
 typedef struct {

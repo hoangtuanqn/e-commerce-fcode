@@ -54,20 +54,15 @@ void view_search_products() {
 
             if(strstr(temp_name, keyword) != NULL && 
                strcmp(product_data[i].category, unique_categories[cat]) == 0 &&
-               product_data[i].quantity > 0
+               product_data[i].quantity > 0 &&
+               product_data[i].status == 1
             ) {
                 if(!category_has_products) {
                     printf("\n\033[1;33m=== Category: %s ===\033[0m\n", unique_categories[cat]);
                     category_has_products = 1;
                 }
-                
-                printf("->\tProduct ID: \033[32m%d\033[0m\n", i + 1);
-                printf("->\tProduct Name: \033[32m%s\033[0m\n", product_data[i].name_product);
-                printf("->\tSeller: \033[32m%s\033[0m\n", product_data[i].username);
-                printf("->\tPrice: \033[32m$%.2f\033[0m\n", product_data[i].price);
-                printf("->\tQuantity: \033[32m%d\033[0m\n", product_data[i].quantity);
-                printf("->\tDescription: \033[32m%s\033[0m\n", product_data[i].description);
-                printf("--------------------------------\n");
+                display_product(product_data[i], i + 1);
+               
                 found = 1;
             }
         }

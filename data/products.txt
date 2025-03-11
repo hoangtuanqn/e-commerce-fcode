@@ -4,6 +4,7 @@ This is Laptop
 2.13
 972
 Beautiful Laptop
+1
 
 tuanqn
 Laptop
@@ -11,6 +12,7 @@ This is Laptop hehe
 500.00
 36
 Beautiful Laptop
+1
 
 tuanqn2
 PC
@@ -18,6 +20,7 @@ PC ne
 2.13
 88
 Beautiful Laptop
+1
 
 tuanqn
 TV
@@ -25,6 +28,7 @@ This is Laptop hehe
 500.00
 88
 Beautiful Laptop
+1
 
 tuanqn
 TV
@@ -32,6 +36,7 @@ This is Laptop hehe
 500.00
 88
 Beautiful Laptop
+1
 
 tuanqn
 TV
@@ -39,4 +44,5 @@ This is Laptop hehe
 500.00
 88
 Beautiful Laptop
+1
 

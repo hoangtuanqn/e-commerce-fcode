@@ -35,6 +35,7 @@ void buyer() {
                 view_browse_products();
                 break;
             case 2:
+                system("cls");
                 view_search_products();
                 break;
             case 3:

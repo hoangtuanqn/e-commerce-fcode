@@ -42,7 +42,7 @@ void write_order_data();
 
 void write_order_data();
 void generate_order_id(char *orderID, size_t size);
-
+void display_product(Product product, int id);
 
 int validate_password(char *password);
 

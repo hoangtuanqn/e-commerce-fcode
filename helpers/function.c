@@ -398,6 +398,10 @@ void read_product_data() {
         trim_trailing_spaces(line);
         strcpy(product_tmp.description, line);
 
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        product_tmp.status = atoi(line);
+
         // Add to array
         product_data[counter_product_all] = product_tmp;
         
@@ -671,13 +675,14 @@ void write_product_data() {
     }
     for(int i = 0; i < counter_product_all; ++i) {
         if(strlen(product_data[i].name_product) > 0) {
-            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n\n", 
+            fprintf(file, "%s\n%s\n%s\n%.2f\n%d\n%s\n%d\n\n", 
                 product_data[i].username,
                 product_data[i].category,
                 product_data[i].name_product,
                 product_data[i].price,
                 product_data[i].quantity,
-                product_data[i].description
+                product_data[i].description,
+                product_data[i].status
             );
         }
     }
@@ -796,4 +801,14 @@ void generate_order_id(char *orderID, size_t size) {
     }
 
     orderID[7] = '\0';  // Kết thúc chuỗi
+}
+void display_product(Product product, int id) {
+    printf("ID Product: \033[32m%d\033[0m\n", id);
+    printf("->\tSeller: \033[32m%s\033[0m\n", product.username);
+    printf("->\tCategory: \033[32m%s\033[0m\n", product.category);
+    printf("->\tPrice: \033[32m$%.2f\033[0m\n", product.price);
+    printf("->\tName Product: \033[32m%s\033[0m\n", product.name_product);
+    printf("->\tQuantity in stock: \033[32m%d\033[0m\n", product.quantity);
+    printf("->\tDescription: \033[32m%s\033[0m\n", product.description);
+    printf("--------------------------------\n");
 }

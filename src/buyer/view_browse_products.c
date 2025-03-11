@@ -6,16 +6,6 @@
 #include "../../includes/function.h"
 #include "../../includes/buyer/view_ui.h"
 
-void display_product(Product product, int id) {
-    printf("ID Product: \033[32m%d\033[0m\n", id);
-    printf("->\tSeller: \033[32m%s\033[0m\n", product.username);
-    printf("->\tCategory: \033[32m%s\033[0m\n", product.category);
-    printf("->\tPrice: \033[32m$%.2f\033[0m\n", product.price);
-    printf("->\tName Product: \033[32m%s\033[0m\n", product.name_product);
-    printf("->\tQuantity in stock: \033[32m%d\033[0m\n", product.quantity);
-    printf("->\tDescription: \033[32m%s\033[0m\n", product.description);
-    printf("--------------------------------\n");
-}
 
 void display_unique_categories() {
     char unique_categories[MAX_CATEGORIES][100];
@@ -66,7 +56,7 @@ void view_browse_products() {
     if(choice == 0) {
         // Hiển thị tất cả sản phẩm
         for(int i = 0; i < counter_product_all; ++i) {
-            if(product_data[i].quantity > 0) {
+            if(product_data[i].quantity > 0 && product_data[i].status == 1) {
                 display_product(product_data[i], i + 1);
             }
         }
