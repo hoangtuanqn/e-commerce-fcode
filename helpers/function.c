@@ -515,7 +515,9 @@ void write_cart_data() {
 void delete_all_cart() {
     int cart_index = current_user.id_cart;
     strcpy(cart_data[cart_index].buyer, "");
+    cart_data[cart_index].quantity = 0;
     write_cart_data();
+    read_cart_data();
 }
 
 void read_order_data() {
@@ -557,15 +559,15 @@ void read_order_data() {
         trim_trailing_spaces(line);
         strcpy(order_data[counter_order_all].address, line);
 
+        // Read order ID
+        if(!fgets(line, sizeof(line), file)) break;
+        trim_trailing_spaces(line);
+        strcpy(order_data[counter_order_all].order_id, line);
+        
         // Read time
         if(!fgets(line, sizeof(line), file)) break;
         trim_trailing_spaces(line);
         strcpy(order_data[counter_order_all].time_buy, line);
-
-        // Read note
-        if(!fgets(line, sizeof(line), file)) break;
-        trim_trailing_spaces(line);
-        strcpy(order_data[counter_order_all].note, line);
 
         // Read shipping fee
         if(!fgets(line, sizeof(line), file)) break;
@@ -580,10 +582,17 @@ void read_order_data() {
             // Try to parse as product line first
             int id, quantity;
             float price;
-            if(sscanf(line, "%d %d %f", &id, &quantity, &price) == 3) {
+            // Read product line: id quantity price note
+            char note[1000];
+            if(sscanf(line, "%d %d %f %[^\n]", &id, &quantity, &price, note) >= 3) {
                 order_data[counter_order_all].id_product[product_count] = id;
                 order_data[counter_order_all].quantity_product[product_count] = quantity;
                 order_data[counter_order_all].total_product[product_count] = price;
+                if(strlen(note) > 0) {
+                    strcpy(order_data[counter_order_all].note_product[product_count], note);
+                } else {
+                    strcpy(order_data[counter_order_all].note_product[product_count], "No notes");
+                }
                 product_count++;
             } else {
                 // Not a product line, must be the total
@@ -623,16 +632,17 @@ void write_order_data() {
         fprintf(file, "%s\n", order_data[i].phone);
         fprintf(file, "%s\n", order_data[i].full_name);
         fprintf(file, "%s\n", order_data[i].address);
+        fprintf(file, "%s\n", order_data[i].order_id);
         fprintf(file, "%s\n", order_data[i].time_buy);
-        fprintf(file, "%s\n", order_data[i].note);
         fprintf(file, "%.2f\n", order_data[i].shipping_fee);
 
         // Write product details
         for(int j = 0; j < order_data[i].quantity; j++) {
-            fprintf(file, "%d %d %.2f\n", 
+            fprintf(file, "%d %d %.2f %s\n", 
                 order_data[i].id_product[j],
                 order_data[i].quantity_product[j],
-                order_data[i].total_product[j]);
+                order_data[i].total_product[j],
+                order_data[i].note_product[j]);
         }
 
         // Write total
@@ -762,4 +772,19 @@ int validate_password(char *password) {
     }
 
     return 1;
+}
+
+
+void generate_order_id(char *orderID, size_t size) {
+    if (size < 8) return;  // Đảm bảo đủ chỗ cho chuỗi (7 ký tự + null)
+
+    srand(time(NULL));  // Khởi tạo seed cho hàm rand()
+    
+    orderID[0] = 'A' + rand() % 26;  // Chữ cái đầu tiên từ A-Z
+
+    for (int i = 1; i < 7; i++) {
+        orderID[i] = '0' + rand() % 10;  // Các chữ số từ 0-9
+    }
+
+    orderID[7] = '\0';  // Kết thúc chuỗi
 }

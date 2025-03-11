@@ -34,8 +34,7 @@ void view_ui_seller() {
     msg_bold("\n========== TRASH ==========\n");
     printf("12. Category deleted\n");
     printf("13. Product deleted\n");
-
-
+    printf("\n");
 
     printf("0. Logout\n");
     printf("Enter your choice: ");

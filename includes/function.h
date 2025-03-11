@@ -40,6 +40,9 @@ void delete_all_cart();
 void read_order_data();
 void write_order_data();
 
+void write_order_data();
+void generate_order_id(char *orderID, size_t size);
+
 
 int validate_password(char *password);
 

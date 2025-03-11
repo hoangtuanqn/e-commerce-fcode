@@ -76,7 +76,6 @@ void view_check_out() {
     // Check if cart is empty
     if(total_payment <= 0 || cart_data[cart_index].quantity <= 0) {
         msg_error("There are no orders in the shopping cart!\n");
-        msg_error("\n============END============\n\n");
         return;
     }
 
@@ -109,13 +108,13 @@ void view_check_out() {
     }
 
     // Get order notes
-    printf("\nEnter notes for order (If any, press Enter to skip): ");
-    fgets(delivery_info.note, sizeof(delivery_info.note), stdin);
-    trim_trailing_spaces(delivery_info.note);
+    // printf("\nEnter notes for order (If any, press Enter to skip): ");
+    // fgets(delivery_info.note, sizeof(delivery_info.note), stdin);
+    // trim_trailing_spaces(delivery_info.note);
 
-    if(strlen(delivery_info.note) == 0) {
-        strcpy(delivery_info.note, "No notes");
-    }
+    // if(strlen(delivery_info.note) == 0) {
+    //     strcpy(delivery_info.note, "No notes");
+    // }
 
     printf("\nDelivery Address Options:\n");
     printf("1. Use current address\n");
@@ -188,6 +187,23 @@ void view_check_out() {
         return;
     }
 
+    // Get order notes for each product
+    printf("\nProduct Notes (Press Enter to skip):\n");
+    for(int i = 0; i < cart_data[cart_index].quantity; i++) {
+        int product_id = cart_data[cart_index].id_product[i];
+        printf("Note for \033[1;36m%s\033[0m (Quantity: %d): ", 
+            product_data[product_id - 1].name_product,
+            cart_data[cart_index].quantity_product[i]);
+            
+        fgets(delivery_info.note_product[i], sizeof(delivery_info.note_product[i]), stdin);
+        trim_trailing_spaces(delivery_info.note_product[i]);
+
+        if(strlen(delivery_info.note_product[i]) == 0) {
+            strcpy(delivery_info.note_product[i], "No notes");
+        }
+    }
+
+    generate_order_id(delivery_info.order_id, sizeof(delivery_info.order_id));
     // Process order
     handle_check_out(&delivery_info);
 

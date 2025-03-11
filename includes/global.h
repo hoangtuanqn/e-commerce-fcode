@@ -47,11 +47,12 @@ typedef struct {
     char phone[20];
     char full_name[100];
     char address[200];
+    char order_id[8];
     char time_buy[200];
-    char note[500];
     int id_product[200];
     float shipping_fee; // phí giao hàng
     int quantity_product[200];
+    char note_product[200][1000]; // note cho từng đơn hàng
     float total_product[200];
     float total;
     int quantity; // số lượng sản phẩm mua

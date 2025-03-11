@@ -76,28 +76,31 @@ void view_all_orders() {
 
         // If order has products from current seller, display order info
         if(has_seller_products) {
-            printf("\033[1;36mOrder #%d:\033[0m\n", ++order_count);
-            printf("-> Buyer Username: \033[32m%s\033[0m\n", order_data[i].buyer);
-            printf("-> Email: \033[32m%s\033[0m\n", order_data[i].email);
-            printf("-> Phone: \033[32m%s\033[0m\n", order_data[i].phone);
-            printf("-> Full Name: \033[32m%s\033[0m\n", order_data[i].full_name);
-            printf("-> Address: \033[32m%s\033[0m\n", order_data[i].address);
-            printf("-> Order Date: \033[32m%s\033[0m\n", order_data[i].time_buy);
-            printf("-> Notes: \033[32m%s\033[0m\n", order_data[i].note);
+            printf("\033[1;34mOrder #%d:\033[0m\n", ++order_count);
+            printf("-> Buyer Username: \033[0;36m%s\033[0m\n", order_data[i].buyer);
+            printf("-> Email: \033[0;36m%s\033[0m\n", order_data[i].email);
+            printf("-> Phone: \033[0;36m%s\033[0m\n", order_data[i].phone);
+            printf("-> Full Name: \033[0;36m%s\033[0m\n", order_data[i].full_name);
+            printf("-> Address: \033[0;36m%s\033[0m\n", order_data[i].address);
+            printf("-> Order ID: \033[1;35m%s\033[0m\n", order_data[i].order_id);
+            printf("-> Order Date: \033[0;36m%s\033[0m\n", order_data[i].time_buy);
+
 
             // Print only products from current seller
-            printf("-> Products:\n");
+            printf("\033[1;33m-> Products:\033[0m\n");
             for(int j = 0; j < order_data[i].quantity; j++) {
                 int product_id = order_data[i].id_product[j];
                 if(product_id > 0 && product_id <= counter_product_all) {
                     // Only show products from current seller
                     if(strcmp(product_data[product_id - 1].username, current_user.username) == 0) {
-                        printf("   - Product Name: \033[32m%s\033[0m\n", 
+                        printf("   - Product Name: \033[0;32m%s\033[0m\n", 
                             product_data[product_id - 1].name_product);
-                        printf("   - Quantity: \033[32m%d\033[0m\n", 
+                        printf("   - Quantity: \033[0;32m%d\033[0m\n", 
                             order_data[i].quantity_product[j]);
-                        printf("   - Item Total: \033[32m$%.2f\033[0m\n", 
+                        printf("   - Item Total: \033[0;32m$%.2f\033[0m\n", 
                             order_data[i].total_product[j]);
+                        printf("   - Product Note: \033[0;35m%s\033[0m\n",
+                            order_data[i].note_product[j]);
                         printf("   -------------------------\n");
                         
                         order_total += order_data[i].total_product[j];
@@ -106,7 +109,7 @@ void view_all_orders() {
             }
             
             // Show total for seller's products only
-            printf("-> Seller's Total: \033[32m$%.2f\033[0m\n", order_total);
+            printf("-> Seller's Total: \033[1;31m$%.2f\033[0m\n", order_total);
             printf("--------------------------------\n\n");
             
             seller_total += order_total;
