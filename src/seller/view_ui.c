@@ -21,19 +21,22 @@ void view_ui_seller() {
     printf("4. Delete Category\n");
     printf("\n");
     printf("5. View All Product\n");
-    printf("6. Add Product\n");
-    printf("7. Update Product\n");
-    printf("8. Delete Product\n");
+    printf("6. View Best-Selling Products\n");
+    printf("7. View Out-of-Stock Products\n");
+    printf("\n");
+    printf("8. Add Product\n");
+    printf("9. Update Product\n");
+    printf("10. Delete Product\n");
     printf("\n");
 
-    printf("9. View All Order\n");
-    printf("10. Update Order Status\n");
+    printf("11. View All Order\n");
+    printf("12. Update Order Status\n");
     printf("\n");
-    printf("11. Change password\n");
+    printf("13. Change password\n");
     printf("\n");
     msg_bold("\n========== TRASH ==========\n");
-    printf("12. Category deleted\n");
-    printf("13. Product deleted\n");
+    printf("14. Category deleted\n");
+    printf("15. Product deleted\n");
     printf("\n");
 
     printf("0. Logout\n");

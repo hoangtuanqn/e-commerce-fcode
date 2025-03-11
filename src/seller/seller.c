@@ -13,6 +13,8 @@
 #include "../../includes/seller/view_update_category.h"
 
 #include "../../includes/seller/view_all_product.h"
+#include "../../includes/seller/view_best_selling_product.h"
+
 #include "../../includes/seller/view_add_product.h"
 #include "../../includes/seller/view_update_product.h"
 #include "../../includes/seller/view_delete_product.h"
@@ -55,23 +57,31 @@ void seller() {
                 system("cls");
                 view_all_product();
                 break;
-             case 6:
+            case 6:
                 system("cls");
-                view_add_product();
+                view_best_selling_product();
                 break;
             case 7:
                 system("cls");
-                view_update_product();
+                view_add_product();
                 break;
-            case 8:
+             case 8:
                 system("cls");
-                view_delete_product();
+                view_add_product();
                 break;
             case 9:
                 system("cls");
-                view_all_orders();
+                view_update_product();
+                break;
+            case 10:
+                system("cls");
+                view_delete_product();
                 break;
             case 11:
+                system("cls");
+                view_all_orders();
+                break;
+            case 12:
                 system("cls");
                 view_change_password();
                 break;
