@@ -20,6 +20,7 @@
 #include "../../includes/seller/view_update_product.h"
 #include "../../includes/seller/view_delete_product.h"
 #include "../../includes/seller/view_all_orders.h"
+#include "../../includes/seller/view_update_order_status.h"
 
 #include "../../includes/buyer/view_change_password.h" // tái sử dụng bên seller
 
@@ -83,6 +84,10 @@ void seller() {
                 view_all_orders();
                 break;
             case 12:
+                system("cls");
+                view_update_order_status();
+                break;
+            case 13:
                 system("cls");
                 view_change_password();
                 break;

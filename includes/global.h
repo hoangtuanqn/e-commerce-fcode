@@ -58,6 +58,7 @@ typedef struct {
     float total_product[200];
     float total;
     int quantity; // số lượng sản phẩm mua
+    int status; // 0 - chờ xử lý, 1 - thành công, 2 - thất bại
 } Order;
 
 extern int is_logged_in;

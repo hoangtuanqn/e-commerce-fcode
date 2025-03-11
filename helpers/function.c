@@ -585,6 +585,10 @@ void read_order_data() {
         trim_trailing_spaces(line);
         strcpy(order_data[counter_order_all].time_buy, line);
 
+        // Read status order
+        if(!fgets(line, sizeof(line), file)) break;
+        order_data[counter_order_all].status = atof(line);
+
         // Read shipping fee
         if(!fgets(line, sizeof(line), file)) break;
         order_data[counter_order_all].shipping_fee = atof(line);
@@ -650,6 +654,7 @@ void write_order_data() {
         fprintf(file, "%s\n", order_data[i].address);
         fprintf(file, "%s\n", order_data[i].order_id);
         fprintf(file, "%s\n", order_data[i].time_buy);
+        fprintf(file, "%d\n", order_data[i].status);
         fprintf(file, "%.2f\n", order_data[i].shipping_fee);
 
         // Write product details
