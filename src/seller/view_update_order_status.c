@@ -5,37 +5,49 @@
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
 
-void handle_update_order_status(int order_id, int new_status) {
-    // Validate order ID
-    if(order_id <= 0 || order_id > counter_order_all) {
-        msg_error("Invalid order ID!\n");
-        return;
-    }
+void handle_update_order_status(int *list_order_ids, int count, int new_status) {
+    int updated_count = 0;
+    
+    for(int i = 0; i < count; i++) {
+        int order_id = list_order_ids[i];
+        
+        // Validate order ID
+        if(order_id <= 0 || order_id > counter_order_all) {
+            printf("Order ID %d is invalid - skipping\n", order_id);
+            continue;
+        }
 
-    int order_idx = order_id - 1;
-    int has_seller_products = 0;
+        int order_idx = order_id - 1;
+        int has_seller_products = 0;
 
-    // Check if order has products from current seller
-    for(int j = 0; j < order_data[order_idx].quantity; j++) {
-        int product_id = order_data[order_idx].id_product[j];
-        if(product_id > 0 && product_id <= counter_product_all) {
-            if(strcmp(product_data[product_id - 1].username, current_user.username) == 0) {
-                has_seller_products = 1;
-                break;
+        // Check if order has products from current seller
+        for(int j = 0; j < order_data[order_idx].quantity; j++) {
+            int product_id = order_data[order_idx].id_product[j];
+            if(product_id > 0 && product_id <= counter_product_all) {
+                if(strcmp(product_data[product_id - 1].username, current_user.username) == 0) {
+                    has_seller_products = 1;
+                    break;
+                }
             }
         }
+
+        if(!has_seller_products) {
+            printf("Order #%d not found or doesn't contain your products - skipping\n", order_id);
+            continue;
+        }
+
+        // Update status
+        order_data[order_idx].status = new_status;
+        updated_count++;
     }
 
-    if(!has_seller_products) {
-        msg_error("Order not found or doesn't contain your products!\n");
-        return;
+    if(updated_count > 0) {
+        write_order_data();
+        msg_success("Order status updated successfully!\n");
+        printf("Updated status for \033[1;32m%d\033[0m order(s)\n", updated_count);
+    } else {
+        msg_error("No orders were updated\n");
     }
-
-    // Update status
-    order_data[order_idx].status = new_status;
-    write_order_data();
-
-    msg_success("Order status updated successfully!\n");
 }
 
 void view_update_order_status() {
@@ -49,6 +61,7 @@ void view_update_order_status() {
     for(int i = 0; i < counter_order_all; i++) {
         int has_seller_products = 0;
         float order_total = 0;
+
 
         // Check if order has products from current seller
         for(int j = 0; j < order_data[i].quantity; j++) {
@@ -92,15 +105,28 @@ void view_update_order_status() {
         return;
     }
 
-    // Get order to update
-    int order_id;
-    printf("\nEnter Order ID to update (1-%d): ", counter_order_all);
-    if(scanf("%d", &order_id) != 1) {
-        msg_error("Invalid input!\n");
-        while(getchar() != '\n');
+    // Get orders to update
+    char list_id[1000];
+    printf("\nPlease enter the order IDs you wish to update, separated by spaces: ");
+    fgets(list_id, sizeof(list_id), stdin);
+
+    char *token = strtok(list_id, " \n");
+    int list_orders[1000], i = 0, is_valid = 1;
+    while (token != NULL) {
+        int order_id = atoi(token);
+        if(order_id <= 0 || order_id > counter_order_all) {
+            msg_error("Invalid order id ");
+            printf("%d!\n", order_id);
+            is_valid = 0;
+        }
+        list_orders[i++] = order_id;
+        token = strtok(NULL, " \n");
+    }
+
+    if(!is_valid) {
+        msg_error("Cannot update because id is invalid!\n");
         return;
     }
-    while(getchar() != '\n');
 
     // Get new status
     printf("\nSelect new status:\n");
@@ -122,6 +148,6 @@ void view_update_order_status() {
         return;
     }
 
-    handle_update_order_status(order_id, new_status);
+    handle_update_order_status(list_orders, i, new_status);
     printf("\n============END============\n\n");
 }
