@@ -1,17 +1,49 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../../includes/function.h"
 #include "../../includes/buyer/view_ui.h"
 void view_ui_buyer_header() {
+    read_product_data();
+    read_order_data();
+
+    int total_available_items = 0;
+    int total_orders = 0;
+    float total_spent = 0;
+    
+    // Calculate total available items
+    for(int i = 0; i < counter_product_all; i++) {
+        if(product_data[i].quantity > 0) {
+            total_available_items += product_data[i].quantity;
+        }
+    }
+
+    // Calculate buyer's orders and total spent
+    for(int i = 0; i < counter_order_all; i++) {
+        if(strcmp(order_data[i].buyer, current_user.username) == 0) {
+            float order_total = 0;
+            
+            for(int j = 0; j < order_data[i].quantity; j++) {
+                order_total += order_data[i].total_product[j];
+            }
+
+            // Only count completed orders
+            if(order_data[i].status == 1) {
+                total_orders++;
+                total_spent += order_total;
+            }
+        }
+    }
+
     printf("\n========== Welcome to Your Shopping Portal! ==========\n");
     printf("We are excited to assist you in finding the best products tailored to your needs.\n");
     printf("=====================================================\n\n");
 
     printf("\n========== Dashboard! ==========\n");
     printf("Explore our wide range of products available for you.\n");
-    printf("Total items available: [quantity]\n");
-    printf("Number of orders placed: [number of orders]\n");
-    printf("Total amount spent: [total amount]\n");
+    printf("Total items available: \033[1;32m%d\033[0m items\n", total_available_items);
+    printf("Number of orders placed: \033[1;32m%d\033[0m orders\n", total_orders);
+    printf("Total amount spent: \033[1;32m$%.2f\033[0m\n", total_spent);
     printf("=====================================================\n\n");
 }
 void view_ui_buyer() {

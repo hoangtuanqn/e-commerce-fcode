@@ -191,7 +191,7 @@ void view_check_out() {
     printf("\nProduct Notes (Press Enter to skip):\n");
     for(int i = 0; i < cart_data[cart_index].quantity; i++) {
         int product_id = cart_data[cart_index].id_product[i];
-        printf("Note for \033[1;36m%s\033[0m (Quantity: %d): ", 
+        printf("Note for %s (Quantity: %d): ", 
             product_data[product_id - 1].name_product,
             cart_data[cart_index].quantity_product[i]);
             
