@@ -7,4 +7,3 @@ int is_exist_category(char *category_name);
 
 
 #endif
-
