@@ -11,7 +11,7 @@ tuanqn
 Laptop
 This is Laptop hehe
 500.00
-36
+1
 Beautiful Laptop
 1
 200
@@ -20,7 +20,7 @@ tuanqn2
 PC
 PC ne
 2.13
-88
+38
 Beautiful Laptop
 1
 60

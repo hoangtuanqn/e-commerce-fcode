@@ -12,9 +12,10 @@ int is_email_exists(const char *email);
 int is_phone_exists(const char *phone);
 
 int is_validation_email(char *email);
+int contains_number(char *input);
 int is_validation_phone(char *phone);
 int contains_dangerous_chars(const char *input); // hàm kiểm tra kí tự độc hại
-char *input_string(char *input); // xử lý dữ liệu đầu vào
+char *input_string(char *input);                 // xử lý dữ liệu đầu vào
 int is_validation_number(float value, float min_value, float max_value);
 
 // User related functions
@@ -46,6 +47,5 @@ void display_product(Product product, int id);
 
 int validate_password(char *password);
 
-char* get_status(int status);
+char *get_status(int status);
 #endif
-
