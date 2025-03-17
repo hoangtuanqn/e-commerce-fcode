@@ -425,7 +425,7 @@ void read_category_data()
     fclose(file);
 }
 
-// Đọc hết dữ liệu trong file product
+// Read all data from products file
 void read_product_data()
 {
     counter_product_all = 0;
@@ -501,7 +501,7 @@ void read_product_data()
             counter_product_seller++;
         }
 
-        // Kiểm tra đơn hàng ở mỗi category
+        // Check the number of products in each category
         for (int k = 0; k < counter_category_all; ++k)
         {
             if (
