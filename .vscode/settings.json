@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "buyer.h": "c",
-        "global.h": "c",
-        "view_ui.h": "c",
-        "view_check_out.h": "c",
-        "function.h": "c"
-    }
-}
