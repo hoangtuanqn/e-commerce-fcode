@@ -54,9 +54,20 @@ void view_browse_products()
     display_unique_categories();
 
     int choice;
-    printf("Enter category number (0 for all products): ");
-    scanf("%d", &choice);
-    getchar(); // Clear buffer
+    do
+    {
+        printf("Enter category number (0 for all products): ");
+        scanf("%d", &choice);
+        getchar(); // Clear buffer
+        if (choice >= 0 && choice <= counter_category_all)
+        {
+            break;
+        }
+        else
+        {
+            msg_error("Choice Invalid\n");
+        }
+    } while (1);
 
     printf("\n========== Products ==========\n\n");
 

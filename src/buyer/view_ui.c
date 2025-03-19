@@ -88,6 +88,7 @@ void view_delete_from_cart()
     msg_error("\n========== Delete from cart ==========\n");
     printf("1. Delete all products\n");
     printf("2. Delete a specific product\n");
+    printf("3. Back to menu\n");
     printf("Enter your choice: ");
 }
 void view_add_more_to_cart()

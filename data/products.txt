@@ -11,7 +11,7 @@ tuanqn
 Laptop
 This is Laptop hehe
 500.00
-1
+200
 Beautiful Laptop
 1
 200
@@ -45,7 +45,16 @@ Beautiful Laptop
 
 tuanqn
 TV
-This is Laptop hehe
+This is Laptop hehe 6
+500.00
+88
+Beautiful Laptop
+1
+20
+
+tuanqn
+TV
+This is Laptop hehe 7
 500.00
 88
 Beautiful Laptop

@@ -106,6 +106,7 @@ void handle_add_to_cart()
     }
 
     // If product doesn't exist in cart, add it
+    printf("Truoc khi them %d \n", cart_data[cart_index].quantity);
     if (!product_exists)
     {
         if (cart_data[cart_index].quantity >= MAX_PRODUCTS)
@@ -115,26 +116,35 @@ void handle_add_to_cart()
         }
 
         // Add new product to cart
-        cart_data[cart_index].id_product[cart_data[cart_index].quantity] = id_product;
-        cart_data[cart_index].quantity_product[cart_data[cart_index].quantity] = quantity_product;
+        int current_index = cart_data[cart_index].quantity;
+        cart_data[cart_index].id_product[current_index] = id_product;
+        cart_data[cart_index].quantity_product[current_index] = quantity_product;
         cart_data[cart_index].quantity++;
     }
+
+    printf("Sau khi them %d \n", cart_data[cart_index].id_product[cart_data[cart_index].quantity - 1]);
 
     // Save cart data to file
     write_cart_data();
 
     msg_success("Product added to cart successfully!\n");
-    // printf("Product: %s\n", product_data[id_product - 1].name_product);
-    // printf("Quantity: %d\n\n", quantity_product);
 }
 void view_add_to_cart()
 {
     handle_add_to_cart();
-    view_add_more_to_cart();
-    int choice;
-    scanf("%d", &choice);
-    if (choice == 1)
+    do
     {
-        view_add_to_cart();
-    }
+        view_add_more_to_cart();
+        int choice;
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            view_add_to_cart();
+        case 2:
+            return;
+        default:
+            msg_error("Choice invalid");
+        }
+    } while (1);
 }

@@ -14,57 +14,59 @@
 #include "../../includes/buyer/view_order_history.h"
 #include "../../includes/buyer/view_change_password.h"
 
-void buyer() {
+void buyer()
+{
     int choice;
     view_ui_buyer_header();
     read_category_data();
     read_product_data();
     read_cart_data();
     read_order_data();
-    do {
+    do
+    {
         view_ui_buyer();
         scanf("%d", &choice);
         getchar();
-        switch (choice) {
-            case 0:
-                is_logged_in = 0;
-                remove_remember_login();
-                return;
-            case 1:
-                system("cls");
-                view_browse_products();
-                break;
-            case 2:
-                system("cls");
-                view_search_products();
-                break;
-            case 3:
-                system("cls");
-                view_all_cart();
-                break;
-            case 4:
-                system("cls");
-                view_browse_products();
-                view_add_to_cart();
-                break;
-            case 5:
-                system("cls");
-                view_delete_cart();
-                break;
-            case 6:
-                system("cls");
-                view_check_out();
-                break;
-            case 7:
-                system("cls");
-                view_order_history();
-                break;
-            case 8:
-                system("cls");
-                view_change_password();
-            default:
-                msg_error("Invalid choice!\n\n");
+        switch (choice)
+        {
+        case 0:
+            is_logged_in = 0;
+            remove_remember_login();
+            return;
+        case 1:
+            system("cls");
+            view_browse_products();
+            break;
+        case 2:
+            system("cls");
+            view_search_products();
+            break;
+        case 3:
+            system("cls");
+            view_all_cart(1);
+            break;
+        case 4:
+            system("cls");
+            view_browse_products();
+            view_add_to_cart();
+            break;
+        case 5:
+            system("cls");
+            view_delete_cart();
+            break;
+        case 6:
+            system("cls");
+            view_check_out();
+            break;
+        case 7:
+            system("cls");
+            view_order_history();
+            break;
+        case 8:
+            system("cls");
+            view_change_password();
+        default:
+            msg_error("Invalid choice!\n\n");
         }
     } while (1);
-
 }

@@ -6,9 +6,10 @@
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
 
-float view_all_cart()
+float view_all_cart(int display_total)
 {
     read_product_data();
+    read_cart_data();
     float total_amount = 0;
     int product_count = 0;
 
@@ -31,17 +32,15 @@ float view_all_cart()
 
         int product_id = cart_data[cart_index].id_product[j];
         int quantity = cart_data[cart_index].quantity_product[j];
-
         // Kiểm tra product_id hợp lệ
         if (
             product_id <= 0 ||
             product_id > counter_product_all ||
-            product_data[product_id - 1].quantity <= quantity ||
+            product_data[product_id - 1].quantity < quantity ||
             !product_data[product_id - 1].status)
         {
             continue;
         }
-
         // Lấy thông tin sản phẩm từ product_data
         Product *product = &product_data[product_id - 1];
         float subtotal = product->price * quantity;
@@ -53,12 +52,18 @@ float view_all_cart()
         printf("   Price per unit: \033[32m$%.2f\033[0m\n", product->price);
         printf("   Subtotal: \033[32m$%.2f\033[0m\n\n", subtotal);
     }
-
-    if (product_count > 0)
+    if (display_total)
     {
-        printf("Order total: \033[32m$%.2f\033[0m\n", total_amount);
-        printf("Shipping: \033[32m$%.2f\033[0m\n", SHIPPING_FEE);
-        printf("Total: \033[31m$%.2f\033[0m\n", total_amount + SHIPPING_FEE);
+        if (product_count > 0)
+        {
+            printf("Order total: \033[32m$%.2f\033[0m\n", total_amount);
+            printf("Shipping: \033[32m$%.2f\033[0m\n", SHIPPING_FEE);
+            printf("Total: \033[31m$%.2f\033[0m\n", total_amount + SHIPPING_FEE);
+        }
+        else
+        {
+            printf("\033[31mNo products in your cart!\033[0m\n");
+        }
     }
 
     printf("============END============\n\n");

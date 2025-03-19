@@ -596,7 +596,7 @@ void write_cart_data()
         for (int j = 0; j < cart_data[i].quantity; j++)
         {
             int id_product = cart_data[i].id_product[j];
-            if (cart_data[i].quantity > product_data[id_product].quantity)
+            if (cart_data[i].quantity_product[j] > product_data[id_product - 1].quantity)
             {
                 ++cnt;
             }
@@ -611,7 +611,8 @@ void write_cart_data()
         for (int j = 0; j < cart_data[i].quantity; j++)
         {
             int id_product = cart_data[i].id_product[j];
-            if (cart_data[i].quantity > product_data[id_product].quantity)
+            printf("Cac id product dc luu %d \n", id_product);
+            if (cart_data[i].quantity_product[j] > product_data[id_product - 1].quantity)
             {
                 continue;
             }

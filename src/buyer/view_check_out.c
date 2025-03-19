@@ -9,12 +9,14 @@
 #include "../../includes/buyer/view_all_cart.h"
 #include "../../includes/buyer/view_add_to_cart.h"
 #include "../../includes/buyer/view_check_out.h"
-void handle_check_out(Order *delivery_info) {
+void handle_check_out(Order *delivery_info)
+{
     read_order_data();
     // Get current time
     time_t now = time(NULL);
     struct tm *local = localtime(&now);
-    if(local == NULL) {
+    if (local == NULL)
+    {
         msg_error("Error getting current time!\n");
         return;
     }
@@ -29,24 +31,28 @@ void handle_check_out(Order *delivery_info) {
     int product_count = 0;
 
     // Process each item in cart
-    for(int i = 0; i < cart_data[cart_index].quantity; i++) {
+    for (int i = 0; i < cart_data[cart_index].quantity; i++)
+    {
         int product_id = cart_data[cart_index].id_product[i];
         int quantity = cart_data[cart_index].quantity_product[i];
-        
+
         // Validate product ID
-        if(product_id <= 0 || product_id > counter_product_all) {
+        if (product_id <= 0 || product_id > counter_product_all)
+        {
             msg_error("Invalid product ID in cart!\n");
             continue;
         }
-        
+
         Product *product = &product_data[product_id - 1];
-        
+
         // bỏ qua đơn hàng nếu số lượng trong giỏ > số lượng trong kho
-        if(quantity > product->quantity) {
+        if (quantity > product->quantity)
+        {
             continue;
         }
         // Validate product stock
-        if(quantity > product->quantity) {
+        if (quantity > product->quantity)
+        {
             msg_error("Product ");
             printf("%s ", product->name_product);
             msg_error("is out of stock!\n");
@@ -69,12 +75,14 @@ void handle_check_out(Order *delivery_info) {
     delivery_info->total = total + delivery_info->shipping_fee;
 }
 
-void view_check_out() {
-    float total_payment = view_all_cart();
+void view_check_out()
+{
+    float total_payment = view_all_cart(1);
     int cart_index = current_user.id_cart;
 
     // Check if cart is empty
-    if(total_payment <= 0 || cart_data[cart_index].quantity <= 0) {
+    if (total_payment <= 0 || cart_data[cart_index].quantity <= 0)
+    {
         msg_error("There are no orders in the shopping cart!\n");
         return;
     }
@@ -94,15 +102,20 @@ void view_check_out() {
     printf("1. Yes\n");
     printf("0. No\n");
     printf("Your choice: ");
-    if(scanf("%d", &choice) != 1) {
+    if (scanf("%d", &choice) != 1)
+    {
         msg_error("Invalid input!\n");
-        while(getchar() != '\n');
+        while (getchar() != '\n')
+            ;
         return;
     }
-    while(getchar() != '\n');
+    while (getchar() != '\n')
+        ;
 
-    if(choice == 0) return;
-    if(choice != 1) {
+    if (choice == 0)
+        return;
+    if (choice != 1)
+    {
         msg_error("Invalid choice!\n");
         return;
     }
@@ -120,20 +133,25 @@ void view_check_out() {
     printf("1. Use current address\n");
     printf("2. Use new address\n");
     printf("Your choice: ");
-    
-    if(scanf("%d", &choice) != 1) {
+
+    if (scanf("%d", &choice) != 1)
+    {
         msg_error("Invalid input!\n");
-        while(getchar() != '\n');
+        while (getchar() != '\n')
+            ;
         return;
     }
-    while(getchar() != '\n');
+    while (getchar() != '\n')
+        ;
 
-    if(choice == 1) {
+    if (choice == 1)
+    {
         // Use current user information
-        if(strlen(current_user.email) == 0 || 
-           strlen(current_user.phone) == 0 ||
-           strlen(current_user.full_name) == 0 ||
-           strlen(current_user.address) == 0) {
+        if (strlen(current_user.email) == 0 ||
+            strlen(current_user.phone) == 0 ||
+            strlen(current_user.full_name) == 0 ||
+            strlen(current_user.address) == 0)
+        {
             msg_error("Current user information is incomplete!\n");
             return;
         }
@@ -141,64 +159,85 @@ void view_check_out() {
         strcpy(delivery_info.phone, current_user.phone);
         strcpy(delivery_info.full_name, current_user.full_name);
         strcpy(delivery_info.address, current_user.address);
-    } 
-    else if(choice == 2) {
-        do {
+    }
+    else if (choice == 2)
+    {
+        do
+        {
             printf("Email: ");
             fgets(delivery_info.email, sizeof(delivery_info.email), stdin);
-            if (!input_string(delivery_info.email) || !is_validation_email(delivery_info.email)) {
+            if (!input_string(delivery_info.email) || !is_validation_email(delivery_info.email))
+            {
                 msg_error("Invalid email address\n");
-            } else {
+            }
+            else
+            {
                 break;
             }
         } while (1);
 
-        do {
+        do
+        {
             printf("Phone Number: ");
             fgets(delivery_info.phone, sizeof(delivery_info.phone), stdin);
-            if (!input_string(delivery_info.phone) || !is_validation_phone(delivery_info.phone)) {
+            if (!input_string(delivery_info.phone) || !is_validation_phone(delivery_info.phone))
+            {
                 msg_error("Invalid phone number!\n");
-            } else {
+            }
+            else
+            {
                 break;
             }
         } while (1);
 
-        do {
+        do
+        {
             printf("Full Name: ");
             fgets(delivery_info.full_name, sizeof(delivery_info.full_name), stdin);
-            if (!input_string(delivery_info.full_name) || strlen(delivery_info.full_name) < 2) {
+            if (!input_string(delivery_info.full_name) || strlen(delivery_info.full_name) < 2)
+            {
                 msg_error("Name is too short!\n");
-            } else {
+            }
+            else
+            {
                 break;
             }
         } while (1);
 
-        do {
+        do
+        {
             printf("Address: ");
             fgets(delivery_info.address, sizeof(delivery_info.address), stdin);
-            if (!input_string(delivery_info.address) || strlen(delivery_info.address) < 5) {
+            if (!input_string(delivery_info.address) || strlen(delivery_info.address) < 5)
+            {
                 msg_error("Address is too short!\n");
-            } else {
+            }
+            else
+            {
                 break;
             }
         } while (1);
-    } else {
+    }
+    else
+    {
         msg_error("Invalid choice!\n");
         return;
     }
 
     // Get order notes for each product
     printf("\nProduct Notes (Press Enter to skip):\n");
-    for(int i = 0; i < cart_data[cart_index].quantity; i++) {
+    for (int i = 0; i < cart_data[cart_index].quantity; i++)
+    {
         int product_id = cart_data[cart_index].id_product[i];
-        printf("Note for %s (Quantity: %d): ", 
-            product_data[product_id - 1].name_product,
-            cart_data[cart_index].quantity_product[i]);
-            
+        printf("Note for %s (Quantity: %d): ",
+               product_data[product_id - 1].name_product,
+               cart_data[cart_index].quantity_product[i]);
+
         fgets(delivery_info.note_product[i], sizeof(delivery_info.note_product[i]), stdin);
         trim_trailing_spaces(delivery_info.note_product[i]);
 
-        if(strlen(delivery_info.note_product[i]) == 0) {
+        if (strlen(delivery_info.note_product[i]) == 0)
+        {
             strcpy(delivery_info.note_product[i], "No notes");
         }
     }
@@ -215,7 +254,7 @@ void view_check_out() {
     write_order_data();
     write_product_data();
     delete_all_cart();
-    
+
     msg_success("\nOrder placed successfully!\n");
     msg_success("Please wait for the seller to confirm your order.\n");
     printf("\n============END============\n\n");
