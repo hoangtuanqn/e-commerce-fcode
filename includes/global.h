@@ -60,10 +60,10 @@ typedef struct
     float shipping_fee; // phí giao hàng
     int quantity_product[200];
     char note_product[200][1000]; // note cho từng đơn hàng
+    int status_product[200];      // mỗi sản phẩm sẽ có status 0 - chờ xử lý, 1 - thành công, 2 - thất bại
     float total_product[200];
     float total;
     int quantity; // số lượng sản phẩm mua
-    int status;   // 0 - chờ xử lý, 1 - thành công, 2 - thất bại
 } Order;
 
 extern int is_logged_in;

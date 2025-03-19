@@ -700,9 +700,10 @@ void read_order_data()
         strcpy(order_data[counter_order_all].time_buy, line);
 
         // Read status order
-        if (!fgets(line, sizeof(line), file))
-            break;
-        order_data[counter_order_all].status = atof(line);
+        // tí comment cái này lại
+        // if (!fgets(line, sizeof(line), file))
+        //     break;
+        // order_data[counter_order_all].status = atof(line);
 
         // Read shipping fee
         if (!fgets(line, sizeof(line), file))
@@ -718,15 +719,16 @@ void read_order_data()
                 break; // Empty line indicates end of order
 
             // Try to parse as product line first
-            int id, quantity;
+            int id, quantity, status;
             float price;
             // Read product line: id quantity price note
             char note[1000];
-            if (sscanf(line, "%d %d %f %[^\n]", &id, &quantity, &price, note) >= 3)
+            if (sscanf(line, "%d %d %f %d %[^\n]", &id, &quantity, &price, &status, note) >= 4)
             {
                 order_data[counter_order_all].id_product[product_count] = id;
                 order_data[counter_order_all].quantity_product[product_count] = quantity;
                 order_data[counter_order_all].total_product[product_count] = price;
+                order_data[counter_order_all].status_product[product_count] = status;
                 if (strlen(note) > 0)
                 {
                     strcpy(order_data[counter_order_all].note_product[product_count], note);
@@ -782,16 +784,17 @@ void write_order_data()
         fprintf(file, "%s\n", order_data[i].address);
         fprintf(file, "%s\n", order_data[i].order_id);
         fprintf(file, "%s\n", order_data[i].time_buy);
-        fprintf(file, "%d\n", order_data[i].status);
+        // fprintf(file, "%d\n", order_data[i].status);
         fprintf(file, "%.2f\n", order_data[i].shipping_fee);
 
         // Write product details
         for (int j = 0; j < order_data[i].quantity; j++)
         {
-            fprintf(file, "%d %d %.2f %s\n",
+            fprintf(file, "%d %d %.2f %d %s\n",
                     order_data[i].id_product[j],
                     order_data[i].quantity_product[j],
                     order_data[i].total_product[j],
+                    order_data[i].status_product[j],
                     order_data[i].note_product[j]);
         }
 

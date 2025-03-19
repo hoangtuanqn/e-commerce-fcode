@@ -95,9 +95,6 @@ void view_all_orders()
             printf("-> Address: \033[0;36m%s\033[0m\n", order_data[i].address);
             printf("-> Order ID: \033[1;35m%s\033[0m\n", order_data[i].order_id);
             printf("-> Order Date: \033[0;36m%s\033[0m\n", order_data[i].time_buy);
-            printf("-> Status: %s\n",
-                   order_data[i].status == 0 ? "\033[33mPending\033[0m" : order_data[i].status == 1 ? "\033[32mCompleted\033[0m"
-                                                                                                    : "\033[31mFailed\033[0m");
 
             // Print only products from current seller
             printf("\033[1;33m-> Products:\033[0m\n");
@@ -109,23 +106,30 @@ void view_all_orders()
                     // Only show products from current seller
                     if (strcmp(product_data[product_id - 1].username, current_user.username) == 0)
                     {
-                        printf("   - Product Name: \033[0;32m%s\033[0m\n",
+                        // Simplified status display using ternary operator
+                        printf("   - [%s] Product: \033[0;32m%s\033[0m\n",
+                               order_data[i].status_product[j] == 0 ? "\033[33mPending\033[0m" : order_data[i].status_product[j] == 1 ? "\033[32mCompleted\033[0m"
+                                                                                                                                      : "\033[31mFailed\033[0m",
                                product_data[product_id - 1].name_product);
-                        printf("   - Quantity: \033[0;32m%d\033[0m\n",
+                        printf("     Quantity: \033[0;32m%d\033[0m\n",
                                order_data[i].quantity_product[j]);
-                        printf("   - Item Total: \033[0;32m$%.2f\033[0m\n",
+                        printf("     Item Total: \033[0;32m$%.2f\033[0m\n",
                                order_data[i].total_product[j]);
-                        printf("   - Product Note: \033[0;35m%s\033[0m\n",
+                        printf("     Product Note: \033[0;35m%s\033[0m\n",
                                order_data[i].note_product[j]);
                         printf("   -------------------------\n");
 
-                        order_total += order_data[i].total_product[j];
+                        // Only add to total if product is completed
+                        if (order_data[i].status_product[j] == 1)
+                        {
+                            order_total += order_data[i].total_product[j];
+                        }
                     }
                 }
             }
 
-            // Show total for seller's products only
-            printf("-> Seller's Total: \033[1;31m$%.2f\033[0m\n", order_total);
+            // Show total for seller's completed products only
+            printf("-> Seller's Total (Completed Products): \033[1;31m$%.2f\033[0m\n", order_total);
             printf("--------------------------------\n\n");
 
             seller_total += order_total;
@@ -138,7 +142,7 @@ void view_all_orders()
     }
     else
     {
-        printf("\nTotal Sales: \033[1;32m$%.2f\033[0m\n", seller_total);
+        printf("\nTotal Sales (Completed Products): \033[1;32m$%.2f\033[0m\n", seller_total);
     }
 
     printf("============END============\n\n");

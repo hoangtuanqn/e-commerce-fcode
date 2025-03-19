@@ -4,43 +4,52 @@
 
 #include "../../includes/function.h"
 #include "../../includes/seller/view_ui.h"
-void view_ui_seller_header() {
+void view_ui_seller_header()
+{
     read_product_data();
     read_order_data();
 
     int total_stock = 0;
-    int total_orders = 0;
+    int total_products_sold = 0;
     float total_sales = 0;
-    
+
     // Calculate total stock from all products
-    for(int i = 0; i < counter_product_all; i++) {
-        if(strcmp(product_data[i].username, current_user.username) == 0) {
+    for (int i = 0; i < counter_product_all; i++)
+    {
+        if (strcmp(product_data[i].username, current_user.username) == 0)
+        {
             total_stock += product_data[i].quantity;
         }
     }
 
-    // Calculate total orders and sales
-    for(int i = 0; i < counter_order_all; i++) {
-        int has_seller_products = 0;
+    // Calculate total products sold and sales
+    for (int i = 0; i < counter_order_all; i++)
+    {
         float order_total = 0;
 
         // Check if order has products from current seller
-        for(int j = 0; j < order_data[i].quantity; j++) {
+        for (int j = 0; j < order_data[i].quantity; j++)
+        {
             int product_id = order_data[i].id_product[j];
-            if(product_id > 0 && product_id <= counter_product_all) {
-                if(strcmp(product_data[product_id - 1].username, current_user.username) == 0) {
-                    // Calculate total for each product: quantity * price
-                    float product_total = order_data[i].quantity_product[j] * product_data[product_id - 1].price;
-                    order_total += product_total;
-                    has_seller_products = 1;
+            if (product_id > 0 && product_id <= counter_product_all)
+            {
+                if (strcmp(product_data[product_id - 1].username, current_user.username) == 0)
+                {
+                    // Only count completed products (status_product = 1)
+                    if (order_data[i].status_product[j] == 1)
+                    {
+                        // Add the quantity of products sold
+                        total_products_sold += order_data[i].quantity_product[j];
+
+                        // Use the stored total_product value
+                        order_total += order_data[i].total_product[j];
+                    }
                 }
             }
         }
 
-        if(has_seller_products && order_data[i].status == 1) { // Only count completed orders
-            total_orders++;
-            total_sales += order_total;
-        }
+        // Add to total sales
+        total_sales += order_total;
     }
 
     printf("\n========== Welcome to the system! ==========\n");
@@ -49,11 +58,12 @@ void view_ui_seller_header() {
 
     printf("\n========== Dashboard! ==========\n");
     printf("Stock available: \033[1;32m%d\033[0m items\n", total_stock);
-    printf("Number of orders completed: \033[1;32m%d\033[0m orders\n", total_orders);
+    printf("Number of products sold: \033[1;32m%d\033[0m products\n", total_products_sold);
     printf("Total sales amount: \033[1;32m$%.2f\033[0m\n", total_sales);
     printf("=====================================================\n\n");
 }
-void view_ui_seller() {
+void view_ui_seller()
+{
     msg_bold("\n========== Seller Menu ==========\n");
     printf("1. View All Category\n");
     printf("2. Add Category\n");

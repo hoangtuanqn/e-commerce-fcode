@@ -40,9 +40,43 @@ void view_all_product()
                         printf("\tDescription: \033[32m%s\033[0m\n", product_data[i].description);
                         printf("\tSold Quantity: \033[32m%d\033[0m\n", product_data[i].sold_quantity);
 
-                        printf("\tStatus: %s%s\033[0m\n",
-                               product_data[i].status == 1 ? "\033[32m" : "\033[31m", // Green for active, Red for inactive
-                               get_status(product_data[i].status));
+                        // Improved status display with more informative colors and messages
+                        char *status_color;
+                        char *status_text;
+                        
+                        switch(product_data[i].status) {
+                            case 0:
+                                status_color = "\033[33m"; // Yellow for pending/inactive
+                                status_text = "Inactive";
+                                break;
+                            case 1:
+                                status_color = "\033[32m"; // Green for active
+                                status_text = "Active";
+                                break;
+                            case 2:
+                                status_color = "\033[31m"; // Red for deleted/hidden
+                                status_text = "Hidden";
+                                break;
+                            default:
+                                status_color = "\033[90m"; // Gray for unknown
+                                status_text = "Unknown";
+                        }
+                        
+                        printf("\tStatus: %s%s\033[0m", status_color, status_text);
+                        
+                        // Add stock status indicator
+                        if (product_data[i].status == 1) {
+                            if (product_data[i].quantity <= 0) {
+                                printf(" \033[31m(Out of Stock)\033[0m\n");
+                            } else if (product_data[i].quantity < 5) {
+                                printf(" \033[33m(Low Stock: %d)\033[0m\n", product_data[i].quantity);
+                            } else {
+                                printf(" \033[32m(In Stock)\033[0m\n");
+                            }
+                        } else {
+                            printf("\n");
+                        }
+                        
                         printf("--------------------------------\n\n");
                     }
                 }

@@ -18,7 +18,6 @@ void view_ui_buyer_header()
         if (product_data[i].quantity > 0 && product_data[i].status == 1)
         {
             total_available_items += product_data[i].quantity;
-            printf("Run this is");
         }
     }
 
@@ -27,19 +26,11 @@ void view_ui_buyer_header()
     {
         if (strcmp(order_data[i].buyer, current_user.username) == 0)
         {
-            float order_total = 0;
+            // Count all orders for this user
+            total_orders++;
 
-            for (int j = 0; j < order_data[i].quantity; j++)
-            {
-                order_total += order_data[i].total_product[j];
-            }
-
-            // Only count completed orders
-            if (order_data[i].status == 0 || order_data[i].status == 1)
-            {
-                total_orders++;
-                total_spent += order_total;
-            }
+            // Add the total amount from the order
+            total_spent += order_data[i].total;
         }
     }
 

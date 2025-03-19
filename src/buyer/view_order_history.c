@@ -28,15 +28,20 @@ void view_order_history() {
 
             printf("\033[1;33m-> Products:\033[0m\n");
             for(int j = 0; j < order_data[i].quantity; j++) {
-            int product_id = order_data[i].id_product[j];
-            if(product_id > 0 && product_id <= counter_product_all) {
-                printf("   - Product Name: \033[0;32m%s\033[0m\n", product_data[product_id - 1].name_product);
-                printf("   - Quantity: \033[0;32m%d\033[0m\n", order_data[i].quantity_product[j]);
-                printf("   - Item Total: \033[0;32m$%.2f\033[0m\n", order_data[i].total_product[j]);
-                printf("   - Note: \033[0;35m%s\033[0m\n", order_data[i].note_product[j]);
+                int product_id = order_data[i].id_product[j];
+                if(product_id > 0 && product_id <= counter_product_all) {
+                    // Display product status with color coding
+                    printf("   - [%s] Product Name: \033[0;32m%s\033[0m\n", 
+                           order_data[i].status_product[j] == 0 ? "\033[33mPending\033[0m" : 
+                           order_data[i].status_product[j] == 1 ? "\033[32mDelivered\033[0m" : 
+                                                                 "\033[31mFailed\033[0m",
+                           product_data[product_id - 1].name_product);
+                    printf("   - Quantity: \033[0;32m%d\033[0m\n", order_data[i].quantity_product[j]);
+                    printf("   - Item Total: \033[0;32m$%.2f\033[0m\n", order_data[i].total_product[j]);
+                    printf("   - Note: \033[0;35m%s\033[0m\n", order_data[i].note_product[j]);
 
-                printf("   -------------------------\n");
-            }
+                    printf("   -------------------------\n");
+                }
             }
             printf("-> Shipping Fee: \033[1;33m$%.2f\033[0m\n", order_data[i].shipping_fee);
             printf("-> Total: \033[1;31m$%.2f\033[0m\n", order_data[i].total);
