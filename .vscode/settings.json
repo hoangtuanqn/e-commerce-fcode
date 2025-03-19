@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "buyer.h": "c",
+        "global.h": "c"
+    }
+}

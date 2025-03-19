@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 #include "../includes/global.h"
 #include "../includes/login.h"
 #include "../includes/view_ui.h"
@@ -10,17 +9,21 @@
 
 User current_user;
 
-int handle_login(char *username, char *password) {
-    if (strlen(username) == 0 || strlen(password) == 0) {
+int handle_login(char *username, char *password)
+{
+    if (strlen(username) == 0 || strlen(password) == 0)
+    {
         return 0;
     }
     // printf("%s---%s--%d--%d--%d", username, password, strlen(username), strlen(password), MAX_USERS);
 
     // Duyệt qua mảng list_user để tìm user phù hợp
-    for(int i = 0; i < counter_user; i++) {
+    for (int i = 0; i < counter_user; i++)
+    {
         // Nếu username rỗng thì break vì đã hết user
         // printf("%s-%s\n", list_user[i].username, list_user[i].password);
-        if(strlen(list_user[i].username) == 0) {
+        if (strlen(list_user[i].username) == 0)
+        {
             break;
         }
 
@@ -28,42 +31,50 @@ int handle_login(char *username, char *password) {
         // printf("----%s-----%s------\n", list_user[i].username, list_user[i].password);
         // printf("----%s-----%s------\n", username, password);
         // printf("---%d--", counter_user);
-        if (strcmp(list_user[i].username, username) == 0 && 
-            strcmp(list_user[i].password, password) == 0) {
-            
+        if (strcmp(list_user[i].username, username) == 0 &&
+            strcmp(list_user[i].password, password) == 0)
+        {
+
             // Copy thông tin user vào current_user
             current_user = list_user[i]; // gán dữ liệu trực tiếp
-          
+
             return 1;
         }
     }
 
     return 0;
 }
-void login_form() {
+void login_form()
+{
     int is_re_login = 1;
     char username[50], password[50];
 
-    do {
+    do
+    {
         printf("====================================\n");
         printf("               LOGIN        \n");
         printf("====================================\n");
-        do {
+        do
+        {
             printf("Username: ");
             scanf("%s", username);
-        } while(!input_string(username));
-        
-        do {
+        } while (!input_string(username));
+
+        do
+        {
             printf("Password: ");
             scanf("%s", password);
-        } while(!input_string(password));
+        } while (!input_string(password));
 
-        if (handle_login(username, password)) {
+        if (handle_login(username, password))
+        {
             is_logged_in = 1;
             is_re_login = 0;
             msg_success("Login successful!\n");
             handle_remember_login();
-        } else {
+        }
+        else
+        {
             msg_error("Invalid username or password!\n");
             is_re_login = view_ui_re_login();
         }

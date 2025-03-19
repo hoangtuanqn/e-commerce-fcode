@@ -24,76 +24,66 @@
 
 #include "../../includes/buyer/view_change_password.h" // tái sử dụng bên seller
 
-void seller() {
+void seller()
+{
     int choice;
     int pause = 0; // 1 là pause, 0 là không pause
     view_ui_seller_header();
-    do {
+    do
+    {
         view_ui_seller();
         read_category_data();
         read_product_data();
         scanf("%d", &choice);
         getchar();
-        switch (choice) {
-            case 0:
-                is_logged_in = 0;
-                remove_remember_login();
-                return;
-            case 1:
-                system("cls");
-                view_all_category();
-                break;
-            case 2:
-                system("cls");
-                view_add_category();
-                break;
-            case 3:
-                system("cls");
-                view_update_category();
-                break;
-            case 4:
-                system("cls");
-                view_delete_category();
-                break;
-            case 5:
-                system("cls");
-                view_all_product();
-                break;
-            case 6:
-                system("cls");
-                view_best_selling_product();
-                break;
-            case 7:
-                system("cls");
-                view_out_of_stock_product();
-                break;
-             case 8:
-                system("cls");
-                view_add_product();
-                break;
-            case 9:
-                system("cls");
-                view_update_product();
-                break;
-            case 10:
-                system("cls");
-                view_delete_product();
-                break;
-            case 11:
-                system("cls");
-                view_all_orders();
-                break;
-            case 12:
-                system("cls");
-                view_update_order_status();
-                break;
-            case 13:
-                system("cls");
-                view_change_password();
-                break;
-            default:
-                msg_error("Invalid choice!\n\n");
+        system("cls");
+        switch (choice)
+        {
+        case 0:
+            is_logged_in = 0;
+            remove_remember_login();
+            return;
+        case 1:
+            view_all_category();
+            break;
+        case 2:
+            view_add_category();
+            break;
+        case 3:
+            view_update_category();
+            break;
+        case 4:
+            view_delete_category();
+            break;
+        case 5:
+            view_all_product();
+            break;
+        case 6:
+            view_best_selling_product();
+            break;
+        case 7:
+            view_out_of_stock_product();
+            break;
+        case 8:
+            view_add_product();
+            break;
+        case 9:
+            view_update_product();
+            break;
+        case 10:
+            view_delete_product();
+            break;
+        case 11:
+            view_all_orders();
+            break;
+        case 12:
+            view_update_order_status();
+            break;
+        case 13:
+            view_change_password();
+            break;
+        default:
+            msg_error("Invalid choice!\n\n");
         }
     } while (!pause);
-
 }

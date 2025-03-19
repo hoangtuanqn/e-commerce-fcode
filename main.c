@@ -17,7 +17,6 @@ int main()
     {
         if (is_logged_in)
         {
-
             switch (current_user.account_type)
             {
             case 1:

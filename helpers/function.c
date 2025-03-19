@@ -947,7 +947,7 @@ int validate_password(char *password)
     }
     if (!hasSpecial)
     {
-        msg_error("Error: Password must contain at least one special character (!@#$%%^&*).\n");
+        msg_error("Error: Password must contain at least one special character (!@#$%^&*).\n");
         return 0;
     }
 
