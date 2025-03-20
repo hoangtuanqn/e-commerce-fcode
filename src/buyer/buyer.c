@@ -27,6 +27,7 @@ void buyer()
         view_ui_buyer();
         scanf("%d", &choice);
         getchar();
+        system("cls");
         switch (choice)
         {
         case 0:
@@ -34,36 +35,31 @@ void buyer()
             remove_remember_login();
             return;
         case 1:
-            system("cls");
             view_browse_products();
             break;
         case 2:
-            system("cls");
             view_search_products();
             break;
         case 3:
-            system("cls");
-            view_all_cart(1);
+            view_search_products();
             break;
         case 4:
-            system("cls");
+            view_all_cart(1);
+            break;
+        case 5:
             view_browse_products();
             view_add_to_cart();
             break;
-        case 5:
-            system("cls");
+        case 6:
             view_delete_cart();
             break;
-        case 6:
-            system("cls");
+        case 7:
             view_check_out();
             break;
-        case 7:
-            system("cls");
+        case 8:
             view_order_history();
             break;
-        case 8:
-            system("cls");
+        case 9:
             view_change_password();
         default:
             msg_error("Invalid choice!\n\n");

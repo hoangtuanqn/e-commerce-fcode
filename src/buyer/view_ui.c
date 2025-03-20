@@ -51,17 +51,19 @@ void view_ui_buyer()
 
     printf("1. Browse Products\n");
     printf("2. Search for products\n");
-    printf("\n");
-    printf("3. View cart\n");
-    printf("4. Add to cart\n");
+    printf("3. Search for categories\n");
 
     printf("\n");
-    printf("5. Delete from cart\n");
-    printf("6. Checkout\n");
-    printf("7. View Orders\n");
+    printf("4. View cart\n");
+    printf("5. Add to cart\n");
 
     printf("\n");
-    printf("8. Change password\n");
+    printf("6. Delete from cart\n");
+    printf("7. Checkout\n");
+    printf("8. View Orders\n");
+
+    printf("\n");
+    printf("9. Change password\n");
 
     printf("\n");
     printf("0. Logout\n");

@@ -6,3 +6,4 @@
 *.dylib
 *.lib
 *.exp
+.vscode
